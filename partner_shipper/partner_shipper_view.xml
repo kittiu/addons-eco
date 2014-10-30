@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+    <data>
+    	<!-- Partner Shipper -->
+        <record id="partner_shipper_form_view" model="ir.ui.view">
+            <field name="name">partner.shipper.form.view</field>
+            <field name="model">partner.shipper</field>
+            <field name="arch" type="xml">
+            	<form string="Shipper" version="7.0">
+                  <sheet>
+                    <group col="4">
+                        <group>
+							<field name="name"/>
+                        </group>      
+                        <group>
+							<field name="route"/>
+                        </group>
+                    </group>
+                    <group>
+                        <group string="Address">
+                            <label for="street" string="Address"/>
+                            <div>
+                                <field name="street" placeholder="Street..."/>
+                                <field name="street2"/>
+                                <div>
+                                    <field name="zip" class="oe_inline" placeholder="ZIP"/>
+                                    <field name="city" class="oe_inline" placeholder="City"/>
+                                </div>
+                                <field name="country" placeholder="Country"/>
+                            </div>
+                        </group>
+                        <group string="Communication">
+                            <field name="phone"/>
+                            <field name="fax"/>
+                            <field name="email" widget="email"/>
+                            <field name="active"/>
+                        </group>          
+                        <group>
+	                        <field name="area_covered"/>
+						</group>
+                        <group>
+	                        <field name="dest_contact"/>
+						</group>      					
+					</group>             
+					<group string="Notes">
+                        <field name="note"/>
+                    </group>                  
+				  </sheet>
+                </form>
+            </field>
+        </record>
+        <record id="partner_shipper_form_action" model="ir.actions.act_window">
+            <field name="name">Shippers</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">partner.shipper</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="help" type="html">
+              <p class="oe_view_nocontent_create">
+                Click to add a new Shipper.
+              </p>
+              <p>
+              	Shipper is the master data used for customers
+              </p>
+            </field>
+        </record>
+        <record id="partner_shipper_tree_view" model="ir.ui.view">
+            <field name="name">partner.shipper.tree.view</field>
+            <field name="model">partner.shipper</field>
+            <field name="arch" type="xml">
+                <tree string="Shippers">
+                    <field name="name"/>
+                    <field name="route"/>
+                    <field name="area_covered"/>
+                </tree>
+            </field>
+        </record>
+        <menuitem action="partner_shipper_form_action" id="menu_partner_shipper_form_action" parent="base.menu_config_address_book" sequence="25" groups="base.group_no_one"/>
+
+	</data>
+</openerp>

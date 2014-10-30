@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+    <data>
+        <record id="invoice_supplier_form_ext" model="ir.ui.view">
+		    <field name="name">invoice.supplier.form.ext</field>
+		    <field name="model">account.invoice</field>
+		    <field name="type">form</field>
+		    <field name="inherit_id" ref="account.invoice_supplier_form"/>
+		    <field name="arch" type="xml">
+                <data>
+                    <button name="%(account.action_account_invoice_refund)d" position="before">
+                    	<button name="post_landedcost" type="object" string="Post Landed Cost" attrs="{'invisible': ['|', '|', ('landedcost_alloc_move_id','&lt;&gt;',False), ('is_landedcost_alloc','=',False), ('state','not in',('open','paid'))]}" class="oe_highlight" groups="account.group_account_invoice"/>
+                        <button name="unpost_landedcost" type="object" string="Unpost Landed Cost" attrs="{'invisible': ['|', ('landedcost_alloc_move_id','=',False), ('state','not in',('open','paid'))]}"  groups="account.group_account_invoice"/>
+                    </button>                    
+                    <xpath expr="/form/sheet/notebook/page[@string='Invoice']" position="after">
+                        <page string="Landed Cost Allocation">
+                           <group>
+                           		<group>
+	                                <field name="is_landedcost_alloc"/>
+                        		</group>                                
+                        		<group>
+	                        		<field name="landedcost_alloc_move_id"/>
+	                        		<field name="landedcost_alloc_move_date"/>
+                        		</group>
+                        	</group>                        	
+                        	<field name="landedcost_alloc_ids">
+                                <tree string="Landed Cost Allocation" editable="bottom">
+                                    <field name="invoice_id" invisible="1"/>
+                                    <field name="supplier_invoice_id" on_change="onchange_supplier_invoice_id(invoice_id, supplier_invoice_id)" options="{'limit': 10, 'create': false, 'create_edit': false}"/>
+                                    <field name="landedcost_account_id" options="{'limit': 10, 'create': false, 'create_edit': false}"/>
+                                    <field name="landedcost_amount_alloc" sum="Total Allocation"/>
+                        		</tree>
+                        	</field>
+                        </page>                    
+                    </xpath>
+				</data>
+			</field>
+		</record>
+	</data>
+</openerp>

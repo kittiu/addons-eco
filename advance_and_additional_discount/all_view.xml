@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<openerp>
+    <data>
+    
+    	<record id="view_order_ext" model="ir.ui.view">
+            <field name="name">sale.order.form.ext</field>
+            <field name="model">sale.order</field>
+            <field name="type">form</field>
+            <field name="inherit_id" ref="sale.view_order_form"/>
+            <field name="arch" type="xml">
+                <data>
+					<xpath expr="/form/header/button[@name='%(sale.action_view_sale_advance_payment_inv)d']" position="attributes">
+						<attribute name="attrs">{'invisible': ['|', '&amp;', ('advance_type', '=', 'deposit'), ('amount_deposit', '&gt;', 0),
+															   '|', '&amp;', ('advance_type', '=', 'advance'), ('advance_percentage', '&gt;', 0),
+															   '|',('state', 'not in', ('progress','invoice_except', 'done')),'&amp;',('advance_type', '=', False),('invoiced_rate', '>=', 100)]}</attribute>
+						<attribute name="context">{'advance_type':advance_type, 'retention': retention_percentage, 'num_invoice': num_invoice}</attribute>
+					</xpath>
+					<field name="amount_untaxed" position="after">
+	                    <field name="add_disc" colspan="2"/>
+	                    <field name="add_disc_amt" colspan="2" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+	                    <field name="amount_net" sum="Net Amount" colspan="2" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+					</field>
+					<field name='invoiced' position="before">
+                       <field name="invoiced_rate"/>
+                   </field>
+					<xpath expr="/form/sheet/notebook/page[@string='Other Information']/group" position="inside">
+	                    <group>
+	                        <field name="advance_type" attrs="{'invisible': [('order_policy', 'not in', ('picking','manual'))]}"/>
+							<field name="amount_deposit" attrs="{'invisible': [('order_policy', 'not in', ('picking','manual'))]}"/>
+							<field name="advance_percentage" readonly="True" attrs="{'invisible': [('order_policy', 'not in', ('picking','manual'))]}"/>
+	                        <field name="num_invoice" invisible="1"/>                   
+	                        <!-- field name="num_invoice" attrs="{'invisible': [('order_policy', 'not in', ('picking','manual'))]}"/ -->                         
+	                    </group>
+	                    <group>
+	                    	<field name="retention_percentage" readonly="True" attrs="{'invisible':[('retention_percentage', '=', 0.0)]}"/>
+	                        <field name="amount_retained" readonly="True" attrs="{'invisible':[('retention_percentage', '=', 0.0)]}" widget="monetary" options="{'currency_field': 'currency_id'}"/>                
+						</group>					
+					</xpath> 				
+				</data> 
+            </field>
+       </record>
+    	
+       <record id="purchase_order_form_ext" model="ir.ui.view">
+            <field name="name">purchase.order.form.ext</field>
+            <field name="model">purchase.order</field>
+            <field name="type">form</field>
+            <field name="inherit_id" ref="purchase.purchase_order_form"/>
+            <field name="arch" type="xml">
+				<xpath expr="/form/header/button[@name='view_invoice']" position="attributes">
+					<attribute name="invisible">{'invisible': ['|', ('invoice_method','=','picking'), '|', ('state','!=', 'approved'), '|',('invoiced','=',True), ('advance_type', '!=', False) ]}</attribute>								
+				</xpath>
+				<xpath expr="/form/header/button[@name='view_invoice']" position="after">
+                    <button name="%(action_view_purchase_advance_payment_inv)d" string="Receive Invoice"
+                    	attrs="{'invisible': ['|', '&amp;', ('advance_type', '=', 'deposit'), ('amount_deposit', '&gt;', 0),
+											  '|', '&amp;', ('advance_type', '=', 'advance'), ('advance_percentage', '&gt;', 0),
+										      '|',('state', 'not in', ('approved')),('advance_type', '=', False),]}"
+                        type="action" class="oe_highlight" groups="base.group_user"
+                    	context="{'advance_type':advance_type}"/>
+				</xpath>                
+				<field name="amount_untaxed" position="after">
+                    <field name="add_disc" colspan="2"/>
+                    <field name="add_disc_amt" colspan="2" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                    <field name="amount_net" sum="Net Amount" colspan="2" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                </field>
+				<field name='invoiced' position="before">
+                    <field name="invoiced_rate"/>
+                </field>
+                <xpath expr="/form/sheet/notebook/page[@string='Incoming Shipments &amp; Invoices']/group" position="inside">
+                    <group>
+						<field name="advance_type" attrs="{'invisible': [('invoice_method', 'not in', ('picking','manual','line_percentage'))]}"/>
+						<field name="amount_deposit" attrs="{'invisible': [('invoice_method', 'not in', ('picking','manual','line_percentage'))]}"/>
+						<field name="advance_percentage" readonly="True" attrs="{'invisible': [('invoice_method', 'not in', ('picking','manual','line_percentage'))]}"/>
+							
+                        <field name="num_invoice" invisible="1"/>                   
+					</group>
+				</xpath> 
+            </field>
+        </record>
+        
+        
+        <record id="invoice_form_ext" model="ir.ui.view">
+            <field name="name">account.invoice.form.ext</field>
+            <field name="model">account.invoice</field>
+            <field name="type">form</field>
+            <field name="inherit_id" ref="account.invoice_form"/>
+            <field name="arch" type="xml">
+                <field name="amount_untaxed" position="after">
+                  	<field name="add_disc" />
+                	<field name="add_disc_amt"  widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                	<field name="amount_net" sum="Net Amount" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                    <field name="amount_advance" sum="Advance Amt" colspan="2" attrs="{'invisible':[('amount_advance', '=', 0.0)]}" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                    <field name="amount_deposit" sum="Deposit Amt" colspan="2" attrs="{'invisible':[('amount_deposit', '=', 0.0)]}" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                    <field name="amount_beforetax" sum="Before Taxes" colspan="2" attrs="{'invisible':[('amount_advance', '=', 0.0),('amount_deposit', '=', 0.0)]}" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                </field>
+                <field name="amount_tax" position="after">
+                    <field name="amount_beforeretention" sum="Before Retention" colspan="2" attrs="{'invisible':[('amount_retention', '=', 0.0)]}" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                    <field name="amount_retention" sum="Retention Amt" colspan="2" attrs="{'invisible':[('amount_retention', '=', 0.0)]}" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                </field>            
+			</field>
+        </record>
+        
+        <record id="invoice_supplier_form_ext" model="ir.ui.view">
+            <field name="name">account.invoice.supplier.form.ext</field>
+            <field name="model">account.invoice</field>
+            <field name="type">form</field>
+            <field name="inherit_id" ref="account.invoice_supplier_form"/>
+            <field name="priority">2</field>
+            <field name="arch" type="xml">
+                <field name="amount_untaxed" position="after">
+                  <field name="add_disc" />
+                	<field name="add_disc_amt"  widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                	<field name="amount_net" sum="Net Amount" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                    <field name="amount_advance" sum="Advance Amt" colspan="2" attrs="{'invisible':[('amount_advance', '=', 0.0)]}" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                    <field name="amount_deposit" sum="Deposit Amt" colspan="2" attrs="{'invisible':[('amount_deposit', '=', 0.0)]}" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                    <field name="amount_beforetax" sum="Before Taxes" colspan="2" attrs="{'invisible':[('amount_advance', '=', 0.0),('amount_deposit', '=', 0.0)]}" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                </field>
+            </field>
+        </record>
+        
+    </data>
+</openerp>

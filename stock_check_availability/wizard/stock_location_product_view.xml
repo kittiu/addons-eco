@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <record id="view_stock_check_availability" model="ir.ui.view">
+            <field name="name">view.stock.check.availability</field>
+            <field name="model">stock.location.product</field>
+            <field name="priority" eval="17"/>
+            <field name="arch" type="xml">
+            	  <form string="Product(s) Availability" version="7.0">
+            	  	<group>
+            	  		<field name="location_id" required="1" />
+            	  		<!--domain="[('location_id','=',%(stock.stock_location_locations_virtual)d)]"-->
+            	  		<field name="type" invisible="1"/>
+            	  	</group>
+            	  	<footer>
+                        <button name="action_open_window" string="View Products Availability " type="object" class="oe_highlight"/>
+                        or
+                        <button string="Cancel" class="oe_link" special="cancel" />
+                    </footer>
+            	  </form>
+            </field>
+        </record>
+        
+        <record id="act_check_product_availability" model="ir.actions.act_window">
+               <field name="name">Product Availability</field>
+               <field name="type">ir.actions.act_window</field>
+               <field name="res_model">stock.location.product</field>
+               <field name="view_type">form</field>
+               <field name="view_mode">form</field>              
+               <field name="context">{'default_type': 'inventory'}</field>
+               <field name="view_id" ref="view_stock_check_availability"/>
+               <field name="target">new</field>
+        </record>
+    </data>
+</openerp>

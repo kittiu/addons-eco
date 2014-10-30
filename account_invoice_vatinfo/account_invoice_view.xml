@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+    <data>
+        <record id="invoice_supplier_form_ext" model="ir.ui.view">
+		    <field name="name">invoice.supplier.form.ext</field>
+		    <field name="model">account.invoice</field>
+		    <field name="type">form</field>
+		    <field name="inherit_id" ref="account.invoice_supplier_form"/>
+		    <field name="arch" type="xml">
+                <data>
+                    <button name="%(account.action_account_invoice_refund)d" position="before">
+                    	<button name="post_vatinfo" type="object" string="Post VAT Info" attrs="{'invisible': ['|', '|', ('vatinfo_move_id','&lt;&gt;',False), ('is_vatinfo_tax','=',False), ('state','not in',('open','paid'))]}" class="oe_highlight" groups="account.group_account_invoice"/>
+                        <button name="unpost_vatinfo" type="object" string="Unpost VAT Info" attrs="{'invisible': ['|', ('vatinfo_move_id','=',False), ('state','not in',('open','paid'))]}"  groups="account.group_account_invoice"/>
+                    </button>
+                    <xpath expr="/form/sheet/notebook/page/field/tree/field[@name='invoice_line_tax_id']" position="after">
+	                    <button name="%(action_invoice_vatinfo)d"
+	                        string="VAT Info"
+	                        type="action"
+	                        icon="gtk-justify-fill"/>
+                    </xpath>
+                    <xpath expr="/form/sheet/notebook/page[@string='Invoice']" position="after">
+                        <page string="VAT Info">
+                            <group>
+                                <group>
+	                                <field name="is_vatinfo_tax"/>
+                        		</group>                                
+                        		<group>
+	                        		<field name="vatinfo_move_id"/>
+	                        		<field name="vatinfo_move_date"/>
+                        		</group>
+                        	</group>
+                        	<field name="invoice_vatinfo">
+                                <tree string="Invoice VAT Info" editable="bottom">
+                                    <field name="product_id" readonly="1" />
+                                    <field name="vatinfo_date" attrs="{'required':[('vatinfo_tax_amount', '&gt;', 0)]}"/>
+                                    <field name="vatinfo_number" attrs="{'required':[('vatinfo_tax_amount', '&gt;', False)]}"/>
+                                    <field name="vatinfo_supplier_name" attrs="{'required':[('vatinfo_tax_amount', '&gt;', False)]}"/>
+                                    <field name="vatinfo_tin" attrs="{'required':[('vatinfo_tax_amount', '&gt;', False)]}"/>
+                                    <field name="vatinfo_branch" attrs="{'required':[('vatinfo_tax_amount', '&gt;', False)]}"/>
+                                    <field name="vatinfo_base_amount" attrs="{'required':[('vatinfo_tax_amount', '&gt;', False)]}"/>
+                                    <field name="vatinfo_tax_id" attrs="{'required':[('vatinfo_tax_amount', '&gt;', False)]}" on_change="onchange_vat(vatinfo_tax_id, vatinfo_tax_amount)"/>
+                                    <field name="vatinfo_tax_amount" on_change="onchange_vat(vatinfo_tax_id, vatinfo_tax_amount)"/>
+                        		</tree>
+                        	</field>
+                        </page>                    
+                    </xpath>
+				</data>
+			</field>
+		</record>
+	</data>
+</openerp>

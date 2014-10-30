@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <record id="view_account_config_settings_ext" model="ir.ui.view">
+            <field name="name">view.account.config.settings</field>
+            <field name="inherit_id" ref="account.view_account_config_settings" />
+            <field name="model">account.config.settings</field>
+            <field name="arch" type="xml">
+                <data>
+                    <xpath expr="/form[1]" position="inside">
+						<separator string="Expense"/>
+						<group name="tax_group">
+	                        <label for="id" string="Tax"/>
+	                        <div name="expense_tax">
+	                            <div>
+	                                <label for="property_expense_input_vat_tax"/>
+									<field name="property_expense_input_vat_tax"
+                                    class="oe_inline"/>	                            
+								</div>
+	                            <div>
+	                                <label for="property_expense_personal_wht_tax"/>
+									<field name="property_expense_personal_wht_tax"
+                                    class="oe_inline"/>	                            
+								</div>	     
+	                            <div>
+	                                <label for="property_expense_company_wht_tax"/>
+									<field name="property_expense_company_wht_tax"
+                                    class="oe_inline"/>	                            
+								</div>	                       
+							</div>
+                    	</group>					
+					</xpath>
+				</data>
+            </field>
+        </record>
+    </data>
+</openerp>

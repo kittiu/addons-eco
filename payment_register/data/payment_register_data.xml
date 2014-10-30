@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data noupdate="1">
+        
+
+		<!-- Bank in Transit Sequence-->
+        <record id="seq_type_bank_receipt_voucher" model="ir.sequence.type">
+            <field name="name">Bank in Transit</field>
+            <field name="code">bank_receipt_voucher</field>
+        </record>
+        <record id="sequence_receipt_voucher_journal" model="ir.sequence">
+            <field name="name">Bank in Transit</field>
+            <field name="code">bank_receipt_voucher</field>
+            <field name="prefix">RV%(year)s/</field>
+            <field name="padding">4</field>
+            <field name="company_id" eval="False"/>
+            <field name="implementation">no_gap</field>
+        </record>
+        
+		<!-- Add Bank In Transit -->
+        <record id="bank_intransit_journal" model="account.journal">
+            <field name="name">Receipt Voucher</field>
+            <field name="code">BNKT</field>
+            <field name="type">bank</field>
+            <field name="sequence_id" ref="sequence_receipt_voucher_journal"/>
+            <field name="user_id" ref="base.user_root"/>
+            <field name="company_id" ref="base.main_company"/>
+        </record>
+	</data>
+</openerp>
+

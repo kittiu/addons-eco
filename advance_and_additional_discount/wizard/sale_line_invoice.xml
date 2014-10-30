@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+    <data>
+        <record id="view_sale_order_line_make_invoice_ext" model="ir.ui.view">
+            <field name="name">view.sale.order.line.make.invoice.ext</field>
+            <field name="model">sale.order.line.make.invoice</field>
+            <field name="inherit_id" ref="sale.view_sale_order_line_make_invoice"/>
+            <field name="arch" type="xml">
+                <data>
+					<xpath expr="/form/footer/button[@string='Create Invoices']" position="attributes">
+						<attribute name="attrs">{'invisible': True}</attribute>
+					</xpath>		
+				</data>
+           </field>
+        </record>
+	</data>
+</openerp>
+

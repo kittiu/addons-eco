@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        
+        <!-- Update -->
+        <record id="view_addon_update_search" model="ir.ui.view">
+            <field name="name">addon.update.search</field>
+            <field name="model">addon.update</field>
+            <field name="arch" type="xml">
+                <search string="Addon Update">
+                	<field name="name" filter_domain="[('name','ilike',self)]" string="Sheet Number"/>
+                </search>
+            </field>
+        </record>
+               
+        <record id="addon_update_tree" model="ir.ui.view">
+            <field name="name">addon.update.tree</field>
+            <field name="model">addon.update</field>
+            <field name="arch" type="xml">
+                <tree string="Addon Update Sheet">
+                    <field name="name"/>
+                    <field name="config_id"/>
+                    <field name="revision"/>
+                    <field name="check_time"/>
+                    <field name="state"/>             
+                </tree>
+            </field>
+        </record>        
+        <record id="addon_update_form" model="ir.ui.view">
+            <field name="name">addon.update.form</field>
+            <field name="model">addon.update</field>
+            <field name="arch" type="xml">
+       			<form string="Addon Update Sheet" version="7.0">
+					<header>                        
+                        <button name="action_sent" states="check" string="Send to Production" type="object" class="oe_highlight"/>
+                        <button name="upgrade_module" states="ready" string="Upgrade" type="object" class="oe_highlight"/>
+                        <button name="action_revert" states="ready,done" string="Revert" type="object"/>
+                        <button name="action_cancel" states="draft,check" string="Cancel" type="object"/>
+                        <field name="state" widget="statusbar" statusbar_visible="draft,check,sent,ready,done"/>
+               		</header>
+	                <sheet>
+	                    <h1>
+	                        <field name="name" class="oe_inline" readonly="1"/>
+	                    </h1>
+	                    <div class="oe_right oe_button_box">
+	                        <button name="action_check" string="Check Updated Modules" states="draft,check" type="object" />
+	                    </div>        
+	                    <group>
+	                       <p attrs="{'invisible':[('state','&lt;&gt;','draft')]}" class="oe_grey">
+	                           Select addon project you want to work on. Then click on "Check Update Modules" button. It will lish new/updated addons available.
+	                           <b>Please note that this process can take long time depend on size of the project.</b>
+	                       </p>    
+	                       <p attrs="{'invisible':[('state','&lt;&gt;','check')]}" class="oe_grey">
+								"Select" addon you want to upgrade. Then click "Send to Production" to uploaded selected addons to production folder.
+	                       </p>   
+	                       <p attrs="{'invisible':[('state','&lt;&gt;','ready')]}" class="oe_highlight">
+								Click "Upgrade" to complete the task or click "Revert" to bring system back to last know working stage.
+	                      	    <br><b>Do not leave it pending at this state. As code and database are no syncronized, it can result in a serious outcome!</b></br>
+	                       </p>
+	                       <p attrs="{'invisible':[('state','&lt;&gt;','done')]}" class="oe_grey">
+	                           All selected module has been updated successfully!
+	                       </p>
+	                       <p attrs="{'invisible':[('state','&lt;&gt;','revert')]}" class="oe_grey">
+	                           All selected module has been revereted!
+	                       </p>
+                   		</group>
+						<group colspan="4">
+	                        <group>
+	                       		<field name="config_id" />
+	                       		<field name="revision" />
+	                        </group>
+	                        <group>
+	                        	<field name="check_time"/>
+	                        </group>
+	                    </group>
+	                    <notebook>
+							<page string="Available Updated Modules">
+								<field name="update_lines" widget="one2many_list" colspan="4" nolabel="1" >
+		                            <tree string="Update Lines" editable="bottom" colors="blue:type in ('update');red:type in ('new');">
+		                                <field name="select"/>
+		                                <field name="module_id"/>
+		                                <field name="name"/>
+		                                <field name="type"/>
+		                                <field name="changed_files"/>
+		                                <field name="added_files"/>
+		                                <field name="removed_files"/>
+		                                <field name="state"/>
+		                            </tree>
+		                        </field>	
+                            	<field name="note" class="oe_inline" placeholder="Additional Notes..."/>
+	                        </page>
+		            	</notebook>
+	                </sheet>             
+				</form>
+            </field>
+        </record>
+        <record id="action_addon_update_tree" model="ir.actions.act_window">
+            <field name="name">Addon Update</field>
+            <field name="res_model">addon.update</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="help" type="html">
+              <p><b>No Addon Update Sheet found!</b></p>
+            </field>
+        </record>
+
+        <menuitem id="menu_addon_update_tree" parent="menu_addons_updater" name="Addon Update Sheet" sequence="100" action="action_addon_update_tree" groups="base.group_no_one" />
+    </data>
+</openerp>

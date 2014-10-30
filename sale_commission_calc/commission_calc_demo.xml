@@ -1,0 +1,45 @@
+<?xml version="1.0"?>
+<openerp>
+    <data noupdate="0">
+        
+		<!-- Sales Users -->
+        <record id="partner_sale_rep_1" model="res.partner">
+            <field name="name">Sales Rep 1</field>
+            <field name="company_id" ref="base.main_company"/>
+            <field name="customer" eval="False"/>
+            <field name="email">salerep1@example.com</field>
+        </record>
+        <record id="user_sale_rep_1" model="res.users">
+            <field name="partner_id" ref="partner_sale_rep_1"/>
+            <field name="login">salerep1</field>
+            <field name="password">salerep1</field>
+            <field name="signature">--
+Sale Rep 1</field>
+            <field name="company_id" ref="base.main_company"/>
+            <field name="groups_id" eval="[(6,0,[ref('base.group_user'), ref('base.group_partner_manager')])]"/>
+        </record>
+        
+        <record id="partner_sale_rep_2" model="res.partner">
+            <field name="name">Sales Rep 2</field>
+            <field name="company_id" ref="base.main_company"/>
+            <field name="customer" eval="False"/>
+            <field name="email">salerep2@example.com</field>
+        </record>
+        <record id="user_sale_rep_2" model="res.users">
+            <field name="partner_id" ref="partner_sale_rep_2"/>
+            <field name="login">salerep2</field>
+            <field name="password">salerep2</field>
+            <field name="signature">--
+Sale Rep 2</field>
+            <field name="company_id" ref="base.main_company"/>
+            <field name="groups_id" eval="[(6,0,[ref('base.group_user'), ref('base.group_partner_manager')])]"/>
+        </record>
+        
+		<!-- Sales Team 1 -->
+        <record id="sale_team_1" model="sale.team">
+            <field name="name">Sale Team 1</field>
+            <field name="commission_rule_id" ref="commission_rule_for_sales_rep"/>
+            <field name="users" eval="[(6,0,[ref('user_sale_rep_1'), ref('user_sale_rep_2')])]"/>
+        </record>
+	</data>
+</openerp>

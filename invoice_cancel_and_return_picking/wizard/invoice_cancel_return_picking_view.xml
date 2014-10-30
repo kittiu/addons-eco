@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        
+        <record id="view_invoice_cancel_return_picking" model="ir.ui.view">
+            <field name="name">Cancel Invoice and Return Shipments</field>
+            <field name="model">invoice.cancel.return.picking</field>
+            <field name="arch" type="xml">
+                <form string="Return lines" version="7.0">
+                    <group>
+                        <field name="picking_ids"/>
+                        <field name="invoice_state" />
+                    </group>
+                    <footer>
+                        <button name="create_cancel_and_returns" string="Cancel Invoice and Return Shipments" type="object" class="oe_highlight"/>
+                        or
+                        <button string="Cancel" class="oe_link" special="cancel" />
+                    </footer>
+                </form>
+            </field>
+        </record>
+        
+        <record id="act_invoice_cancel_return_picking" model="ir.actions.act_window">
+            <field name="name">Cancel Invoice and Return Shipments</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">invoice.cancel.return.picking</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
+        
+    </data>
+</openerp>

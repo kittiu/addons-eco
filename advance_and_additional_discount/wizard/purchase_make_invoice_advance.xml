@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <record id="view_purchase_advance_payment_inv" model="ir.ui.view">
+            <field name="name">Invoice Purchase Order</field>
+            <field name="model">purchase.advance.payment.inv</field>
+            <field name="arch" type="xml">
+                <form string="Invoice Purchase Order" version="7.0">
+                    <separator string="Create Advance on 1st Invoice" invisible="context.get('advance_type', False) in ['deposit', False]"/>
+                    <separator string="Create Deposit on 1st Invoice" invisible="context.get('advance_type', False) in ['advance', False]"/>                
+                    <p class="oe_grey">
+                        Select how you want to invoice this order. This
+                        will create a draft invoice that can be modified
+                        before validation.
+                    </p>
+                    <group>
+                        <field name="advance_payment_method" required="True" class="oe_inline"/>
+                        <label for="amount" attrs="{'invisible': [('advance_payment_method', 'not in', ('fixed','percentage'))]}"/>
+                        <div attrs="{'invisible': [('advance_payment_method', 'not in', ('fixed','percentage'))]}">
+                            <field name="amount"
+                                attrs="{'required': [('advance_payment_method', 'in', ('fixed','percentage'))]}" class="oe_inline"/>
+                            <label string="%%"
+                                attrs="{'invisible': [('advance_payment_method', '!=', 'percentage')]}" class="oe_inline"/>
+                        </div>
+                    </group>
+                    <footer>
+                        <button name="create_invoices" string="Create and View Invoice" type="object"
+                            context="{'open_invoices': True}" class="oe_highlight"/>
+                        <button name="create_invoices" string="Create Invoice" type="object"
+                            class="oe_highlight" />
+                        or
+                        <button string="Cancel" class="oe_link" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <record id="action_view_purchase_advance_payment_inv" model="ir.actions.act_window">
+            <field name="name">Invoice Purchase Order</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">purchase.advance.payment.inv</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
+    </data>
+</openerp>

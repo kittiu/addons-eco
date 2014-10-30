@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+    <data>
+        <record id="view_expenses_form_ext" model="ir.ui.view">
+            <field name="name">view.expenses.form.ext</field>
+            <field name="inherit_id" ref="invoice_expense.view_expenses_form" />
+            <field name="model">invoice.expense.expense</field>
+            <field name="arch" type="xml">
+                <data>
+                    <xpath expr="/form/sheet/group/group/field[@name='partner_id']" position="attributes">
+            			<attribute name="options">{'limit': 10, 'create': false, 'create_edit': false}</attribute>
+                    </xpath>
+                    <xpath expr="/form/sheet/notebook/page/field/tree//field[@name='product_id']" position="attributes">
+						<attribute name="required">True</attribute>
+            			<attribute name="options">{'limit': 10, 'create': false, 'create_edit': false}</attribute>
+                    </xpath>
+                    <xpath expr="/form/sheet/notebook/page/field/tree//field[@name='ref']" position="after">
+						<field name="supplier_name" attrs="{'required':['|',('vat_amount','&lt;&gt;',0),('wht_amount','&lt;&gt;',0)]}"/>
+						<field name="supplier_type" attrs="{'required':[('wht_amount','&lt;&gt;',0)]}"/>
+						<field name="vat" attrs="{'required':['|',('vat_amount','&lt;&gt;',0),('wht_amount','&lt;&gt;',0)]}"/>
+						<field name="branch" attrs="{'required':['|',('vat_amount','&lt;&gt;',0),('wht_amount','&lt;&gt;',0)]}"/>
+					</xpath>
+                    <xpath expr="/form/sheet/notebook/page/field/tree//field[@name='total_amount']" position="after">
+						<field name="vat_amount" sum="VAT Total"/>
+						<field name="wht_amount" sum="WHT Total"/>
+						<field name="total_net_amount" sum="Net Total"/>
+					</xpath>
+                    <xpath expr="/form/sheet/notebook/page/field/form//field[@name='ref']" position="attributes">
+						<attribute name="required">True</attribute>
+            			<attribute name="options">{'limit': 10, 'create': false, 'create_edit': false}</attribute>
+					</xpath>
+                    <xpath expr="/form/sheet/notebook/page/field/form//field[@name='ref']" position="after">
+						<field name="supplier_name" attrs="{'required':['|',('vat_amount','&lt;&gt;',0),('wht_amount','&lt;&gt;',0)]}"/>
+						<field name="supplier_type" attrs="{'required':[('wht_amount','&lt;&gt;',0)]}"/>
+						<field name="vat" attrs="{'required':['|',('vat_amount','&lt;&gt;',0),('wht_amount','&lt;&gt;',0)]}"/>
+						<field name="branch" attrs="{'required':['|',('vat_amount','&lt;&gt;',0),('wht_amount','&lt;&gt;',0)]}"/>
+					</xpath>
+                    <xpath expr="/form/sheet/notebook/page/field/form//field[@name='date_value']" position="after">
+						<field name="vat_amount" />
+						<field name="wht_amount" />
+						<field name="total_net_amount"/>
+					</xpath>				
+				</data>
+            </field>
+        </record>
+    </data>
+</openerp>

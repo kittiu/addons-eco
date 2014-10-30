@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+    <data>
+
+        <record id="view_order_form_ext" model="ir.ui.view">
+            <field name="name">view.order.form.ext</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_order_form"/>
+            <field name="arch" type="xml">
+                <data>
+                    <field name="name" position="after">
+	                    <div class="oe_right oe_button_box" name="buttons">
+	                    	<field name="split_ab_ref" invisible="1" /> 
+	                    	<button string="Split A/B" attrs="{'invisible': ['|',('split_ab_ref','!=',False),('state','!=','draft')]}" name="split_quotation_ab" type="object"/>
+	                    </div>
+                    </field>
+                </data>
+           </field>
+        </record>	
+        
+	</data>
+</openerp>

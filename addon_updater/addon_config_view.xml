@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        
+        <!-- Addons Updater -->
+        <menuitem id="menu_addons_updater" parent="base.menu_management" name="Addons Updater" sequence="100" groups="base.group_no_one" />
+
+        <!-- Modules -->
+        <record id="addon_config_form" model="ir.ui.view">
+            <field name="name">addon.config.form</field>
+            <field name="model">addon.config</field>
+            <field name="arch" type="xml">
+                <form string="Add-on Config" version="7.0">
+                    <sheet>
+                        <group string="Addon Project Configuration">
+		                    <group>
+		                        <field name="name" on_change="onchange_addon(name)"/>
+		                    </group>
+		                    <group>
+	                        	<field name="bzr_source" placeholder="i.e., https://launchpad.net/mycompany-openerp/mycustom-addons"/>
+		                    </group>
+		                </group>
+		                <group string="Path Setup">
+		                    <group>	                        
+		                        <field name="root_path" on_change="onchange_rootpath(root_path)"
+		                            placeholder="i.e., /tmp/mycustom-addons"/>
+		                    </group>
+		                    <group class="oe_grey">
+		                       <p>
+		                           Local path is the intermediate location where the bzr branch will be pulled down.
+		                           It should have write/read/delete permission.
+		                       </p>
+		                    </group>
+		                    <group>	                        
+		                        <field name="backup_path"
+		                            placeholder="i.e., /tmp/mycustom-addons_backup"/>
+		                    </group>
+		                    <group class="oe_grey" col="1" >
+		                       <p>
+		                           Backup path is where the existing addons will be backup before they are replace by the updated one.
+		                           The backup addons can be used in case of Revert.
+		                       </p>
+		                    </group>	
+			                <group>
+		                        <field name="production_path"/>
+		                    </group>	
+		                    <group class="oe_grey" col="1" >
+		                       <p>
+		                           Proeduction path is the location of running addons, where the new udpated addon will be pushed up to.
+		                       </p>
+		                    </group>		                    		                    
+	                    </group>
+	                    <group>
+                        	<field name="note" class="oe_inline" placeholder="Additional Notes..." nolabel="1"/>
+	                    </group>        
+                    </sheet>
+                </form>
+            </field>
+        </record>
+        <record id="addon_config_tree" model="ir.ui.view">
+            <field name="name">addon.config.tree</field>
+            <field name="model">addon.config</field>
+            <field name="arch" type="xml">
+                <tree string="Add-on Config">
+                    <field name="name"/>
+                    <field name="bzr_source"/>
+                </tree>
+            </field>
+        </record>
+        <record id="open_addon_config_tree" model="ir.actions.act_window">
+            <field name="name">Add-on Config</field>
+            <field name="res_model">addon.config</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="help" type="html">
+              <p><b>No Addon Projects found!</b></p>
+            </field>
+        </record>
+        <menuitem id="menu_addon_config_tree" parent="menu_addons_updater" name="Addons Projects" sequence="60" action="open_addon_config_tree" groups="base.group_no_one" />
+    </data>
+</openerp>

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>        
+        <record id="product_product_tree_view_ext" model="ir.ui.view">
+            <field name="name">product.product.tree.view.ext</field>
+            <field name="model">product.product</field>
+            <field name="inherit_id" ref="product.product_product_tree_view"/>
+            <field eval="8" name="priority"/>
+            <field name="arch" type="xml">    	
+            	<xpath expr="/tree/field[@name='qty_available']" position="after">
+	                <field name="incoming_qty" invisible="not context.get('is_inout',False)"/> 
+	                <field name="outgoing_qty" invisible="not context.get('is_inout',False)"/> 
+				</xpath>   
+            	<xpath expr="/tree/field[@name='virtual_available']" position="after">
+	                <field name="qty_safety" invisible="not context.get('is_safety',False)"/>  	
+	                <field name="qty_reorder" invisible="not context.get('is_safety',False)"/>  	             	  
+				</xpath>     				        					
+            </field>
+        </record>
+    </data>
+</openerp>

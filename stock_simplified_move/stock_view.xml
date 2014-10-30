@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+    <data>
+        <menuitem id="menu_simplified_stock_move" name="Simplified Internal Move" parent="stock.menu_stock_root" sequence="0"/>
+
+        <record id="view_simplified_picking_internal_search" model="ir.ui.view">
+            <field name="name">stock.picking.internal.search</field>
+            <field name="model">stock.picking</field>
+            <field name="arch" type="xml">
+                <search string="Internal Picking List">
+                    <field name="name" string="Internal Picking List" filter_domain="['|',('name','ilike', self),('origin','ilike',self)]"/>
+                    <filter name="mymoveready" string="My Internal Move (Ready)" domain="[('create_uid','=',uid),('state','=','assigned')]" help="My Internal Moves"/>
+					<filter name="mymove" string="My Internal Move" domain="[('create_uid','=',uid)]" help="My Internal Moves"/>
+                    <filter icon="terp-check" name="available" string="Ready" domain="[('state','=','assigned')]" help="Assigned Internal Moves (Ready)"/>
+                    <filter icon="terp-camera_test" name="confirmed" string="Waiting" domain="[('state','=','confirmed')]" help="Confirmed Internal Moves"/>
+                    <filter icon="terp-dialog-close" name="done" string="Done" domain="[('state','=','done')]" help="Pickings already processed"/>
+                    <field name="partner_id" filter_domain="[('partner_id','child_of',self)]"/>
+                    <field name="product_id"/>
+                    <field name="stock_journal_id"/>
+                    <group expand="0" string="Group By...">
+                        <filter string="Location" domain="[]" context="{'group_by':'location_id'}"/>
+                        <filter string="Dest. Location" domain="[]" context="{'group_by':'location_dest_id'}"/>
+                        <filter string="Order Date" icon="terp-go-month" domain="[]"  context="{'group_by':'date'}"/>
+                        <filter string="Expected Date" icon="terp-go-month" domain="[]"  context="{'group_by':'min_date'}"/>
+                        <filter string="Origin" icon="terp-gtk-jump-to-rtl" domain="[]" context="{'group_by':'origin'}"/>
+                        <filter string="Journal" icon="terp-folder-orange" domain="[]" context="{'group_by':'stock_journal_id'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <record id="action_simplified_move_tree" model="ir.actions.act_window">
+            <field name="name">Simplified Internal Move</field>
+            <field name="res_model">stock.picking</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[('type','=','internal')]</field>
+            <field name="context">{'contact_display': 'partner_address', 'search_default_mymoveready': 1, 'simplified_move': True}</field>
+            <field name="search_view_id" ref="view_simplified_picking_internal_search"/>
+            <field name="help" type="html">
+              <p class="oe_view_nocontent_create">
+                Click to create a simplified internal move request. 
+              </p><p>
+                Most operations are prepared automatically by OpenERP according
+                to your preconfigured logistics rules, but you can also record
+                manual stock movements.
+              </p>
+            </field>
+        </record>
+
+        <record id="view_simplified_move_tree" model="ir.ui.view">
+            <field name="name">view.simplified.picking.tree</field>
+            <field name="model">stock.picking</field>
+            <field name="arch" type="xml">
+                <tree colors="blue:state == 'draft';grey:state == 'cancel';red:state not in ('cancel', 'done') and date &lt; current_date" string="Picking list">
+                    <field name="name"/>
+                    <field name="location_id"/>
+                    <field name="location_dest_id"/>
+                    <field name="create_uid"/>
+                    <field name="backorder_id"/>
+                    <field name="origin"/>
+                    <field name="date"/>
+                    <field name="min_date"/>
+                    <field name="invoice_state"/>
+                    <field name="stock_journal_id" widget="selection"/>
+                    <field name="state"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="view_simplified_move_form" model="ir.ui.view">
+            <field name="name">view.simplified.move.form</field>
+            <field name="model">stock.picking</field>
+            <field eval="12" name="priority"/>
+            <field name="arch" type="xml">
+                <form string="Internal Picking List" version="7.0">
+                <header>
+                    <button name="draft_force_assign" states="draft" string="Confirm" type="object" class="oe_highlight" groups="base.group_user" invisible="True"/>
+                    <button name="draft_validate" states="draft" string="Confirm &amp; Transfer" type="object" class="oe_highlight" groups="base.group_user"/>
+                    <!-- <button name="action_assign" states="confirmed" string="Check Availability" type="object"/> -->
+                    <button name="force_assign" states="confirmed" string="Force Availability" type="object" class="oe_highlight" groups="base.group_user"/>
+                    <button name="action_process" states="assigned" string="Confirm &amp; Transfer" groups="base.group_user" type="object" class="oe_highlight"/>
+                    <button name="%(stock.action_stock_invoice_onshipping)d" string="Create Invoice/Refund"  attrs="{'invisible': ['|','|',('state','&lt;&gt;','done'),('invoice_state','=','invoiced'),('invoice_state','=','none')]}"  type="action" class="oe_highlight" groups="base.group_user"/>
+                    <button name="%(stock.act_stock_return_picking)d" string="Reverse Transfer" states="done" type="action" groups="base.group_user"/>
+                    <button name="button_cancel" states="assigned,confirmed,draft" string="Cancel Transfer" groups="base.group_user"/>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,assigned,done" statusbar_colors='{"shipping_except":"red","invoice_except":"red","waiting_date":"blue"}'/>
+                </header>
+                <sheet>
+                    <h1>
+                        <field name="name" class="oe_inline" attrs="{'invisible': [('name','=','/')]}" readonly="1"/>
+	                    <div class="oe_right oe_button_box">
+	                        <button name="%(stock_fill_internal_move_line_by_origin.action_view_stock_fill_move)d" string="Fill Move Lines" states="draft" type="action" context="{'move_type':'out','location_id': location_id, 'location_dest_id': location_dest_id}"/>
+	                    </div>                    
+                    </h1>
+                    <group>
+                        <group>
+                            <field name="location_id" required="True" domain="[('usage','!=','view')]"  options="{'limit': 10, 'create': false, 'create_edit': false}"/>
+                            <field name="location_dest_id" required="True" domain="[('usage','!=','view')]" options="{'limit': 10, 'create': false, 'create_edit': false}"/>
+                            <field name="product_categ_id" />
+                            <field name="backorder_id" readonly="1" attrs="{'invisible': [('backorder_id','=',False)]}" invisible="True"/>
+                            <field name="invoice_state" string="Invoice Control" groups="account.group_account_invoice" attrs="{'invisible':[('invoice_state', '=', 'none')]}"/>
+                            <field name="stock_journal_id" widget="selection" groups="account.group_account_user" invisible="True"/>
+                        </group>
+                        <group>
+                            <field name="date"/>
+                            <field name="min_date" readonly="1" attrs="{'invisible': [('min_date','=',False)]}"/>
+                            <field name="origin" placeholder="e.g. PO0032" class="oe_inline"/>
+                            <field name="partner_id" on_change="onchange_partner_in(partner_id)" invisible="0" options="{'limit': 10, 'create': false, 'create_edit': false}"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Products">
+                            <field name="move_lines" context="{'address_in_id': partner_id, 'form_view_ref':'view_move_picking_form', 'tree_view_ref':'view_move_picking_tree', 'picking_type': 'internal', 'simplified_move': True, 'location_id': location_id, 'location_dest_id': location_dest_id, 'product_categ_id': product_categ_id}"/>
+                            <field name="note" placeholder="Add an internal note..." class="oe_inline"/>
+                        </page>
+                        <page string="Additional Info">
+                            <group>
+                                <group>
+                                    <field name="move_type"/>
+                                    <field name="type" invisible="1"/>
+                                    <field name="auto_picking" groups="base.group_user"/>
+                                </group>
+                                <group>
+                                    <field name="company_id" groups="base.group_multi_company" widget="selection"/>
+                                    <field name="date_done" groups="base.group_no_one"/>
+                                </group>
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record model="ir.actions.act_window.view" id="action_simplified_move_tree_view">
+            <field name="sequence" eval="1"/>
+            <field name="view_mode">tree</field>
+            <field name="view_id" ref="view_simplified_move_tree"/>
+            <field name="act_window_id" ref="action_simplified_move_tree"/>
+        </record>
+        <record model="ir.actions.act_window.view" id="action_simplified_move_tree_form">
+            <field name="sequence" eval="2"/>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="view_simplified_move_form"/>
+            <field name="act_window_id" ref="action_simplified_move_tree"/>
+        </record>
+        <menuitem action="action_simplified_move_tree" id="menu_action_simplified_move_tree" parent="menu_simplified_stock_move" sequence="3"/>
+
+        <record id="view_move_form_ext" model="ir.ui.view">
+            <field name="name">view.move.form.ext</field>
+            <field name="inherit_id" ref="stock.view_move_form" />
+            <field name="model">stock.move</field>
+            <field name="arch" type="xml">
+                <data>     
+					<xpath expr="/form/sheet/group/group[@name='origin_grp']/field[@name='type']" position="attributes">
+                    	<attribute name="on_change">onchange_move_type(type, context)</attribute>
+					</xpath>
+                </data>
+            </field>
+        </record>
+        
+        <record id="view_move_picking_tree_ext" model="ir.ui.view">
+            <field name="name">view.move.picking.tree.ext</field>
+            <field name="inherit_id" ref="stock.view_move_picking_tree" />
+            <field name="model">stock.move</field>
+            <field name="arch" type="xml">
+                <data>
+                    <xpath expr="/tree/field[@name='location_id']" position="attributes">
+                    	<attribute name="invisible">False</attribute>
+					</xpath>
+                </data>
+            </field>
+        </record>
+
+	</data>
+</openerp>

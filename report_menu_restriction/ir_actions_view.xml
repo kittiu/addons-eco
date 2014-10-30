@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+    <data>
+        <record id="act_report_xml_view_ext" model="ir.ui.view">
+            <field name="name">act.report.xml.view.ext</field>
+            <field name="inherit_id" ref="base.act_report_xml_view" />
+            <field name="model">ir.actions.report.xml</field>
+            <field name="arch" type="xml">
+                <data>
+                    <field name="report_file" position="after">
+                    	<field name="invisible" />
+                    </field>
+                    <page string="Security" position="after">
+                        <page string="Views" attrs="{'invisible': [('model','not in',('account.invoice','account.voucher'))]}">
+                            <label string="For Invoice (account.invoice) and Payment (account.voucher), you can restrict views for this report."/>
+							<field name="views_id"/>
+                        </page>
+                    </page>
+                </data>
+            </field>
+        </record>
+    </data>
+</openerp>

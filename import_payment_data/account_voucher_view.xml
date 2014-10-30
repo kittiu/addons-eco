@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+    <data>
+        <record id="view_vendor_receipt_form_ext" model="ir.ui.view">
+		    <field name="name">invoice.form.ext</field>
+		    <field name="model">account.voucher</field>
+		    <field name="type">form</field>
+		    <field name="inherit_id" ref="account_voucher.view_vendor_receipt_form"/>
+		    <field name="arch" type="xml">
+                <data>
+                    <xpath expr="/form/sheet/h1" position="before">
+                        <div class="oe_right">
+		                 	<field name="import_file" attrs="{'invisible':[('partner_id', '=', False)]}" groups="base.group_user"
+		                 	    on_change="onchange_import_file(import_file, payment_rate, partner_id, journal_id, currency_id, type, date, payment_rate_currency_id, company_id, context)" />
+						</div>
+					</xpath>
+                    <xpath expr="/form/sheet/group/group[2]" position="inside">
+	                 	<field name="import_amount" attrs="{'invisible':[('import_file','=',False)]}" invisible="0"/>
+						<field name="mismatch" attrs="{'invisible':[('import_file','=',False)]}" groups="base.group_user" />                        
+					</xpath>		
+                    <xpath expr="/form/sheet/notebook" position="before">
+                        <group attrs="{'invisible':[('mismatch_list','=',False)]}">
+							<field name="mismatch_list" attrs="{'invisible':[('mismatch_list','=',False)]}" groups="base.group_user" />                        
+						</group>
+					</xpath>					
+				</data>
+			</field>
+		</record>
+	</data>
+</openerp>

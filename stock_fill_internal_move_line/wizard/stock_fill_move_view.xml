@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+           <record id="view_stock_fill_move" model="ir.ui.view">
+            <field name="name">Fill Move Lines</field>
+            <field name="model">stock.fill.move</field>
+            <field name="arch" type="xml">
+              <form string="Fill Move Lines" version="7.0">
+                  <separator string="Import Move Lines"/>
+                  <group>
+                      <field name="location_id" groups="stock.group_locations" options="{'limit': 10, 'create': false, 'create_edit': false}"/>
+                      <field name="location_dest_id" groups="stock.group_locations" options="{'limit': 10, 'create': false, 'create_edit': false}"/>
+                      <field name="set_qty_zero"/>
+                  </group>
+                  <footer>
+                      <button name="fill_move" string="Fill Move Lines" type="object" class="oe_highlight"/>
+                      or
+                      <button string="Cancel" class="oe_link" special="cancel" />
+                  </footer>
+              </form>
+            </field>
+        </record>
+
+        <record id="action_view_stock_fill_move" model="ir.actions.act_window">
+            <field name="name">Fill Move Lines</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">stock.fill.move</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="view_stock_fill_move"/>
+            <field name="target">new</field>
+        </record>
+            
+    </data>
+</openerp>

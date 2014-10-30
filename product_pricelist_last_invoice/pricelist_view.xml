@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+		 <record id="product_pricelist_item_form_view_ext" model="ir.ui.view">
+            <field name="name">product.pricelist.item.form_ext</field>
+            <field name="inherit_id" ref="product.product_pricelist_item_form_view"/>
+            <field name="model">product.pricelist.item</field>
+            <field name="arch" type="xml">
+            	<xpath expr="/form/group//field[@name='base']" position="attributes">
+	            	<attribute name="string">First Base</attribute>
+	            </xpath>
+            	<xpath expr="/form//group[@string='Price Computation']" position="after">
+            		<group col="4">
+	            		<field name="base2"/>
+                    	<field name="base2_pricelist_id" attrs="{'invisible':[('base2', '!=', -1)],'required': [('base2','=', -1)], 'readonly': [('base2','!=', -1)]}"/>
+                    </group>
+	            </xpath>
+            </field>
+         </record>
+    </data>
+</openerp>
+

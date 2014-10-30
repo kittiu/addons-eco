@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+    <data>
+
+        <record id="view_order_form_ext" model="ir.ui.view">
+            <field name="name">"view.order.form.ext"</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_order_form"/>
+            <field name="arch" type="xml">
+               	<data>
+	                <xpath expr="/form/sheet/notebook/page/field/form/group/group/label[@for='discount']" position="before">
+		                <field name="discount_amount" groups="sale.group_discount_per_so_line" on_change="onchange_discount_amount(discount_amount, price_unit)"/>
+	                </xpath>
+	                <xpath expr="/form/sheet/notebook/page/field/form/group/group/div/field[@name='discount']" position="attributes">
+	                	<attribute name="invisible">True</attribute>
+	                </xpath>
+	                <xpath expr="/form/sheet/notebook/page/field/tree/field[@name='discount']" position="before">
+		                <field name="discount_amount" groups="sale.group_discount_per_so_line" on_change="onchange_discount_amount(discount_amount, price_unit)"/>
+	                </xpath>   
+	                <xpath expr="/form/sheet/notebook/page/field/tree/field[@name='discount']" position="attributes">
+	                	<attribute name="invisible">True</attribute>
+	                </xpath>	                	    
+               	</data>
+            </field>
+        </record>         
+
+    </data>
+</openerp>

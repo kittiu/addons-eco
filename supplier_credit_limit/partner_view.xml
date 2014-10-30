@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+    <data>
+        
+        <record id="view_partner_property_form_ext" model="ir.ui.view">
+            <field name="name">view.partner.property.form.ext</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="account.view_partner_property_form"/>
+            <field name="arch" type="xml">
+                <data>
+                    <field name="debit" position="after">
+	                    <field name="debit_limit"/>
+                    </field>
+                </data>
+           </field>
+        </record>	            
+            
+    </data>
+</openerp>
+
+    

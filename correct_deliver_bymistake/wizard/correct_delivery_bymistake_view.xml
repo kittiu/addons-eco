@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        
+        <record id="action_partial_picking" model="ir.actions.act_window">
+            <field name="name">Process Picking</field>
+            <field name="res_model">stock.partial.picking</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
+        <record id="view_correct_delivery_bymistake" model="ir.ui.view">
+            <field name="name">Correct Mistake Delivery</field>
+            <field name="model">delivery.correction</field>
+            <field name="arch" type="xml">
+                <form string="Correct Mistake Delivery" version="7.0">
+                    <field name="invoice_state" invisible="True"/>
+                    <separator string="Correct Mistake Delivery"/>
+                    <label string="Click on Correct it below to start the process..." />
+                    <footer>
+                        <div>
+                            <button name="action_correct_delivery" string="Correct it!" type="object" class="oe_highlight"/> or
+                            <button special="cancel" string="Cancel" class="oe_link"/>
+                        </div>
+                    </footer>
+                </form>
+            </field>
+        </record>
+    </data>
+</openerp>

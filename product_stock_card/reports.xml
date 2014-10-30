@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<openerp>
+	<data>
+		<report string="Stock Card"
+        	model="product.product"
+        	auto="False"
+        	name="report.product.stock.card"
+        	rml="product_stock_card/report/product_stock_card_form.jrxml"
+        	id="report_product_stock_card"
+        	menu="True"
+        	header="False"
+    		attachment=""
+        	groups="" 
+    	/>  
+    	<record id="report_product_stock_card" model="ir.actions.report.xml">
+        	<field name="jasper_report">True</field>
+        	<field name="jasper_output">pdf</field>
+    	</record> 
+	</data>
+</openerp>

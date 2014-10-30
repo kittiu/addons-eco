@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+        <record id="view_update_invoice_commission" model="ir.ui.view">
+            <field name="name">Update Invoices</field>
+            <field name="model">update.invoice.commission</field>
+            <field name="arch" type="xml">
+                <form string="Update Invoices" version="7.0">
+                    <field name="state" invisible="1"/>
+                    <separator string="Invoice Updates Result"/>
+                    <group states="init">
+                        <label string="This process will find all customer invoices which has no commission updated yet, then update commission rule according to the salesperson of those invoices. Make sure, each salesperson has commission rule assigned." />
+                    </group>
+                    <group states="done" >
+                        <field name="result"/>
+                    </group>
+                    <footer>
+                        <div states="init">
+                            <button name="update_commission" string="Update" type="object" class="oe_highlight"/> or
+                            <button special="cancel" string="Cancel" class="oe_link"/>
+                        </div>
+                        <div states="done">
+                            <button special="cancel" string="Close" class="oe_link"/>
+                        </div>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <record id="action_update_invoice_commission" model="ir.actions.act_window">
+            <field name="name">Update Invoice's Commission</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">update.invoice.commission</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
+
+        <menuitem
+            name="Update Invoices"
+            action="action_update_invoice_commission"
+            id="menu_update_invoice_commission"
+            parent="menu_commission_calc_config"
+            sequence="70"/>
+
+    </data>
+</openerp>

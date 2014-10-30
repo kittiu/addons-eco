@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+    <data>
+        
+        <record id="product_category_form_view_ext" model="ir.ui.view">
+            <field name="name">product.category.form.view.ext</field>
+            <field name="inherit_id" ref="product.product_category_form_view" />
+            <field name="model">product.category</field>
+            <field name="arch" type="xml">
+                <data>
+                    <xpath expr="/form/sheet/group/group/field[@name='type']" position="after">
+						<group colspan="2">
+							<field name="require_serial_on_deivery" />			
+						</group>
+						<group colspan="2"></group>
+                    </xpath>
+                </data>
+            </field>
+        </record>
+  
+    </data>
+</openerp>

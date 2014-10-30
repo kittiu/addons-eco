@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <record id="view_cash_register_vatinfo_wizard" model="ir.ui.view">
+            <field name="name">Tax Info</field>
+            <field name="model">cash.register.vatinfo</field>
+            <field name="arch" type="xml">
+                <form string="Expense Line Tax Info" version="7.0">
+                    <group>
+	                    <group>
+	                        <field name="vatinfo_date"/>
+	                        <field name="vatinfo_number"/>
+	                        <field name="vatinfo_supplier_name"/>
+	                        <field name="vatinfo_tin"/>
+	                        <field name="vatinfo_branch"/>
+	                        <field name="currency_id" invisible="1"/>
+	                    </group>
+	                    <group>
+	                        <field name="vatinfo_base_amount" on_change="onchange_vat(vatinfo_tax_id, vatinfo_base_amount, vatinfo_tax_amount, context)" context="{'change_field':'base_amt'}" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+	                        <field name="vatinfo_tax_id" on_change="onchange_vat(vatinfo_tax_id, vatinfo_base_amount, vatinfo_tax_amount, context)" context="{'change_field':'tax_id'}" options="{'limit': 10, 'create': false, 'create_edit': false}"/>
+	                        <field name="vatinfo_tax_amount" on_change="onchange_vat(vatinfo_tax_id, vatinfo_base_amount, vatinfo_tax_amount, context)" context="{'change_field':'tax_amt'}" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+	                    </group>                    
+	                </group>
+                    <footer>
+                        <button name="do_add_vatinfo" string="Ok" type="object" class="oe_highlight"/>
+                        or
+                        <button string="Cancel" class="oe_link" special="cancel" />
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <record id="action_cash_register_vatinfo" model="ir.actions.act_window">
+            <field name="name">Tax Info</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">cash.register.vatinfo</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
+    </data>
+</openerp>

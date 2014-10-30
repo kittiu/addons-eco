@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+    <data>
+        <record id="product_normal_form_view_ext" model="ir.ui.view">
+            <field name="name">product.normal.form.view.ext</field>
+            <field name="inherit_id" ref="product.product_normal_form_view" />
+            <field name="model">product.product</field>
+            <field name="arch" type="xml">
+                <data>                     
+                    <xpath expr="/form/sheet/notebook/page[@string='Sales']" position="after">
+						<page string="Purchase History" groups="purchase.group_purchase_user">
+							<field name="invoice_line_ids" colspan="4" nolabel="1">
+							    <tree>
+							        <field name="partner_id" />
+							        <field name="price_unit" />
+							        <field name="discount" />
+							        <field name="invoice_id" />
+							        <field name="date_invoice" />
+							    </tree>
+							</field>
+						</page>                
+					</xpath>         
+				</data>
+            </field>
+        </record> 
+
+  	</data>
+</openerp>

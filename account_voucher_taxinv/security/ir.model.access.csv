@@ -1,0 +1,2 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_account_voucher_taxinv_invoice,account.voucher.taxinv invoice,model_account_voucher_taxinv,account.group_account_invoice,1,1,1,1

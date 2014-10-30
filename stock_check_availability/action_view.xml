@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+    <data>
+        <!-- sale.order -->
+        <act_window name="View Product in Stock"
+	        res_model="stock.location.product"
+	        src_model="sale.order"
+	        view_mode="form"
+	        target="new"
+	        context="{'product_field':['order_line', 'product_id']}"
+	        key2="client_action_multi"
+	        id="so_view_stock_product_act_window"
+	        view_id="view_stock_check_availability"/>
+        
+        <!-- stock.picking -->
+        <act_window name="View Product in Stock"
+	        res_model="stock.location.product"
+	        src_model="stock.picking.out"
+	        view_mode="form"
+	        target="new"
+	        context="{'product_field':['move_lines', 'product_id']}"
+	        key2="client_action_multi"
+	        id="do_view_stock_product_act_window"
+	        view_id="view_stock_check_availability"/>        
+	</data>
+</openerp>

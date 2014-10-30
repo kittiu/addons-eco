@@ -1,0 +1,247 @@
+id,name,code,parent_id:id,type,user_type:id,reconcile
+a_root,"TAME TECH INTERNATIONAL CO., LTD.",0,,View,account.data_account_type_view,FALSE
+10,Statement of Financial Position,10,a_root,View,account.data_account_type_view,FALSE
+1,สินทรัพย์,1,10,View,account.data_account_type_view,FALSE
+11,สินทรัพย์หมุนเวียน,11,1,View,account.data_account_type_view,FALSE
+111,เงินสดและเงินฝากธนาคาร,111,11,View,account.data_account_type_view,FALSE
+1110,เงินสดย่อย,1110,111,Liquidity,account.data_account_type_cash,FALSE
+a_bank,เงินฝากออมทรัพย์-ธนาคารไทยพาณิชย์ มาบตาพุด,11110,111,Liquidity,account.data_account_type_bank,FALSE
+11120,เงินฝากออมทรัพย์-ธนาคารทหารไทย ระยอง 2,11120,111,Liquidity,account.data_account_type_bank,FALSE
+11130,เงินฝากกระแสรายวัน-ธนาคารไทยพาณิชย์ มาบตาพุด,11130,111,Liquidity,account.data_account_type_bank,FALSE
+11140,เงินฝากกระแสรายวัน-ธนาคารทหารไทย ระยอง 2,11140,111,Liquidity,account.data_account_type_bank,FALSE
+112,ลูกหนี้,112,11,View,account.data_account_type_view,FALSE
+1121,ลูกหนี้การค้า,1121,112,View,account.data_account_type_view,FALSE
+a_recv,ลูกหนี้การค้า,11210,1121,Receivable,account.data_account_type_receivable,TRUE
+1122,ลูกหนี้เงินให้กู้ยืม,1122,112,View,account.data_account_type_view,FALSE
+11221,ลูกหนี้เงินให้กู้ยืมแก่กรรมการและพนักงาน,11221,1122,Regular,account.data_account_type_asset,FALSE
+11222,ลูกหนี้เงินกู้ยืม-บจ.แสนสบาย,11222,1122,Regular,account.data_account_type_asset,FALSE
+11223,ลูกหนี้เงินให้กู้ยืมอื่น ๆ,11223,1122,Regular,account.data_account_type_asset,FALSE
+1123,ค่าใช้จ่ายจ่ายล่วงหน้า,1123,112,View,account.data_account_type_view,FALSE
+11231,ค่าใช้จ่ายซื้อสินค้าล่วงหน้า,11231,1123,Regular,account.data_account_type_asset,FALSE
+11232,เงินทดรองจ่ายซื้อสินค้า,11232,1123,Regular,account.data_account_type_asset,FALSE
+1124,ภาษีรับ,1124,112,View,account.data_account_type_view,FALSE
+a_input_vat,ภาษีซื้อ,11241,1124,Regular,account.data_account_type_asset,FALSE
+11242,ภาษีซื้อยังไม่ถึงกำหนดชำระ,11242,1124,Regular,account.data_account_type_asset,FALSE
+11243,ลูกหนี้-กรมสรรพากร,11243,1124,Regular,account.data_account_type_asset,FALSE
+a_wht_income,ภาษีถูกหัก ณ ที่จ่าย,11244,1124,Regular,account.data_account_type_asset,FALSE
+113,สินค้าคงเหลือ,113,11,View,account.data_account_type_view,FALSE
+11310,สินค้าคงคลัง,11310,113,Regular,account.data_account_type_asset,FALSE
+11320,สินค้าระหว่างทำ,11320,113,Regular,account.data_account_type_asset,FALSE
+11330,สินค้าสำเร็จรูป,11330,113,Regular,account.data_account_type_asset,FALSE
+11340,งานระหว่างทำ,11340,113,Regular,account.data_account_type_asset,FALSE
+114,ค่าใช้จ่ายจ่ายล่วงหน้า เงินมัดจำและสินทรัพย์หมุนเวียนอื่น,114,11,View,account.data_account_type_view,FALSE
+1140,ค่าใช้จ่ายจ่ายล่วงหน้า,1140,114,View,account.data_account_type_view,FALSE
+11401,เบี้ยประกันภัยรถยนต์จ่ายล่วงหน้า,11401,1140,Regular,account.data_account_type_asset,FALSE
+11402,เบี้ยประกันสุขภาพพนักงานจ่ายล่วงหน้า,11402,1140,Regular,account.data_account_type_asset,FALSE
+11403,เบี้ยประกันภัยโจรกรรมจ่ายล่วงหน้า,11403,1140,Regular,account.data_account_type_asset,FALSE
+11404,เบี้ยประกันอัคคีภัยจ่ายล่วงหน้า,11404,1140,Regular,account.data_account_type_asset,FALSE
+1141,เงินมัดจำ,1141,114,View,account.data_account_type_view,FALSE
+11411,เงินมัดจำท่อก๊าซ,11411,1141,Regular,account.data_account_type_asset,FALSE
+11412,ซอฟท์แวร์บัญชีระหว่างทำ,11412,1141,Regular,account.data_account_type_asset,FALSE
+11413,เงินมัดจำอื่น ๆ,11413,1141,Regular,account.data_account_type_asset,FALSE
+1142,สินทรัพย์หมุนเวียนอื่น,1142,114,View,account.data_account_type_view,FALSE
+11421,สินทรัพย์หมุนเวียนอื่น,11421,1142,Regular,account.data_account_type_asset,FALSE
+11422,ดอกเบี้ยรอตัดจ่าย,11422,1142,Regular,account.data_account_type_asset,FALSE
+11423,ดอกเบี้ยค้างรับ,11423,1142,Regular,account.data_account_type_asset,FALSE
+12,สินทรัพย์ไม่หมุนเวียน,12,1,View,account.data_account_type_view,FALSE
+121,ที่ดิน อาคารและอุปกรณ์,121,12,View,account.data_account_type_view,FALSE
+12110,ที่ดิน,12110,121,Regular,account.data_account_type_asset,FALSE
+12120,อาคาร,12120,121,Regular,account.data_account_type_asset,FALSE
+12130,"ส่วนปรับปรุงที่ดิน (ค่าทำถนน,ค่าทำร้ว,ค่าทำท่อระบายน้ำ)",12130,121,Regular,account.data_account_type_asset,FALSE
+12140,ส่วนปรับปรุงอาคาร ,12140,121,Regular,account.data_account_type_asset,FALSE
+122,เครื่องตกแต่งและเครื่องใช้สำนักงาน,122,12,View,account.data_account_type_view,FALSE
+12210,เฟอร์นิเจอร์,12210,122,Regular,account.data_account_type_asset,FALSE
+12220,เครื่องตกแต่งและติดตั้ง,12220,122,Regular,account.data_account_type_asset,FALSE
+12230,อุปกรณ์สำนักงาน,12230,122,Regular,account.data_account_type_asset,FALSE
+12240,เครื่องมือและสินทรัพย์อื่น,12240,122,Regular,account.data_account_type_asset,FALSE
+12250,ยานพาหนะ,12250,122,Regular,account.data_account_type_asset,FALSE
+12260,ซอฟท์แวร์บัญชี,12260,122,Regular,account.data_account_type_asset,FALSE
+123,ค่าเสื่อมราคาสะสม,123,12,View,account.data_account_type_view,FALSE
+12310,ค่าเสื่อมราคาสะสม-อาคาร,12310,123,Regular,account.data_account_type_asset,FALSE
+12320,ค่าเสื่อมราคาสะสม-ส่วนปรับปรุงที่ดิน,12320,123,Regular,account.data_account_type_asset,FALSE
+12330,ค่าเสื่อมราคาสะสม-ส่วนปรับปรุงอาคาร,12330,123,Regular,account.data_account_type_asset,FALSE
+12340,ค่าเสื่อมราคาสะสม-เฟอร์นิเจอร์,12340,123,Regular,account.data_account_type_asset,FALSE
+12350,ค่าเสื่อมราคาสะสม-เครื่องตกแต่งและติดตั้ง,12350,123,Regular,account.data_account_type_asset,FALSE
+12360,ค่าเสื่อมราคาสะสม-อุปกรณ์สำนักงาน,12360,123,Regular,account.data_account_type_asset,FALSE
+12370,ค่าเสื่อมราคาสะสม-เครื่องมือและสินทรัพย์อื่น,12370,123,Regular,account.data_account_type_asset,FALSE
+12380,ค่าเสื่อมราคาสะสม-ยานพาหนะ,12380,123,Regular,account.data_account_type_asset,FALSE
+12390,ค่าเสื่อมราคาสะสม-ซอฟท์แวร์บัญชี,12390,123,Regular,account.data_account_type_asset,FALSE
+124,เงินฝากประจำ,124,12,View,account.data_account_type_view,FALSE
+12410,เงินฝากประจำ-ธนาคารทหารไทย ระยอง 2,12410,124,Regular,account.data_account_type_asset,FALSE
+12420,เงินฝากประจำ-ธนาคาร SCBT,12420,124,Regular,account.data_account_type_asset,FALSE
+125,สินทรัพย์ไม่หมุนเวียนอื่น,125,12,View,account.data_account_type_view,FALSE
+12510,เงินมัดจำค่าถังน้ำดื่ม,12510,125,Regular,account.data_account_type_asset,FALSE
+12520,เงินมัดจำค่า SERVER,12520,125,Regular,account.data_account_type_asset,FALSE
+12530,เงินประกันค่าไฟฟ้า,12530,125,Regular,account.data_account_type_asset,FALSE
+12540,เงินมัดจำค่าเช่าสำนักงาน,12540,125,Regular,account.data_account_type_asset,FALSE
+2,หนี้สิน,2,10,View,account.data_account_type_view,FALSE
+21,หนี้สินหมุนเวียน,21,2,View,account.data_account_type_view,FALSE
+211,เจ้าหนี้การค้า,211,21,View,account.data_account_type_view,FALSE
+a_pay,เจ้าหนี้การค้า-ในประเทศ,21110,211,Payable,account.data_account_type_payable,TRUE
+21120,เจ้าหนี้การค้า-ต่างประเทศ,21120,211,Payable,account.data_account_type_payable,TRUE
+212,เจ้าหนี้อื่นๆ,212,21,View,account.data_account_type_view,FALSE
+21210,เจ้าหนี้-เงินกู้,21210,212,Regular,account.data_account_type_liability,FALSE
+21220,เงินกู้ยืมจากบุคคลที่เกี่ยวข้อง,21220,212,Regular,account.data_account_type_liability,FALSE
+21230,เจ้าหนี้เงินทดรองจ่ายพนักงาน,21230,212,Regular,account.data_account_type_liability,FALSE
+21240,เจ้าหนี่อื่น,21240,212,Regular,account.data_account_type_liability,FALSE
+213,รายรับล่วงหน้า,213,21,View,account.data_account_type_view,FALSE
+21310,รายได้รับล่วงหน้า,21310,213,Regular,account.data_account_type_liability,FALSE
+21320,เงินมัดจำค่าสินค้า,21320,213,Regular,account.data_account_type_liability,FALSE
+21330,เงินมัดจำ-ใบสั่งซื้อสินค้า,21330,213,Regular,account.data_account_type_liability,FALSE
+22,หนี้สินหมุนเวียนอื่น,22,2,View,account.data_account_type_view,FALSE
+221,ค่าใช้จ่ายค้างจ่าย,221,22,View,account.data_account_type_view,FALSE
+22110,ภาษีเงินได้หัก ณ ที่จ่ายค้างจ่าย (ภ.ง.ด.1),22110,221,Regular,account.data_account_type_liability,FALSE
+22120,ภาษีเงินได้หัก ณ ที่จ่ายค้างจ่าย (ภ.ง.ด.2),22120,221,Regular,account.data_account_type_liability,FALSE
+22130,ภาษีเงินได้หัก ณ ที่จ่ายค้างจ่าย (ภ.ง.ด.3),22130,221,Regular,account.data_account_type_liability,FALSE
+a_wht,ภาษีเงินได้หัก ณ ที่จ่ายค้างจ่าย (ภ.ง.ด.53),22140,221,Regular,account.data_account_type_liability,FALSE
+22150,เงินเดือนค้างจ่าย,22150,221,Regular,account.data_account_type_liability,FALSE
+22160,เงินประกันสังคมค้้างจ่าย,22160,221,Regular,account.data_account_type_liability,FALSE
+22170,ดอกเบี้ยค้างจ่าย,22170,221,Regular,account.data_account_type_liability,FALSE
+22180,ค่าใช้จ่ายค้างจ่ายอื่น ๆ,22180,221,Regular,account.data_account_type_liability,FALSE
+222,ภาษีจ่าย,222,22,View,account.data_account_type_view,FALSE
+a_output_vat,ภาษีขาย,22210,222,Regular,account.data_account_type_liability,FALSE
+22220,เจ้าหนี้-กรมสรรพากร,22220,222,Regular,account.data_account_type_liability,FALSE
+23,ภาษีเงินได้,23,2,View,account.data_account_type_view,FALSE
+23100,ภาษีเงินได้ค้างจ่าย,23100,23,Regular,account.data_account_type_liability,FALSE
+24,หนี้สินไม่หมุนเวียน,24,2,View,account.data_account_type_view,FALSE
+24100,เจ้าหนี้-ลิสซิ่งกสิกรไทย,24100,24,Regular,account.data_account_type_liability,FALSE
+24200,เจ้าหนี้-ตรีเพชรอีซูซุลีสซิ่ง,24200,24,Regular,account.data_account_type_liability,FALSE
+24300,เจ้าหนี้เงินกู้-SCBT,24300,24,Regular,account.data_account_type_liability,FALSE
+24400,ประมาณการหนี้สินเงินชดเชยพนักงาน,24400,24,Regular,account.data_account_type_liability,FALSE
+3,ส่วนของผู้ถือหุ้น,3,10,View,account.data_account_type_view,FALSE
+31,ทุนจดทะเบียน,31,3,View,account.data_account_type_view,FALSE
+31000,หุ้นสามัญ,31000,31,Regular,account.conf_account_type_equity,FALSE
+31010,ส่วนเกินมูลค่าหุ้นสามัญ,31010,31,Regular,account.conf_account_type_equity,FALSE
+32,กำไรสะสม,32,3,View,account.data_account_type_view,FALSE
+32100,เงินปันผล,32100,32,Regular,account.conf_account_type_equity,FALSE
+32200,สำรองตามกฎหมาย,32200,32,Regular,account.conf_account_type_equity,FALSE
+32900,กำไรสะสม,32900,32,Regular,account.conf_account_type_equity,FALSE
+20,Statement of Income,20,a_root,View,account.data_account_type_view,FALSE
+4,รายได้,4,20,View,account.data_account_type_view,FALSE
+a_sales,รายได้จากการขาย,41000,4,Regular,account.data_account_type_income,FALSE
+42000,รายได้จากการให้บริการ,42000,4,Regular,account.data_account_type_income,FALSE
+43000,รายได้จากการสั่งทำ,43000,4,Regular,account.data_account_type_income,FALSE
+44000,รายได้ค่าเช่า,44000,4,Regular,account.data_account_type_income,FALSE
+44,รับคืน,44,4,View,account.data_account_type_view,FALSE
+44100,รับคืนสินค้า,44100,44,Regular,account.data_account_type_income,FALSE
+45,ส่วนลดจ่าย,45,4,View,account.data_account_type_view,FALSE
+45100,ส่วนลดจ่าย-ส่วนลดการค้า,45100,45,Regular,account.data_account_type_income,FALSE
+45200,ส่วนลดส่งเสริมการขาย,45200,45,Regular,account.data_account_type_income,FALSE
+46,รายได้อื่น ๆ,46,4,View,account.data_account_type_view,FALSE
+46100,ดอกเบี้ยรับ,46100,46,Regular,account.data_account_type_income,FALSE
+46200,กำไรจากการจำหน่ายทรัพย์สิน,46200,46,Regular,account.data_account_type_income,FALSE
+46300,กำไรจากการแลกเปลี่ยนเงินตรา,46300,46,Regular,account.data_account_type_income,FALSE
+46400,กำไรจากการแลกเปลี่ยนทรัพย์สิน,46400,46,Regular,account.data_account_type_income,FALSE
+46500,รายได้อื่น ๆ,46500,46,Regular,account.data_account_type_income,FALSE
+5,ค่าใช้จ่าย,5,20,View,account.data_account_type_view,FALSE
+51,ต้นทุนขายสินค้า,51,5,View,account.data_account_type_view,FALSE
+a_exp_office,ซื้อสินค้า,51100,51,Regular,account.data_account_type_expense,FALSE
+51200,ค่าขนส่งสินค้าขาเข้า,51200,51,Regular,account.data_account_type_expense,FALSE
+51300,ต้นทุนสินค้า(วัสดุอุปกรณ์และคชจ.อื่นในงานสั่งทำเสร็จสิ้น),51300,51,Regular,account.data_account_type_expense,FALSE
+51400,สินค้าเสื่อมคุณภาพ,51400,51,Regular,account.data_account_type_expense,FALSE
+51500,ปรับปรุงต้นทุนขายสินค้า,51500,51,Regular,account.data_account_type_expense,FALSE
+51600,"Nitrogen (g), Oxygen (g)",51600,51,Regular,account.data_account_type_expense,FALSE
+51700,Rent pipeline,51700,51,Regular,account.data_account_type_expense,FALSE
+52,ส่งคืน,52,5,View,account.data_account_type_view,FALSE
+52100,ส่งคืนสินค้า,52100,52,Regular,account.data_account_type_expense,FALSE
+53,ส่วนลดรับ,53,5,View,account.data_account_type_view,FALSE
+53100,ส่วนลดการค้า,53100,53,Regular,account.data_account_type_expense,FALSE
+53200,ส่วนลดเงินสด,53200,53,Regular,account.data_account_type_expense,FALSE
+54,ค่าใช้จ่ายฝ่ายวิศวกรรม,54,5,View,account.data_account_type_view,FALSE
+54100,"เงินเดือน Engineer , ช่างเทคนิค",54100,54,Regular,account.data_account_type_expense,FALSE
+54101,ค่าจ้างแรงงานทำงาน JOB,54101,54,Regular,account.data_account_type_expense,FALSE
+54102,โบนัส Engineer,54102,54,Regular,account.data_account_type_expense,FALSE
+54103,ค่าล่วงเวลาและเบี้ยเลี้ยง Engineer,54103,54,Regular,account.data_account_type_expense,FALSE
+54104,ค่ารักษาพยาบาล Engineer,54104,54,Regular,account.data_account_type_expense,FALSE
+54105,ค่าประกันภัยสุขภาพ Engineer,54105,54,Regular,account.data_account_type_expense,FALSE
+54106,ค่าใช้จ่ายการอบรมสัมนา Engineer,54106,54,Regular,account.data_account_type_expense,FALSE
+54107,Uniform Engineer,54107,54,Regular,account.data_account_type_expense,FALSE
+54108,ค่ารับรอง Vender,54108,54,Regular,account.data_account_type_expense,FALSE
+54109,ค่าโทรศัพท์ Engineer,54109,54,Regular,account.data_account_type_expense,FALSE
+54110,ค่าคอมมิชชั่น Engineer,54110,54,Regular,account.data_account_type_expense,FALSE
+54111,ค่าซ่อมแซมและบำรุงรักษา-เครื่องมือ,54111,54,Regular,account.data_account_type_expense,FALSE
+55,ค่าใช้จ่ายในการขาย,55,5,View,account.data_account_type_view,FALSE
+55100,ค่าขนส่งสินค้าขาออก,55100,55,Regular,account.data_account_type_expense,FALSE
+55101,Website,55101,55,Regular,account.data_account_type_expense,FALSE
+55102,ค่าใช้จ่ายส่งเสริมการขาย,55102,55,Regular,account.data_account_type_expense,FALSE
+55103,เงินเดือนพนักงานขาย,55103,55,Regular,account.data_account_type_expense,FALSE
+55104,โบนัสพนักงานขาย,55104,55,Regular,account.data_account_type_expense,FALSE
+55105,ค่าล่วงเวลาและเบี้ยเลี้ยงพนักงานขาย,55105,55,Regular,account.data_account_type_expense,FALSE
+55106,ค่ารักษาพยาบาลพนักงานขาย,55106,55,Regular,account.data_account_type_expense,FALSE
+55107,ค่าประกันภัยสุขภาพพนักงานขาย,55107,55,Regular,account.data_account_type_expense,FALSE
+55108,ค่าใช้จ่ายการอบรมสัมนาพนักงานขาย,55108,55,Regular,account.data_account_type_expense,FALSE
+55109,Uniform Sale,55109,55,Regular,account.data_account_type_expense,FALSE
+55110,ค่ารับรองลูกค้า,55110,55,Regular,account.data_account_type_expense,FALSE
+55111,ค่าโทรศัพท์ในการขาย,55111,55,Regular,account.data_account_type_expense,FALSE
+55112,ค่าคอมมิชชั่น Sale,55112,55,Regular,account.data_account_type_expense,FALSE
+55113,ค่าใช้จ่ายในการขายอื่น,55113,55,Regular,account.data_account_type_expense,FALSE
+55114,หนี้สูญ,55114,55,Regular,account.data_account_type_expense,FALSE
+56,ค่าใช้จ่ายในการบริหาร,56,5,View,account.data_account_type_view,FALSE
+561,ค่าใช้จ่ายบริษัท,561,56,View,account.data_account_type_view,FALSE
+56100,ค่าใช้จ่ายก่อนการดำเนินการ,56100,561,Regular,account.data_account_type_expense,FALSE
+56101,ค่าใช้จ่ายในการจัดตั้งบริษัทฯ,56101,561,Regular,account.data_account_type_expense,FALSE
+56102,ค่าใช้จ่ายในการทำบุญบริษัท,56102,561,Regular,account.data_account_type_expense,FALSE
+56103,ค่าเช่าอุปกรณ์คอมพิวเตอร์,56103,561,Regular,account.data_account_type_expense,FALSE
+56104,ค่าเช่า-อาคารสำนักงาน,56104,561,Regular,account.data_account_type_expense,FALSE
+56105,ค่าใช้จ่ายยานพาหนะ,56105,561,Regular,account.data_account_type_expense,FALSE
+56106,ค่าประกันภัยรถยนต์,56106,561,Regular,account.data_account_type_expense,FALSE
+56107,ค่าประกันภัยโจรกรรม,56107,561,Regular,account.data_account_type_expense,FALSE
+56108,ค่าเบี้ยประกันอัคคีภัย,56108,561,Regular,account.data_account_type_expense,FALSE
+56109,ค่าน้ำประปาและไฟฟ้า,56109,561,Regular,account.data_account_type_expense,FALSE
+56110,ค่ารักษาความสะอาด,56110,561,Regular,account.data_account_type_expense,FALSE
+562,ค่าใช้จ่ายด้านบริหาร,562,56,View,account.data_account_type_view,FALSE
+56200,ค่าใช้จ่ายในการประชุมกรรมการ,56200,562,Regular,account.data_account_type_expense,FALSE
+56201,ค่าใช้จ่ายในการเดินทางผู้จัดการและกรรมการ,56201,562,Regular,account.data_account_type_expense,FALSE
+56202,ค่ารับรองกรรมการบริษัท,56202,562,Regular,account.data_account_type_expense,FALSE
+56203,ค่าตอบแทนกรรมการ,56203,562,Regular,account.data_account_type_expense,FALSE
+56204,ค่าที่ปรึกษา,56204,562,Regular,account.data_account_type_expense,FALSE
+56205,ค่าตรวจสอบบัญชี,56205,562,Regular,account.data_account_type_expense,FALSE
+56206,ค่าโทรศัพท์ในการบริหาร,56206,562,Regular,account.data_account_type_expense,FALSE
+563,ค่าใช้จ่ายอื่น,563,56,View,account.data_account_type_view,FALSE
+56300,ภาษีเงินได้หัก ณ ที่จ่ายไม่ขอคืน,56300,563,Regular,account.data_account_type_expense,FALSE
+56301,ค่าจ้างและบริการงานทั่วไป,56301,563,Regular,account.data_account_type_expense,FALSE
+56302,ค่าวัสดุและอุปกรณ์สำนักงาน,56302,563,Regular,account.data_account_type_expense,FALSE
+56303,ค่าโฆษณา,56303,563,Regular,account.data_account_type_expense,FALSE
+56304,ค่าไปรษณีย์,56304,563,Regular,account.data_account_type_expense,FALSE
+56305,ค่าปรับส่งสินค้าล่าช้า,56305,563,Regular,account.data_account_type_expense,FALSE
+56306,ค่าซ่อมแซมและบำรุงรักษา-สำนักงาน,56306,563,Regular,account.data_account_type_expense,FALSE
+56307,ค่าซ่อมแซมและบำรุงรักษา-คอมพิวเตอร์,56307,563,Regular,account.data_account_type_expense,FALSE
+56308,ดอกเบี้ยจ่าย,56308,563,Regular,account.data_account_type_expense,FALSE
+56309,ค่าธรรมเนียมธนาคาร,56309,563,Regular,account.data_account_type_expense,FALSE
+56310,ค่าธรรมเนียม บสย.ค้ำประกันวงเงินกู้,56310,563,Regular,account.data_account_type_expense,FALSE
+56311,ค่าธรรมเนียมอื่น,56311,563,Regular,account.data_account_type_expense,FALSE
+56312,ขาดทุนจากการจำหน่ายทรัพย์สิน,56312,563,Regular,account.data_account_type_expense,FALSE
+56313,ขาดทุนจากการแลกเปลี่ยนเงินตรา,56313,563,Regular,account.data_account_type_expense,FALSE
+56314,ขาดทุนจากการแลกเปลี่ยนสินทรัพย์,56314,563,Regular,account.data_account_type_expense,FALSE
+56315,ค่าตกแต่งตัดจ่าย(ย้าย สนง.),56315,563,Regular,account.data_account_type_expense,FALSE
+56316,ค่าใช้จ่ายเบ็ดเตล็ด,56316,563,Regular,account.data_account_type_expense,FALSE
+56317,ค่าใช้จ่ายต้องห้าม,56317,563,Regular,account.data_account_type_expense,FALSE
+56318,ทรัพย์สินสูญหาย,56318,563,Regular,account.data_account_type_expense,FALSE
+56319,Donation,56319,563,Regular,account.data_account_type_expense,FALSE
+56320,ภาษีเงินได้,56320,563,Regular,account.data_account_type_expense,FALSE
+564,ค่าใช้จ่ายด้านพนักงาน,564,56,View,account.data_account_type_view,FALSE
+56400,เงินเดือนพนักงาน Office,56400,564,Regular,account.data_account_type_expense,FALSE
+56401,โบนัสพนักงาน Office,56401,564,Regular,account.data_account_type_expense,FALSE
+56402,ค่าล่วงเวลาและเบี้ยเลี้ยงพนักงาน Office,56402,564,Regular,account.data_account_type_expense,FALSE
+56403,ค่ารักษาพยาบาลพนักงาน Office,56403,564,Regular,account.data_account_type_expense,FALSE
+56404,ค่าประกันภัยสุขภาพพนักงาน Office,56404,564,Regular,account.data_account_type_expense,FALSE
+56405,ค่าใช้จ่ายการอบรมสัมนาพนักงาน Office,56405,564,Regular,account.data_account_type_expense,FALSE
+56406,Uniform Office,56406,564,Regular,account.data_account_type_expense,FALSE
+56407,ค่าใช้จ่ายในการสนับสนุนเพื่อการศึกษา,56407,564,Regular,account.data_account_type_expense,FALSE
+56408,เงินประกันสังคม,56408,564,Regular,account.data_account_type_expense,FALSE
+56409,เงินสมทบกองทุนเงินทดแทนประจำปี,56409,564,Regular,account.data_account_type_expense,FALSE
+56410,เงินสมทบกองทุนค่าจ้างประจำปี,56410,564,Regular,account.data_account_type_expense,FALSE
+56411,ค่าวารสารและสมาชิก,56411,564,Regular,account.data_account_type_expense,FALSE
+56412,ค่าสวัสดิการพนักงานอื่น ๆ,56412,564,Regular,account.data_account_type_expense,FALSE
+56413,ค่าใช้จ่ายในการพาพนักงานไปเที่ยวประจำปี,56413,564,Regular,account.data_account_type_expense,FALSE
+56414,เงินชดเชยพนักงานเมื่อเกษียณอายุ,56414,564,Regular,account.data_account_type_expense,FALSE
+57,ค่าเสื่อมราคา,57,5,View,account.data_account_type_view,FALSE
+57100,ค่าเสื่อมราคา-อาคาร,57100,57,Regular,account.data_account_type_expense,FALSE
+57200,ค่าเสื่อมราคา-ส่วนปรับปรุงที่ดิน,57200,57,Regular,account.data_account_type_expense,FALSE
+57300,ค่าเสื่อมราคา-ส่วนปรับปรุงอาคาร,57300,57,Regular,account.data_account_type_expense,FALSE
+57400,ค่าเสื่อมราคา-เฟอร์นิเจอร์,57400,57,Regular,account.data_account_type_expense,FALSE
+57500,ค่าเสื่อมราคา-เครื่องตกแต่งและติดตั้ง,57500,57,Regular,account.data_account_type_expense,FALSE
+57600,ค่าเสื่อมราคา-อุปกรณ์สำนักงาน,57600,57,Regular,account.data_account_type_expense,FALSE
+57700,ค่าเสื่อมราคา-เครื่องมือและสินทรัพย์อื่น,57700,57,Regular,account.data_account_type_expense,FALSE
+57800,ค่าเสื่อมราคา-ยานพาหนะ,57800,57,Regular,account.data_account_type_expense,FALSE
+57900,ค่าเสื่อมราคา-ซอฟท์แวร์บัญชี,57900,57,Regular,account.data_account_type_expense,FALSE

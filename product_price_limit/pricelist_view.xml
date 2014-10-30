@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+    <data>
+        <record id="product_pricelist_item_form_view_ext" model="ir.ui.view">
+            <field name="name">product.pricelist.item.form.view.ext</field>
+            <field name="model">product.pricelist.item</field>
+            <field name="inherit_id" ref="product.product_pricelist_item_form_view"/>
+            <field name="arch" type="xml">
+            	<data>
+                	<xpath expr="/form/group[3]" position="after">
+	                    <group col="6" colspan="5" string="Price Limit (based on price computation)">
+	                        <label string="Price Limit ="/>
+	                        <label string="Computed Price"/>
+	                        <label string="* ( 1 - "/>
+	                        <field name="price_subtract_percent" nolabel="1"/>
+	                        <label string=" ) - "/>
+	                        <field name="price_subtract_amount" nolabel="1"/>
+	                    </group>					
+					</xpath>               	
+				</data>
+            </field>
+        </record>
+	</data>
+</openerp>

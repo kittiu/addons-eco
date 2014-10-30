@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <record id="report_thai_tax_wizard" model="ir.ui.view">
+            <field name="name">Tax Report</field>
+            <field name="model">report.thai.tax.wizard</field>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <form string="Selection Criteria">
+                    <group>
+                        <group>
+                    		<field name="company_id" options="{'limit': 10, 'create': false, 'create_edit': false}"/>
+                    		<field name="period_id" options="{'limit': 10, 'create': false, 'create_edit': false}"/>
+                    		<field name="tax_id" on_change="onchange_tax_id(tax_id)" options="{'limit': 10, 'create': false, 'create_edit': false}"/>
+                        </group>
+                        <group>
+                    		<field name="base_code_id" options="{'limit': 10, 'create': false, 'create_edit': false}"/>
+                    		<field name="tax_code_id" options="{'limit': 10, 'create': false, 'create_edit': false}"/>
+                    		<field name="type_tax_use" invisible="1"/>
+                            <button name="start_report" string="Execute Report" type="object"/>
+                        </group>
+                    </group>
+                </form>
+            </field>
+        </record>
+
+        <record id="action_report_thai_tax" model="ir.actions.act_window">
+            <field name="name">VAT Report</field>
+            <field name="res_model">report.thai.tax.wizard</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="report_thai_tax_wizard"/>
+            <field name="target">new</field>
+            <field name="help">Print Tax Report</field>
+        </record>
+
+        <menuitem action="action_report_thai_tax"
+            id="menu_report_thai_tax"
+            parent="menu_finance_thai_reporting" sequence="25" />
+
+    </data>
+</openerp>

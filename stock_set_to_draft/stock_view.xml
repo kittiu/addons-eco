@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+	<data>
+		<!-- Picking Form -->
+		<record id="view_picking_form_ext" model="ir.ui.view">
+            <field name="name">view.picking.form.ext</field>
+            <field name="inherit_id" ref="stock.view_picking_form" />
+            <field name="model">stock.picking.out</field>
+            <field name="arch" type="xml">
+            	<xpath expr="/form/header/field[@name='state']" position="before">
+            		<button name="action_cancel_draft" class="oe_highlight" states="cancel" string="Set to Draft" type="object" groups="base.group_user"/>
+            	</xpath>
+                
+            </field>
+        </record>
+    </data>
+</openerp>

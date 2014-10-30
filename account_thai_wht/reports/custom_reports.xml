@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<openerp>
+<data>
+
+    <report string="Withholding CERT"
+        model="account.voucher"
+        auto="True"
+        name="withholding.cert"
+        rml="account_thai_wht/reports/withholding_cert.jrxml"
+        id="withholding_cert" 
+        menu="True"
+        header="False" 
+        />    
+    <record id="withholding_cert" model="ir.actions.report.xml">
+        <field name="jasper_report">True</field>
+        <field name="jasper_output">pdf</field>
+    </record>
+    
+</data>
+</openerp>

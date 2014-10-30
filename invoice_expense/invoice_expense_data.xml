@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data noupdate="1">
+        <!-- notify all employees of module installation -->
+        <record model="mail.message" id="module_install_notification">
+            <field name="model">mail.group</field>
+            <field name="res_id" ref="mail.group_all_employees"/>
+            <field name="type">notification</field>
+            <field name="subtype_id" ref="mail.mt_comment"/>
+            <field name="subject">Invoice Expense application installed!</field>
+            <field name="body"><![CDATA[<p>Manage Invoice Expense</p>]]></field>
+        </record>
+
+        <!-- Expense-related subtypes for messaging / Chatter -->
+        <record id="mt_expense_approved" model="mail.message.subtype">
+            <field name="name">Approved</field>
+            <field name="res_model">invoice.expense.expense</field>
+            <field name="description">Expense approved</field>
+        </record>
+        <record id="mt_expense_refused" model="mail.message.subtype">
+            <field name="name">Refused</field>
+            <field name="res_model">invoice.expense.expense</field>
+            <field name="description">Expense refused</field>
+        </record>
+        <record id="mt_expense_confirmed" model="mail.message.subtype">
+            <field name="name">To Approve</field>
+            <field name="res_model">invoice.expense.expense</field>
+            <field name="description">Expense confirmed, waiting confirmation</field>
+        </record>
+
+    </data>
+</openerp>

@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+<data>
+
+    <record id="view_job_cost_sheet_report_tree" model="ir.ui.view">
+        <field eval="1" name="priority"/>
+        <field name="name">job.cost.sheet.report.tree</field>
+        <field name="model">job.cost.sheet.report</field>
+        <field name="arch" type="xml">
+            <tree string="Job Cost Sheet" create="false">  	
+                <field name="sale_order_id" invisible="1"/>
+                <field name="move_id" invisible="1"/>
+                <field name="account_id" invisible="1"/>
+                <field name="product_id" invisible="1"/>
+                <field name="date" invisible="1"/>
+                <field name="year" invisible="1"/>
+                <field name="day" invisible="1"/>
+                <field name="month" invisible="1"/>
+                <field name="amount_net" sum="Total Amount"/>
+                <field name="amount_cost" sum="Total Cost"/>
+                <field name="amount_margin" sum="Total Margin"/>
+                <field name="percent_margin" avg="Percent Margin" widget="progressbar"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_job_cost_sheet_report_graph" model="ir.ui.view">
+         <field name="name">job.cost.sheet.report.graph</field>
+         <field name="model">job.cost.sheet.report</field>
+         <field name="arch" type="xml">
+             <graph string="Job Cost Sheet" type="bar">
+                 <field name="sale_order_id"/>
+                 <field name="percent_margin"/>
+             </graph>
+         </field>
+    </record>
+
+    <record id="view_job_cost_sheet_report_search" model="ir.ui.view">
+        <field name="name">job.cost.sheet.report.search</field>
+        <field name="model">job.cost.sheet.report</field>
+        <field name="arch" type="xml">
+            <search string="Job Cost Sheet">
+                <field name="date" string="Order Date"/>
+                <field name="sale_order_id" string="Sales Order"/>
+                <separator/>
+                <filter icon="terp-personal" string="My Sales" help="My Sales" domain="[('user_id','=',uid)]"/>
+                <group expand="1" string="Group By...">
+                    <filter string="Salesperson" icon="terp-personal" name="User" context="{'group_by':'user_id'}"/>
+                    <filter string="Sales Order" name="group_sale_order_id" context="{'group_by':'sale_order_id'}"/>
+                    <filter string="Account" name="group_account_id" context="{'group_by':'account_id'}"/>
+                    <filter string="Product" name="group_product_id" context="{'group_by':'product_id'}"/>
+                    <filter string="Invoice" name="group_move_id" context="{'group_by':'move_id'}"/>
+                    <filter string="Day" icon="terp-go-today" context="{'group_by':'day'}" help="Ordered date of the sales order"/>
+                    <filter string="Month" name="order_month" icon="terp-go-month" context="{'group_by':'month'}" help="Ordered month of the sales order"/>
+                    <filter string="Year" icon="terp-go-year" context="{'group_by':'year'}" help="Ordered Year of the sales order"/>
+            	</group>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_job_cost_sheet_report" model="ir.actions.act_window">
+        <field name="name">Job Cost Sheet</field>
+        <field name="res_model">job.cost.sheet.report</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,graph</field>
+        <field name="search_view_id" ref="view_job_cost_sheet_report_search"/>
+        <field name="view_id" ref="view_job_cost_sheet_report_tree"/>
+        <!--field name="context">{'search_default_year':1,'search_default_month':1,'search_default_user':1,'group_by_no_leaf':1,'group_by':[]}</field-->
+        <field name="context">{'search_default_group_sale_order_id': 1, 'group_by_no_leaf':1,'group_by':[]}</field>
+    </record>
+
+    <menuitem action="action_job_cost_sheet_report" id="menu_report_product_all" parent="base.next_id_64" sequence="20"/>
+
+</data>
+</openerp>

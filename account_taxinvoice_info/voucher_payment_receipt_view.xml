@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+    <data>
+        <record id="view_vendor_receipt_form_ext" model="ir.ui.view">
+		    <field name="name">view.vendor.receipt.form.ext</field>
+		    <field name="model">account.voucher</field>
+		    <field name="type">form</field>
+		    <field name="inherit_id" ref="account_thai_wht.view_vendor_payment_form_ext"/>
+		    <field name="arch" type="xml">
+                <data>
+					<xpath expr="//field[@name='tax_line']" position="after">
+                    	<div style="width: 70%%" >
+	                    	<group>
+	                    		<group>
+				                    <field name="is_tax_adjustable" invisible="1"/>
+				                    <field name="adjust_taxinvoice_info" readonly="1" on_change="onchange_adjust_taxinvoice_info(adjust_taxinvoice_info)" attrs="{'invisible':[('is_tax_adjustable', '=', False)]}" />
+			                   	</group>
+			                   	<group>
+									<field name="is_period_diff" invisible="1"/>
+									<field name="rpt_period_id" attrs="{'invisible':[('adjust_taxinvoice_info', '=', False)], 'required':[('adjust_taxinvoice_info', '=', True)]}" 
+										options="{'limit': 10, 'create': false, 'create_edit': false}"/>
+			                    </group>
+			                </group>
+	                    </div>
+                    	<div style="width: 70%%" >	               
+	                     <p attrs="{'invisible':[('is_period_diff','=', False)]}" class="oe_highlight">
+	                         <b>Note:</b> The selected tax reporting period is different from the period of this document.
+	                     </p>     
+	                    </div>             
+                        <div style="width: 70%%" attrs="{'invisible':[('adjust_taxinvoice_info', '=', False)]}" >
+                            <field name="taxinvoice_info_line">
+                                <tree editable="bottom" string="Taxes">
+                                    <field name="taxinvoice_date"/>
+                                    <field name="taxinvoice_number"/>
+                                    <field name="taxinvoice_partner_id" options="{'limit': 10, 'create': false, 'create_edit': false}"/>
+                                    <field name="taxinvoice_tin"/>
+                                    <field name="taxinvoice_branch"/>
+                                    <field name="taxinvoice_base"/>
+                                    <field name="taxinvoice_amount"/>
+                                </tree>
+                            </field>
+                        </div>
+					</xpath>					
+				</data>
+			</field>
+		</record>
+	</data>
+</openerp>

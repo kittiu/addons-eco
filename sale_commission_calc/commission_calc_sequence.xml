@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data noupdate="1">
+
+        <!-- Sequences for commission.worksheet -->
+        <record id="seq_type_commission_worksheet" model="ir.sequence.type">
+            <field name="name">Commission Worksheet</field>
+            <field name="code">commission.worksheet</field>
+        </record>
+
+        <record id="seq_commission_worksheet" model="ir.sequence">
+            <field name="name">Commission Worksheet</field>
+            <field name="code">commission.worksheet</field>
+            <field name="prefix">CWS</field>
+            <field name="padding">5</field>
+            <field name="company_id" eval="False"/>
+        </record>
+
+    </data>
+</openerp>

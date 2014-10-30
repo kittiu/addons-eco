@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+    <data>
+    	<!-- 
+        <record id="product_category_form_ext" model="ir.ui.view">
+            <field name="name">product.category.form.ext</field>
+            <field name="inherit_id" ref="product.product_category_form_view" />
+            <field name="model">product.category</field>
+            <field name="arch" type="xml">
+                <data>
+                    <xpath expr="/form/sheet/group/group/field[@name='parent_id']" position="before">
+						<field name="product_cat_code"/>
+                    </xpath>
+                </data>
+            </field>
+        </record>
+        -->
+        <record id="product_normal_form_view_ext" model="ir.ui.view">
+            <field name="name">product.normal.form.view.ext</field>
+            <field name="inherit_id" ref="product.product_normal_form_view" />
+            <field name="model">product.product</field>
+            <field name="arch" type="xml">
+                <data>
+                    <xpath expr="/form/sheet/notebook/page[@string='Information']/group//field[@name='type']" position="before">
+						<field name="product_main_code"/>
+                    </xpath>
+                    <!--xpath expr="/form/sheet/notebook/page[@string='Information']/group//field[@name='default_code']" position="before">
+						<field name="product_sub_code"/>
+                    </xpath-->  
+                    <xpath expr="/form/sheet/notebook/page[@string='Information']/group//field[@name='default_code']" position="replace">
+                    	<!-- Replaced with blank -->
+                    </xpath>           
+                    <xpath expr="/form/sheet/div/h1" position="after">
+                    	<h2><field name="default_code"/></h2>
+                    </xpath>      
+
+					<xpath expr="/form/sheet/notebook/page[@string='Sales']/group[@name='sale']" position="before">
+						<group>
+							<group string="Product belongs to...">
+								<field name="partner_id"/>
+							</group>
+							<group>					
+							</group>
+						</group>
+                    </xpath>                
+				</data>
+            </field>
+        </record>
+
+  	</data>
+</openerp>

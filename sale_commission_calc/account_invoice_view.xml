@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<openerp>
+    <data>
+        <record id="invoice_form_ext" model="ir.ui.view">
+            <field name="name">invoice.form.ext</field>
+            <field name="model">account.invoice</field>
+            <field name="inherit_id" ref="account.invoice_form"/>
+            <field name="arch" type="xml">
+                <field name="user_id" position="attributes">
+                	<attribute name="on_change">onchange_user_id(user_id)</attribute>
+                </field>
+                <field name="tax_line" position="before">
+                    <group colspan="2" col="2">
+                    <separator colspan="2" string="Salesperson/Team and Commission"/>
+                       <field name="sale_team_ids" nolabel="1">
+                            <tree string="Salesperson/Teams and Commissions" editable="top">
+                            	<field name="invoice_id" invisible="1"/>
+                                <field name="salesperson_id" on_change="onchange_salesperson_id(salesperson_id)"/>
+                                <field name="sale_team_id" on_change="onchange_sale_team_id(sale_team_id)"/>
+                                <field name="commission_rule_id" />
+                            </tree>
+                        </field>
+                    </group>
+                </field>
+            </field>
+        </record>
+    </data>
+</openerp>

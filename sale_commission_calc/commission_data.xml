@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data noupdate="1">
+        <record id="commission_rule_1st" model="commission.rule">
+            <field name="name">Fixed Commission 3%</field>
+            <field name="type">percent_fixed</field>
+            <field name="fix_percent">3</field>
+        </record>
+	</data>
+</openerp>

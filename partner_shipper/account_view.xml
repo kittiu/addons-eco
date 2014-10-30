@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+    <data>
+        
+        <!--record id="view_picking_out_search_ext" model="ir.ui.view">
+            <field name="name">view.picking.out.search.ext</field>
+            <field name="inherit_id" ref="stock.view_picking_out_search" />
+            <field name="model">stock.picking.out</field>
+            <field name="arch" type="xml">
+                <data>
+                    <xpath expr="/search/group/filter[@string='Status']" position="before">
+                        <filter string="Route" name="by_route" domain="[]"  context="{'group_by':'route_id'}"/>
+                    </xpath>
+                </data>
+            </field>
+        </record-->
+        
+     	<!--record id="view_picking_out_tree_ext" model="ir.ui.view">
+            <field name="name">view.picking.out.tree.ext</field>
+            <field name="inherit_id" ref="stock.view_picking_out_tree" />
+            <field name="model">stock.picking.out</field>
+            <field name="arch" type="xml">
+                <data>
+                    <xpath expr="/tree/field[@name='partner_id']" position="after">
+                    	<field name="route_id"/>
+                    </xpath>
+                </data>
+            </field>
+        </record-->
+                
+        <record id="invoice_form_ext" model="ir.ui.view">
+            <field name="name">invoice.form.ext</field>
+            <field name="inherit_id" ref="account.invoice_form" />
+            <field name="model">account.invoice</field>
+            <field name="arch" type="xml">
+                <data>
+                    <xpath expr="/form/sheet/notebook/page[@string='Other Info']/group" position="inside">
+                        <group name="shipper">
+                            <field name="shipper_id" widget="selection" />
+                            <!--field name="shipper_id" widget="selection" options="{'limit': 10, 'create': false, 'create_edit': false}" /-->
+                        </group>
+					</xpath>
+				</data>
+            </field>
+        </record>
+	</data>
+</openerp>

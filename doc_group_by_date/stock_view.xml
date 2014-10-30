@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+	<data>
+		<!-- Deliver Products -->
+		<record id="view_picking_out_tree_ext" model="ir.ui.view">
+            <field name="name">view.picking.out.tree.ext</field>
+            <field name="inherit_id" ref="stock.view_picking_out_tree" />
+            <field name="model">stock.picking.out</field>
+            <field name="arch" type="xml">
+            	<xpath expr="/tree/field[@name='state']" position="after">
+            	    <field name="date_str" invisible="1"/>
+               	</xpath>
+            </field>
+        </record>
+		<record id="view_picking_out_search_ext" model="ir.ui.view">
+            <field name="name">view.picking.out.search.ext</field>
+            <field name="inherit_id" ref="stock.view_picking_out_search" />
+            <field name="model">stock.picking.out</field>
+            <field name="arch" type="xml">
+            	<xpath expr="/search/group" position="inside">
+                	<filter string="Expected Day" domain="[]" context="{'group_by':'date_str'}"/>
+               	</xpath>
+            </field>
+        </record>
+        
+        <!-- Incoming Shipment -->
+		<record id="view_picking_in_tree_ext" model="ir.ui.view">
+            <field name="name">view.picking.in.tree.ext</field>
+            <field name="inherit_id" ref="stock.view_picking_in_tree" />
+            <field name="model">stock.picking.out</field>
+            <field name="arch" type="xml">
+            	<xpath expr="/tree/field[@name='state']" position="after">
+            	    <field name="date_str" invisible="1"/>
+               	</xpath>
+            </field>
+        </record>
+		<record id="view_picking_in_search_ext" model="ir.ui.view">
+            <field name="name">view.picking.in.search.ext</field>
+            <field name="inherit_id" ref="stock.view_picking_in_search" />
+            <field name="model">stock.picking.in</field>
+            <field name="arch" type="xml">
+            	<xpath expr="/search/group" position="inside">
+                	<filter string="Expected Day" domain="[]" context="{'group_by':'date_str'}"/>
+               	</xpath>
+            </field>
+        </record>
+        
+		<!-- Deliver Products -->
+		<record id="view_move_tree_reception_picking_ext" model="ir.ui.view">
+            <field name="name">view.move.tree.reception.picking.ext</field>
+            <field name="inherit_id" ref="stock.view_move_tree_reception_picking" />
+            <field name="model">stock.move</field>
+            <field name="arch" type="xml">
+            	<xpath expr="/tree/field[@name='state']" position="after">
+            	    <field name="date_str" invisible="1"/>
+               	</xpath>
+            </field>
+        </record>		
+		<record id="view_move_search_ext" model="ir.ui.view">
+            <field name="name">view.move.search.ext</field>
+            <field name="inherit_id" ref="stock.view_move_search" />
+            <field name="model">stock.move</field>
+            <field name="arch" type="xml">
+            	<xpath expr="/search/group" position="inside">
+                	<filter string="Expected Day" domain="[]" context="{'group_by':'date_str'}"/>
+               	</xpath>
+            </field>
+        </record>
+    </data>
+</openerp>

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+<data noupdate="0">
+
+    <record id="group_master_product" model="res.groups">
+        <field name="name">Manage Master Products</field>
+        <field name="category_id" ref="base.module_category_hidden"/>
+    </record>
+
+    <record id="group_master_partner" model="res.groups">
+        <field name="name">Manage Master Partners</field>
+        <field name="category_id" ref="base.module_category_hidden"/>
+    </record>
+
+</data>
+</openerp>

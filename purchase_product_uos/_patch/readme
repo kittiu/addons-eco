@@ -1,0 +1,2 @@
+Because UOS is not used for purchase, using this module will create a bug when partial receive.
+Please make sure you apply the changes manually (identify with #ecosoft) to addons.stock.stock.do_partnal()

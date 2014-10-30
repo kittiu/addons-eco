@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+    <data>
+		<record id="invoice_supplier_form_ext" model="ir.ui.view">
+            <field name="name">invoice.supplier.form.ext</field>
+            <field name="inherit_id" ref="account.invoice_supplier_form" />
+            <field name="model">account.invoice</field>
+            <field name="arch" type="xml">
+            	<xpath expr="/form/sheet/notebook/page//div/field/tree/field[@name='base']" position="attributes">
+            	    <attribute name="invisible">True</attribute>
+                </xpath>  	
+            	<xpath expr="/form/sheet/notebook/page//div/field/tree/field[@name='amount']" position="attributes">
+            	    <attribute name="invisible">True</attribute>
+                </xpath>  	
+            	<xpath expr="/form/sheet/notebook/page//div/field/tree/field[@name='amount']" position="after">
+                    <field name="base_adjusted"/>
+                    <field name="amount_adjusted"/>  	
+            	</xpath>
+            </field>
+        </record>
+    </data>
+</openerp>

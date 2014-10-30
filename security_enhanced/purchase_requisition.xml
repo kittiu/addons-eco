@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<openerp>
+    <data>
+	    <record model="ir.ui.view" id="view_purchase_requisition_form">
+	        <field name="name">view.purchase.requisition.form.ext2</field>
+	        <field name="model">purchase.requisition</field>
+	        <field name="inherit_id" ref="purchase_requisition.view_purchase_requisition_form"/>
+	        <field name="arch" type="xml">	             
+	            <xpath expr="/form/sheet/notebook/page/field/tree/field[@name='product_id']" position="attributes">
+					<attribute name="options">{'limit': 10, 'create': false, 'create_edit': false}</attribute>
+	            </xpath>
+	            <xpath expr="/form/sheet/group/group/field[@name='user_id']" position="attributes">
+					<attribute name="options">{'limit': 10, 'create': false, 'create_edit': false}</attribute>
+	            </xpath>	 			
+			</field>
+	    </record>
+	    
+	    <record id="view_purchase_requisition_partner" model="ir.ui.view">
+            <field name="name">Purchase Requisition</field>
+            <field name="model">purchase.requisition.partner</field>
+            <field name="inherit_id" ref="purchase_requisition.view_purchase_requisition_partner"/>
+            <field name="arch" type="xml">
+            	<xpath expr="/form/group/field[@name='partner_id']" position="attributes">
+					<attribute name="options">{'limit': 10, 'create': false, 'create_edit': false}</attribute>
+	            </xpath>	            
+            </field>
+        </record>
+	</data>
+</openerp>

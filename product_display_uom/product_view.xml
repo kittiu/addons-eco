@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+    <data>    	
+    	<!-- add new menu, passing uom in context -->
+        <record id="product_normal_action_disp" model="ir.actions.act_window">
+            <field name="name">Products (disp.)</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">product.product</field>
+            <field name="view_type">form</field>
+            <field name="context">{"display_uom": True}</field>
+            <field name="view_mode">tree,form,kanban</field>
+            <field name="view_id" ref="product.product_product_tree_view"/>
+            <field name="search_view_id" ref="product.product_search_form_view"/>
+            <field name="help" type="html">
+              <p class="oe_view_nocontent_create">
+                Click to define a new product.
+              </p><p>
+                You must define a product for everything you buy or sell,
+                whether it's a physical product, a consumable or service.
+              </p>
+            </field>
+        </record>
+        <menuitem action="product_normal_action_disp" id="menu_stock_products_menu_disp" parent="stock.menu_stock_product" sequence="2"/>
+    	
+        <record id="product_normal_action_sell_disp" model="ir.actions.act_window">
+            <field name="name">Products (disp.)</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">product.product</field>
+            <field name="view_mode">kanban,tree,form</field>
+            <field name="view_type">form</field>
+            <field name="context">{"search_default_filter_to_sell":1, "display_uom": True}</field>
+            <field name="view_id" ref="product.product_product_tree_view"/>
+            <field name="search_view_id" ref="product.product_search_form_view"/>
+            <field name="help" type="html">
+              <p class="oe_view_nocontent_create">
+                Click to define a new product.
+              </p><p>
+                You must define a product for everything you sell, whether it's
+                a physical product, a consumable or a service you offer to
+                customers.
+              </p><p>
+                The product form contains information to simplify the sale
+                process: price, notes in the quotation, accounting data,
+                procurement methods, etc.
+              </p>
+            </field>
+        </record>
+        <menuitem action="product_normal_action_sell_disp" id="product.menu_products_disp" parent="base.menu_product" sequence="2"/>
+        	
+        <!-- display uom field in product window -->
+        <record id="product_normal_form_view_ext" model="ir.ui.view">
+            <field name="name">product.normal.form.view.ext</field>
+            <field name="inherit_id" ref="product.product_normal_form_view" />
+            <field name="model">product.product</field>
+            <field name="arch" type="xml">
+                <data>
+                    <xpath expr="/form/sheet/notebook//field[@name='uom_id']" position="after">
+						<field name="display_uom"/>
+                    </xpath>          
+				</data>
+            </field>
+        </record>
+        
+        <!-- Display UOM  in Tree view -->
+        <record id="product_product_tree_view_ext" model="ir.ui.view">
+            <field name="name">product.product.tree.view.ext</field>
+            <field name="inherit_id" ref="product.product_product_tree_view" />
+            <field name="model">product.product</field>
+            <field name="arch" type="xml">
+                <data>
+                    <xpath expr="/tree/field[@name='uom_id']" position="replace">
+                    	<field name="uom_id" string="Unit of Measure" groups="product.group_uom" invisible="context.get('display_uom', False)"/>
+                    	<field name="display_uom" string="Unit of Measure" groups="product.group_uom" invisible="not context.get('display_uom', False)"/>
+                    </xpath>          
+				</data>
+            </field>
+        </record>
+
+  	</data>
+</openerp>

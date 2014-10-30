@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+    <data>
+        <record id="view_sale_advance_payment_inv_ext" model="ir.ui.view">
+            <field name="name">view.sale.advance.payment.inv.ext</field>
+            <field name="model">sale.advance.payment.inv</field>
+            <field name="inherit_id" ref="sale.view_sale_advance_payment_inv"/>
+            <field name="arch" type="xml">
+                <data>
+					<xpath expr="/form/p" position="before">
+	                    <separator string="Create Advance on 1st Invoice" invisible="(context.get('advance_type', False) in ['deposit', False] or context.get('num_invoice', False))"/>
+	                    <separator string="Create Deposit on 1st Invoice" invisible="(context.get('advance_type', False) in ['advance', False] or context.get('num_invoice', False))"/>                
+					</xpath>
+					<xpath expr="/form/group/field[@name='advance_payment_method']" position="attributes">
+						<attribute name="on_change">onchange_method(advance_payment_method, product_id, context)</attribute>
+					</xpath>   		
+					<xpath expr="/form/group/field[@name='product_id']" position="attributes">
+						<attribute name="attrs">{'invisible': True}</attribute>
+					</xpath>
+					<xpath expr="/form/footer/button[@string='Create Invoice']" position="attributes">
+						<attribute name="attrs">{'invisible': True}</attribute>
+					</xpath>					
+					<xpath expr="/form/group" position="after">
+						<group invisible="(context.get('advance_type', False) and not context.get('num_invoice', False))" >					
+							<group>
+								<label for="retention" />
+								<div>
+				                    <field name="retention" class="oe_inline"/>
+				                    <label string="%%" class="oe_inline"/>
+			                    </div>
+							</group>
+						</group>
+					</xpath>				
+				</data>
+           </field>
+        </record>
+	</data>
+</openerp>

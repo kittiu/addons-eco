@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+    <data>
+        <record id="purchase_order_form_ext" model="ir.ui.view">
+            <field name="name">purchase.order.form.ext</field>
+            <field name="model">purchase.order</field>
+            <field name="inherit_id" ref="purchase.purchase_order_form"/>
+            <field name="arch" type="xml">
+                <data>
+	                <field name="partner_id" position="attributes" version="7.0">					
+						<attribute name="domain" >[('supplier','=',True),('is_company','=',True)]</attribute> 
+					</field>
+					<field name="partner_id" position="after" version="7.0">					
+						<field name="ref_contact_id" options="{'limit': 10, 'create': false, 'create_edit': false}"/> 
+					</field>		
+				</data>
+			</field>
+        </record>
+	</data>
+</openerp>

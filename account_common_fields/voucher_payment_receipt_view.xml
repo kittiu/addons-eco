@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+    <data>
+        <record model="ir.ui.view" id="view_vendor_payment_check_form">
+            <field name="name">account.voucher.payment.check.form</field>
+            <field name="model">account.voucher</field>
+            <field name="inherit_id" ref="account_voucher.view_vendor_payment_form" />
+            <field name="arch" type="xml">
+				<field name="journal_id" position="after">
+                	<field name="number_cheque"/>
+                	<field name="date_cheque"/>	
+                </field>
+                <xpath expr="/form/sheet/notebook/page/field[@name='line_dr_ids']/tree/field[@name='move_line_id']" position="after">
+                	<field name="supplier_invoice_number"/>
+                </xpath>
+	            <xpath expr="/form/sheet/notebook/page/field[@name='line_cr_ids']/tree/field[@name='move_line_id']" position="after">
+                	<field name="supplier_invoice_number"/>
+                </xpath>            
+			</field>
+        </record>       
+
+        <record model="ir.ui.view" id="view_voucher_tree_ext">
+            <field name="name">view.voucher.tree.ext</field>
+            <field name="model">account.voucher</field>
+            <field name="inherit_id" ref="account_voucher.view_voucher_tree" />
+            <field name="arch" type="xml">
+                <xpath expr="/tree/field[@name='type']" position="after">
+                	<field name="number_cheque"/>
+                </xpath>
+			</field>
+        </record>       
+
+        <record model="ir.ui.view" id="view_voucher_filter_vendor_pay_ext">
+            <field name="name">view.voucher.filter.vendor.pay.ext</field>
+            <field name="model">account.voucher</field>
+            <field name="inherit_id" ref="account_voucher.view_voucher_filter_vendor_pay" />
+            <field name="arch" type="xml">
+                <field name="number" position="after">
+                	<field name="number_cheque" string="Cheque No."/>
+                </field>
+                <xpath expr="/search/field[@name='partner_id']" position="before">
+                    <filter string="Has Cheque" domain="[('number_cheque','!=',False)]"/>
+                </xpath>
+			</field>
+        </record>       
+    </data>
+</openerp>

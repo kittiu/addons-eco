@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <record model="ir.module.category" id="module_category_sale_commission_calc">
+            <field name="name">Sales Commission</field>
+            <field name="sequence">50</field>
+        </record>
+    </data>
+</openerp>

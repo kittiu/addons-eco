@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<openerp>
+    <data>
+
+        <record id="account_xls_output_view" model="ir.ui.view">
+          <field name="name">Excel Output</field>
+          <field name="model">output</field>
+          <field name="type">form</field>
+          <field name="arch" type="xml">
+          <form string="Excel Output">
+          	<field name="name" invisible="1"/>
+            <field name="xls_output" filename='name'/>
+            <button special="cancel" string="Close" icon="gtk-cancel"/>
+            </form>
+          </field>
+        </record>
+   </data>
+</openerp>

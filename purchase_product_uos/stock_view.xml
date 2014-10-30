@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+    <data>
+        <!-- 
+        <record id="view_move_picking_tree_ext" model="ir.ui.view">
+            <field name="name">view.move.picking.tree.ext</field>
+            <field name="inherit_id" ref="stock.view_move_picking_tree" />
+            <field name="model">stock.move</field>
+            <field name="arch" type="xml">
+                <data>
+                    <xpath expr="/tree/field[@name='product_uos']" position="before">
+                    	<field name="product_uos_qty" />
+					</xpath>
+                </data>
+            </field>
+        </record>
+         -->
+    </data>
+</openerp>

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+    <data>
+        
+        <record id="stock_partial_picking_form_ext" model="ir.ui.view">
+            <field name="name">stock.partial.picking.form.ext</field>
+            <field name="inherit_id" ref="stock.stock_partial_picking_form" />
+            <field name="model">stock.partial.picking</field>
+            <field name="arch" type="xml">
+                <data>
+                    <xpath expr="/form/field[@name='move_ids']/tree/field[@name='product_uom']" position="after">
+                    	<field name="product_uos_qty" string="Initial Qty (UOS)"/>
+					</xpath>
+                </data>
+            </field>
+        </record>
+        
+    </data>
+</openerp>

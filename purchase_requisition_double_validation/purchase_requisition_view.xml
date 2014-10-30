@@ -1,0 +1,45 @@
+<?xml version="1.0"?>
+<openerp>
+    <data>
+	    <record model="ir.ui.view" id="view_purchase_requisition_form_ext">
+	        <field name="name">view.purchase.requisition.form.ext</field>
+	        <field name="model">purchase.requisition</field>
+	        <field name="inherit_id" ref="purchase_requisition.view_purchase_requisition_form"/>
+	        <field name="arch" type="xml">
+	            <xpath expr="/form/header/field[@name='state']" position="attributes">
+	            	<attribute name="statusbar_visible">draft,in_purchase,in_progress,done</attribute>
+	            </xpath>
+	            <xpath expr="/form/header/button[@name='tender_in_progress']" position="attributes">
+	            	<attribute name="states">draft,in_purchase</attribute>
+	            	<attribute name="groups">purchase_requisition.group_purchase_requisition_manager</attribute>
+	            </xpath>
+	            <xpath expr="/form/header/button[@name='tender_done']" position="attributes">
+	            	<attribute name="states">in_progress,in_purchase</attribute>
+	            	<attribute name="groups">purchase_requisition.group_purchase_requisition_manager</attribute>
+	            </xpath>	            
+	            <xpath expr="/form/header/button[@name='tender_cancel']" position="attributes">
+	            	<attribute name="states">draft,in_progress,in_purchase</attribute>
+	            	<attribute name="groups">purchase_requisition.group_purchase_requisition_user</attribute>
+	            </xpath>
+	            <xpath expr="/form/header/button[@name='tender_in_progress']" position="after">
+                	<button name="tender_in_purchase" states="draft" string="Send to Purchase" type="object" class="oe_highlight"/>
+	            </xpath>
+	            <xpath expr="/form/sheet/notebook/page/div/button[@name='%(purchase_requisition.action_purchase_requisition_partner)d']" position="attributes">
+	            	<attribute name="groups">purchase_requisition.group_purchase_requisition_manager</attribute>
+	            </xpath>		        
+			</field>
+	    </record>
+	    
+
+	    <record model="ir.ui.view" id="view_purchase_requisition_filter_ext">
+	        <field name="name">view.purchase.requisition.filter.ext</field>
+	        <field name="model">purchase.requisition</field>
+	        <field name="inherit_id" ref="purchase_requisition.view_purchase_requisition_filter"/>
+	        <field name="arch" type="xml">
+	            <xpath expr="/search/filter[@name='draft']" position="after">
+                    <filter string="Sent to Purchase" domain="[('state','=','in_purchase')]" help="Purchase Requisition submitted to Purchase"/>
+	            </xpath>		        
+			</field>
+	    </record>
+	</data>
+</openerp>

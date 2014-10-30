@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+    <data>
+        <record id="view_vendor_payment_form_ext" model="ir.ui.view">
+		    <field name="name">view.vendor.payment.form</field>
+		    <field name="model">account.voucher</field>
+		    <field name="type">form</field>
+		    <field name="inherit_id" ref="account_voucher.view_vendor_payment_form"/>
+		    <field name="arch" type="xml">
+                <data>
+                    <xpath expr="/form/sheet/notebook/page[@string='Journal Items']" position="after">
+                        <page string="Tax Invoice Info" attrs="{'invisible': [('is_taxinv', '=', False)]}" >
+                            <group>
+                                <group>
+	                                <field name="is_taxinv" invisible="1"/>
+			                        <button name="to_unpublish" attrs="{'invisible': [('is_taxinv_publish', '=', False)]}"
+			                            string="Published to VAT Report" 
+			                            type="object" help="Current state is published, click to unpublish"/>
+			                        <button name="to_publish" attrs="{'invisible': [('is_taxinv_publish', '=', True)]}"
+			                            string="Not Published"  class="oe_highlight"
+			                            type="object" help="Current state is unpublished, click to publish"/>
+	                                <field name="is_taxinv_publish"/>
+			                    </group>                                
+                        		<group>
+	                        		<field name="taxinv_period_id" attrs="{'required': [('is_taxinv_publish', '=', True)], 'readonly': [('is_taxinv_publish', '=', True)]}" />
+                        			<field name="is_basevat_invalid" invisible="1"/>
+									<div colspan="2" style="color:red">							
+										<label string="WARNING: Base or Vat Amount not equal to Accounting Entry" attrs="{'invisible': [('is_basevat_invalid', '!=', True)]}"/>		
+									</div>	
+	                        	</group>                      	
+                        	</group>
+                        	<field name="voucher_taxinv" attrs="{'readonly': [('is_taxinv_publish','=',True)]}">
+                                <tree string="Tax Invoice Info" attrs="{'readonly': [('is_taxinv_publish', '=', True)]}"  editable="bottom">
+                                    <!--field name="invoice_id" readonly="1"/-->
+                                    <field name="date" />
+                                    <field name="number" />
+                                    <!--field name="partner_id" /-->
+                                    <field name="base_amount"/>
+                                    <field name="tax_id" options="{'limit': 10, 'create': false, 'create_edit': false}"/>
+                                    <field name="tax_amount" />
+                        		</tree>
+                        	</field>
+			                <div>
+		                        <button name="button_reset_taxinv"
+		                            string="(update)" class="oe_link oe_edit_only"
+		                            type="object" help="Recompute Tax Invoices"/>
+		                    </div>
+                    	</page>                  
+                    </xpath>
+				</data>
+			</field>
+		</record>
+	</data>
+</openerp>

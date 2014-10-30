@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+    <data>
+        <record id="view_partner_payment_ext" model="ir.ui.view">
+		    <field name="name">view.vendor.receipt.form.ext</field>
+		    <field name="model">account.voucher</field>
+		    <field name="type">form</field>
+		    <field name="inherit_id" ref="customer_supplier_voucher.view_partner_payment"/>
+		    <field name="arch" type="xml">
+                <data>				
+					<xpath expr="/form/sheet/notebook/page/field[@name='line_cr_ids']/tree/field[@name='amount']" position="after">
+						<field sum="Total WHT" name="amount_wht" on_change="onchange_amount(parent.partner_id, move_line_id, amount_original, amount, amount_unreconciled, context)"/>
+					</xpath>
+					<xpath expr="/form/sheet/notebook/page/field[@name='line_dr_ids']/tree/field[@name='amount']" position="after">
+						<field sum="Total WHT" name="amount_wht" on_change="onchange_amount(parent.partner_id, move_line_id, amount_original, amount, amount_unreconciled, context)"/>
+					</xpath>					
+					<xpath expr="/form/sheet/notebook/page/field[@name='line_cr_ids']/tree/field[@name='amount']" position="attributes">
+						<attribute name="on_change">onchange_amount(parent.partner_id, move_line_id, amount_original, amount, amount_unreconciled, context)</attribute>
+					</xpath>
+					<xpath expr="/form/sheet/notebook/page/field[@name='line_dr_ids']/tree/field[@name='amount']" position="attributes">
+						<attribute name="on_change">onchange_amount(parent.partner_id, move_line_id, amount_original, amount, amount_unreconciled, context)</attribute>
+					</xpath>
+					<xpath expr="/form/sheet/notebook/page/field[@name='line_cr_ids']/tree/field[@name='reconcile']" position="attributes">
+						<attribute name="on_change">onchange_reconcile(parent.partner_id, move_line_id, amount_original, reconcile, amount, amount_unreconciled, context)</attribute>
+					</xpath>
+					<xpath expr="/form/sheet/notebook/page/field[@name='line_dr_ids']/tree/field[@name='reconcile']" position="attributes">
+						<attribute name="on_change">onchange_reconcile(parent.partner_id, move_line_id, amount_original, reconcile, amount, amount_unreconciled, context)</attribute>
+					</xpath>					
+					<page string="Payment Information" position="after">
+			            <page string="Other Info">
+			                <field name="tax_line">
+			                    <tree editable="bottom" string="Taxes">
+			                        <field name="name"/>
+			                        <field name="name2"/>
+			                        <field name="account_id" groups="account.group_account_user"/>
+			                        <field name="base" readonly="1"/>
+			                        <field name="amount" readonly="1"/>
+			                        <field name="tax_currency_gain" readonly="1"/>
+			                        <field invisible="True" name="base_amount"/>
+			                        <field invisible="True" name="tax_amount"/>
+			                        <field name="factor_base" invisible="True"/>
+			                        <field name="factor_tax" invisible="True"/>
+			                    </tree>
+			                </field>
+			                <div>
+		                        <label for="amount_tax"/>
+		                        <button name="button_reset_taxes" states="draft,proforma2"
+		                            string="(update)" class="oe_link oe_edit_only"
+		                            type="object" help="Recompute taxes and total"/>
+		                    </div>
+						</page>	        
+					</page>
+				</data>
+			</field>
+		</record>
+	</data>
+</openerp>

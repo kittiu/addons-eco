@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+    <data>
+
+        <record id="purchase_discount_order_line_form_ext" model="ir.ui.view">
+            <field name="name">purchase.discount.order.line.form.ext</field>
+            <field name="model">purchase.order.line</field>
+            <field name="inherit_id" ref="purchase_discount.purchase_discount_order_line_form"/>
+            <field name="arch" type="xml">
+               	<data>
+	                <field name="discount" position="before">
+		                <field name="discount_amount" on_change="onchange_discount_amount(discount_amount, price_unit)"/>
+	                </field>   
+	                <field name="discount" position="attributes">
+	                	<attribute name="invisible">True</attribute>
+	                </field>	                	    
+               	</data>
+            </field>
+        </record>         
+        
+        <record id="purchase_discount_order_line_tree_ext" model="ir.ui.view">
+            <field name="name">purchase.discount.order.line.tree.ext</field>
+            <field name="model">purchase.order.line</field>
+            <field name="inherit_id" ref="purchase_discount.purchase_discount_order_line_tree"/>
+            <field name="arch" type="xml">
+               	<data>
+	                <field name="discount" position="before">
+		                <field name="discount_amount" on_change="onchange_discount_amount(discount_amount, price_unit)"/>
+	                </field>   
+	                <field name="discount" position="attributes">
+	                	<attribute name="invisible">True</attribute>
+	                </field>	                	    
+               	</data>
+            </field>
+        </record>          
+        
+        <record id="purchase_order_form_ext" model="ir.ui.view">
+            <field name="name">purchase.order.form.ext</field>
+            <field name="model">purchase.order</field>
+            <field name="inherit_id" ref="purchase_discount.purchase_discount_order_form"/>
+            <field name="arch" type="xml">
+               	<data>
+	                <field name="discount" position="before">
+		                <field name="discount_amount" on_change="onchange_discount_amount(discount_amount, price_unit)"/>
+	                </field>   
+	                <field name="discount" position="attributes">
+	                	<attribute name="invisible">True</attribute>
+	                </field>	                	    
+               	</data>
+            </field>
+        </record>      
+    </data>
+</openerp>

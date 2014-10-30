@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+    <data>    	
+        <record id="view_expenses_form_ext" model="ir.ui.view">
+		    <field name="name">view.expenses.form.ext</field>
+		    <field name="model">hr.expense.expense</field>
+		    <field name="type">form</field>
+		    <field name="inherit_id" ref="hr_expense.view_expenses_form"/>
+		    <field name="arch" type="xml">
+                <data>
+                    <xpath expr="/form/sheet/group" position="before">
+                        <h1>
+                        	<field name="number" readonly="1" class="oe_inline"/>
+                        </h1>
+                    </xpath>                	
+                    <button name="done" position="after">
+                    	<button name="post_vatinfo" type="object" string="Post VAT Info" attrs="{'invisible': ['|', '|', ('vatinfo_move_id','&lt;&gt;',False), ('is_vatinfo_tax','=',False), ('state','not in',('done'))]}" class="oe_highlight" groups="account.group_account_invoice"/>
+                        <button name="unpost_vatinfo" type="object" string="Unpost VAT Info" attrs="{'invisible': ['|', ('vatinfo_move_id','=',False), ('state','not in',('done','cancelled'))]}"  groups="account.group_account_invoice"/>
+                    </button>
+                    <xpath expr="/form/sheet/notebook/page/field/tree/field[@name='unit_quantity']" position="after">
+	                    <button name="%(action_expense_vatinfo)d"
+	                        string="VAT Info"
+	                        type="action"
+	                        icon="gtk-justify-fill"/>
+                    </xpath>
+                    <xpath expr="/form/sheet/notebook/page[@string='Description']" position="after">
+                        <page string="VAT Info">
+                            <group>
+                                <group>
+	                                <field name="is_vatinfo_tax"/>
+                        		</group>                                
+                        		<group>
+	                        		<field name="vatinfo_move_id"/>
+	                        		<field name="vatinfo_move_date"/>
+                        		</group>
+                        	</group>
+                        	<field name="expense_vatinfo">
+                                <tree string="Expense VAT Info" editable="bottom">
+                                    <field name="product_id" readonly="1" />
+                                    <field name="vatinfo_date" attrs="{'required':[('vatinfo_tax_amount', '&gt;', 0)]}"/>
+                                    <field name="vatinfo_number" attrs="{'required':[('vatinfo_tax_amount', '&gt;', False)]}"/>
+                                    <field name="vatinfo_supplier_name" attrs="{'required':[('vatinfo_tax_amount', '&gt;', False)]}"/>
+                                    <field name="vatinfo_tin" attrs="{'required':[('vatinfo_tax_amount', '&gt;', False)]}"/>
+                                    <field name="vatinfo_branch" attrs="{'required':[('vatinfo_tax_amount', '&gt;', False)]}"/>
+                                    <field name="vatinfo_base_amount" attrs="{'required':[('vatinfo_tax_amount', '&gt;', False)]}"/>
+                                    <field name="vatinfo_tax_id" attrs="{'required':[('vatinfo_tax_amount', '&gt;', False)]}" on_change="onchange_vat(vatinfo_tax_id, vatinfo_tax_amount)"/>
+                                    <field name="vatinfo_tax_amount" on_change="onchange_vat(vatinfo_tax_id, vatinfo_tax_amount)"/>
+                        		</tree>
+                        	</field>
+                        </page>                    
+                    </xpath>
+                    <xpath expr="/form/sheet/notebook/page[@string='Accounting']//field[@name='journal_id']" position="before">
+                   		<field name="date_confirm" string="Accounting Date"/>            
+                    </xpath>				
+            	</data>
+			</field>
+		</record>
+	</data>
+</openerp>

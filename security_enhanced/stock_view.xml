@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+    <data>
+      
+		<!-- Not allow M2O fields to Create / Edit -->
+		    
+		<record id="view_picking_form" model="ir.ui.view">
+            <field name="name">view.picking.form</field>
+            <field name="inherit_id" ref="stock.view_picking_form" />
+            <field name="model">stock.picking</field>
+            <field name="arch" type="xml">
+                <field name="partner_id" position="attributes">
+            		<attribute name="options">{'limit': 10, 'create': false, 'create_edit': false}</attribute>
+				</field>   
+			</field>
+        </record>
+        
+		<record id="view_picking_out_form" model="ir.ui.view">
+            <field name="name">view.picking.out.form</field>
+            <field name="inherit_id" ref="stock.view_picking_out_form" />
+            <field name="model">stock.picking.out</field>
+            <field name="arch" type="xml">
+                <field name="partner_id" position="attributes">
+            		<attribute name="options">{'limit': 10, 'create': false, 'create_edit': false}</attribute>
+				</field>   
+			</field>
+        </record>
+        
+		<record id="view_picking_in_form" model="ir.ui.view">
+            <field name="name">view.picking.in.form</field>
+            <field name="inherit_id" ref="stock.view_picking_in_form" />
+            <field name="model">stock.picking.in</field>
+            <field name="arch" type="xml">
+                <field name="partner_id" position="attributes">
+            		<attribute name="options">{'limit': 10, 'create': false, 'create_edit': false}</attribute>
+				</field>   
+			</field>
+        </record>		
+                
+		<record id="view_move_form" model="ir.ui.view">
+            <field name="name">view.move.form</field>
+            <field name="inherit_id" ref="stock.view_move_form" />
+            <field name="model">stock.move</field>
+            <field name="arch" type="xml">
+                <field name="product_id" position="attributes">
+            		<attribute name="options">{'limit': 10, 'create': false, 'create_edit': false}</attribute>
+				</field>   
+                <field name="product_uom" position="attributes">
+            		<attribute name="options">{'limit': 10, 'create': false, 'create_edit': false}</attribute>
+				</field>   
+                <field name="location_id" position="attributes">
+            		<attribute name="options">{'limit': 10, 'create': false, 'create_edit': false}</attribute>
+				</field>   
+                <field name="location_dest_id" position="attributes">
+            		<attribute name="options">{'limit': 10, 'create': false, 'create_edit': false}</attribute>
+				</field> 
+                <field name="partner_id" position="attributes">
+            		<attribute name="options">{'limit': 10, 'create': false, 'create_edit': false}</attribute>
+				</field> 
+			</field>
+        </record>
+  	</data>
+</openerp>

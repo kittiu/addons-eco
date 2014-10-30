@@ -1,0 +1,4 @@
+"id","name","model_id/id","group_id/id","perm_read","perm_write","perm_create","perm_unlink"
+"access_product_stock_card","access_product_stock_card","model_product_stock_card","base.group_user",1,1,1,1
+"access_product_stock_card_location","access_product_stock_card_location","model_product_stock_card_location","base.group_user",1,1,1,1
+"access_product_stock_card_location","access_stock_product_location","model_stock_product_location","base.group_user",1,1,1,1

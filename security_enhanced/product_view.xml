@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+    <data>
+        <record id="product_normal_form_view_ext" model="ir.ui.view">
+            <field name="name">product.normal.form.view.ext</field>
+            <field name="inherit_id" ref="product.product_normal_form_view" />
+            <field name="model">product.product</field>
+            <field name="arch" type="xml">
+                <data>
+					<xpath expr="/form/sheet/notebook/page[@string='Procurements']" position="attributes">
+						<attribute name="groups">purchase.group_purchase_user,purchase.group_purchase_manager</attribute>
+                    </xpath>          
+            	</data>
+            </field>
+        </record>
+        
+
+        <record id="product_normal_form_view" model="ir.ui.view">
+            <field name="name">product.normal.form.view</field>
+            <field name="inherit_id" ref="product.product_normal_form_view" />
+            <field name="model">product.product</field>
+            <field name="arch" type="xml">
+                <field name="categ_id" position="attributes">
+            		<attribute name="options">{'limit': 10, 'create': false, 'create_edit': false}</attribute>
+				</field>
+				<field name="uom_id" position="attributes">
+            		<attribute name="options">{'limit': 10, 'create': false, 'create_edit': false}</attribute>
+				</field>
+				<field name="uom_po_id" position="attributes">
+            		<attribute name="options">{'limit': 10, 'create': false, 'create_edit': false}</attribute>
+				</field>				
+			</field>
+		</record>
+		
+        <record id="view_template_property_form" model="ir.ui.view">
+            <field name="name">view.template.property.form</field>
+            <field name="inherit_id" ref="stock.view_template_property_form" />
+            <field name="model">product.template</field>
+            <field name="arch" type="xml">
+                <field name="property_stock_procurement" position="attributes">
+            		<attribute name="options">{'limit': 10, 'create': false, 'create_edit': false}</attribute>
+				</field>
+				<field name="property_stock_production" position="attributes">
+            		<attribute name="options">{'limit': 10, 'create': false, 'create_edit': false}</attribute>
+				</field>
+				<field name="property_stock_inventory" position="attributes">
+            		<attribute name="options">{'limit': 10, 'create': false, 'create_edit': false}</attribute>
+				</field>				
+			</field>
+		</record>
+		
+
+  	</data>
+</openerp>

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+    <data>
+       <record id="purchase_order_form_ext" model="ir.ui.view">
+            <field name="name">purchase.order.form.ext</field>
+            <field name="model">purchase.order</field>
+            <field name="type">form</field>
+            <field name="inherit_id" ref="advance_and_additional_discount.purchase_order_form_ext"/>
+            <field name="arch" type="xml">
+				<xpath expr="/form/header/button[@name='%(advance_and_additional_discount.action_view_purchase_advance_payment_inv)d']" position="replace">
+                    <button name="%(advance_and_additional_discount.action_view_purchase_advance_payment_inv)d" string="Receive Invoice"
+                    	attrs="{'invisible': ['|','|',('state', 'not in', ('approved')),('invoiced', '=', True),'|','&amp;',('advance_type', '=', False),('invoice_method', 'not in', ('line_percentage')),'&amp;','&amp;',('advance_type', '!=', False),('num_invoice','&gt;',0),('invoice_method', 'not in', ('line_percentage'))]}"
+                        type="action" class="oe_highlight" groups="base.group_user"
+                    	context="{'advance_type': advance_type, 'num_invoice': num_invoice, 'invoice_method': invoice_method}"/>
+				</xpath>
+            </field>
+        </record>
+    </data>
+</openerp>

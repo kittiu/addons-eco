@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <record id="view_invoice_info_wizard" model="ir.ui.view">
+            <field name="name">Tax Info</field>
+            <field name="model">invoice.info</field>
+            <field name="arch" type="xml">
+                <form string="Invoice Line Tax Info" version="7.0">
+                    <group>
+                    	<h1>
+                        	<field name="invoice_id" on_change="onchange_invoice_id(invoice_id)" class="oe_inline" />
+                    	</h1>               
+	                </group>
+	                <field name="invoice_info_line">
+                        <tree string="Invoice Info Lines">
+                            <field name="product_id"/>
+                            <field name="name"/>
+                            <field name="quantity"/>
+                            <field name="uos_id"/>
+                            <field name="price_unit"/>
+                            <field name="price_subtotal"/>
+                        </tree>
+	                </field>
+                    <footer>
+                        <button string="Close" class="oe_link" special="cancel" />
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <record id="action_invoice_info" model="ir.actions.act_window">
+            <field name="name">Invoice Info</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">invoice.info</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
+    </data>
+</openerp>

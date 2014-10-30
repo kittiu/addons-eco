@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+    <data>
+        <record id="view_purchase_order_additional_discount_ext" model="ir.ui.view">
+            <field name="name">view.purchase.order.additional.discount.ext</field>
+            <field name="model">purchase.order</field>
+            <field name="inherit_id" ref="advance_and_additional_discount.purchase_order_form_ext"/>
+            <field name="arch" type="xml">
+				<field name="add_disc" position="after">                    
+						<field name="add_disc_amt_ex" string="Additional Discount Amt" 
+						    on_change="onchange_add_disc_amt_ex(add_disc_amt_ex, amount_untaxed)" 
+						    widget="monetary" options="{'currency_field': 'currency_id'}"/>
+				</field>
+				<field name="add_disc" position="attributes">  
+					<attribute name="invisible">True</attribute>                  
+				</field>					
+				<field name="add_disc_amt" position="attributes">  
+					<attribute name="invisible">True</attribute>                  
+				</field>			
+			</field>
+        </record>
+	</data>
+</openerp>

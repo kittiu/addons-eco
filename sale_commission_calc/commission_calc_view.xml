@@ -1,0 +1,267 @@
+<?xml version="1.0"?>
+<openerp>
+    <data>
+        
+		<!-- SALE TEAM -->
+
+        <record model="ir.ui.view" id="view_sale_team_tree">
+            <field name="name">view.sale.team.tree</field>
+            <field name="model">sale.team</field>
+            <field name="arch" type="xml">
+                <tree string="Sales Team">
+                    <field name="name"/>
+                    <field name="commission_rule_id"/>
+                    <field name="require_paid"/>
+                    <field name="require_posted"/>
+                    <field name="allow_overdue"/>
+                    <field name="last_pay_date_rule"/>
+                    <field name="buffer_days"/>
+                </tree>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="view_sale_team_form">
+            <field name="name">view.sale.team.form</field>
+            <field name="model">sale.team</field>
+            <field name="arch" type="xml">
+				<form string="Groups" version="7.0">
+                  <sheet>
+                    <group col="4">
+                        <field name="name"/>
+                        <field name="commission_rule_id"/>
+	                    <field name="require_paid"/>
+	                    <field name="require_posted"/>
+	                    <field name="allow_overdue"/>
+	                    <field name="last_pay_date_rule"/>
+	                    <field name="buffer_days"/>
+                    </group>
+                    <notebook>
+                        <page string="Team Member">
+                            <field name="users"/>
+                        </page>
+                        <page string="Inherited Team">
+                            <label string="This team is the parent of the following teams"/>
+                            <field name="implied_ids"/>
+                        </page>
+                    </notebook>
+                  </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record model="ir.actions.act_window" id="action_sale_team_form">
+            <field name="name">Sale Teams</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">sale.team</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="view_sale_team_tree"/>
+        </record>
+
+		<!-- COMMISSION WORKSHEET -->
+
+        <record model="ir.ui.view" id="view_commission_worksheet_tree">
+            <field name="name">view.commission.worksheet.tree</field>
+            <field name="model">commission.worksheet</field>
+            <field name="arch" type="xml">
+                <tree string="Commission Worksheet">
+                    <field name="name"/>
+                    <field name="sale_team_id" invisible="not context.get('is_team', False)" />
+                    <field name="salesperson_id" invisible="context.get('is_team', False)"/>
+                    <field name="period_id"/>
+                    <field name="state"/>             
+                </tree>
+            </field>
+        </record>
+
+
+        <record model="ir.ui.view" id="view_commission_worksheet_form">
+            <field name="name">view.commission.worksheet.form</field>
+            <field name="model">commission.worksheet</field>
+            <field name="arch" type="xml">
+                <form string="Commission Worksheet" version="7.0">
+					<header>                        
+                        <button name="action_draft" states="cancel" string="Set to Draft" type="object"/>
+                        <button name="action_confirm" states="draft" string="Confirm" type="object" class="oe_highlight" groups="sale_commission_calc.group_sale_commission_calc_manager"/>
+                        <button name="action_cancel" states="confirmed" string="Cancel" type="object" />
+                        <button name="action_done" states="confirmed" string="Done" type="object"/>
+                        <field name="state" widget="statusbar" statusbar_visible="draft,confirmed,done"/>
+               		</header>
+               		<p></p>
+                    <h1>
+                        <label string="Worksheet "/>
+                        <field name="name" class="oe_inline" readonly="1"/>
+                    </h1>
+                    <div class="oe_right oe_button_box">
+                        <button name="action_calculate" string="Calculate Commission" states="draft" type="object" />
+                        <button name="%(action_create_commission_invoice)d" type="action" string="Create Commission invoice" states="confirmed"/>
+                    </div>                             
+					<group colspan="4">
+                        <group>
+                       		<field name="sale_team_id" invisible="not context.get('is_team', False)" required="context.get('is_team', False)"/>
+                       		<field name="salesperson_id" invisible="context.get('is_team', False)" required="not context.get('is_team', False)"/>
+                        </group>
+                        <group>
+                        	<field name="period_id"/>
+                        </group>
+                    </group>
+                    <notebook>
+						<page string="Worksheet Details">
+							<field name="worksheet_lines" widget="one2many_list" colspan="4" nolabel="1" >
+	                            <tree string="Worksheet Lines" editable="bottom" colors="grey:commission_state in ('draft');blue:commission_state in ('valid');red:commission_state in ('invalid');">
+	                                <field name="invoice_id"/>
+				                    <button name="%(action_invoice_info)d" string="Invoice Info" type="action" icon="gtk-justify-fill"/>	                                
+	                        		<field name="partner_id"/>
+	                                <field name="date_invoice"/>
+	                                <field name="invoice_state"/>
+	                                <field name="invoice_amt" sum="Total Amount"/>
+	                                <field name="commission_amt" sum="Total Commission"/>
+	                                <field name="adjust_amt" sum="Adjust Amount"/>
+	                                <field name="amount_subtotal" sum="Adjusted Total"/>
+	                                <field name="last_pay_date"/>
+	                                <field name="paid_date"/>
+	                                <field name="posted"/>
+	                                <field name="overdue"/>
+	                                <field name="force"/>
+	                                <field name="note" attrs="{'required': [('force','!=',False)]}"/>
+	                                <field name="commission_state"/>
+	                                <field name="state" invisible="1"/>
+	                            </tree>
+	                        </field>					
+                            <group class="oe_subtotal_footer oe_right" colspan="2" name="worksheet_total">            
+                                <field name="amount_draft" />
+                                <field name="amount_valid" />
+                                <field name="amount_invalid" />
+                                <field name="amount_done" />
+                                <field name="amount_skip" />
+                                <div class="oe_subtotal_footer_separator oe_inline" >
+                                    <label for="amount_total" />
+                                </div>
+                                <field name="amount_total" nolabel="1" class="oe_subtotal_footer_separator" />
+                            </group>
+                            <!--
+                            <button name="update_line_status" states="confirmed" string="(Update Line Status)" type="object" class="oe_link"/>
+                            --> 
+                            <div class="oe_clear"/>  
+                        </page>
+	                    <page string="Commission Invoices">
+	                        <field name="invoice_ids">
+								<tree>	
+									<field name="partner_id" string="Receiver"/>
+									<field name="number"/>                    
+									<field name="date_invoice"/>    
+									<field name="currency_id"/>
+									<field name="amount_untaxed"/>
+									<field name="amount_tax"/>
+									<field name="amount_total"/>
+									<field name="comment"/>
+									<field name="state"/>
+	                    		</tree>
+	                    	</field>
+						</page>
+                        <page string="Other Information">
+                            <group>
+                                <group>
+                                    <field name="commission_rule_id"/>
+                                    <field name="last_pay_date_rule"/>
+                                </group>
+                                <group>
+                                    <field name="require_paid"/>
+                                    <field name="require_posted"/>
+                                    <field name="allow_overdue"/>
+                                    <field name="buffer_days"/>
+                                </group>
+                            </group>
+                        </page>
+	            	</notebook>             
+				</form>
+            </field>
+        </record>
+        
+        <record id="view_commission_worksheet_search" model="ir.ui.view">
+            <field name="name">commission_worksheet_search</field>
+            <field name="model">commission.worksheet</field>
+            <field name="arch" type="xml">
+                <search string="Accounts">
+                	<field name="name" filter_domain="['|', ('name','ilike',self), ('period_id','ilike',self)]" string="Name or Period"/>
+                	<filter icon="terp-sale" string="Draft" domain="[('state','=','draft')]"/>
+                	<filter icon="terp-sale" string="Confirm" domain="[('state','=','confirmed')]"/>
+                    <filter icon="terp-sale" string="Paid" domain="[('state','=','done')]"/>
+                    <group expand="0" string="Group By...">
+                        <filter string="Team" icon="terp-folder-orange" invisible="not context.get('is_team', False)" domain="" context="{'group_by':'sale_team_id'}"/>
+                        <filter string="Salesperson" icon="terp-folder-orange" invisible="context.get('is_team', False)" domain="" context="{'group_by':'salesperson_id'}"/>
+                        <filter string="Status" icon="terp-stock_symbol-selection" domain="" context="{'group_by':'state'}"/>
+                        <filter string="Period" icon="terp-stock_symbol-selection" domain="" context="{'group_by':'period_id'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+        
+        <record model="ir.actions.act_window" id="action_team_commission_worksheet_form">
+            <field name="name">Team Worksheet</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">commission.worksheet</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="context">{'is_team': True}</field>
+            <field name="domain">[('sale_team_id','!=', False)]</field>
+            <field name="view_id" ref="view_commission_worksheet_tree"/>
+            <field name="search_view_id" ref="view_commission_worksheet_search"/>
+        </record>
+        
+        <record model="ir.actions.act_window" id="action_user_commission_worksheet_form">
+            <field name="name">Salesperson Worksheet</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">commission.worksheet</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="context">{'is_team': False}</field>
+            <field name="domain">[('salesperson_id','!=',False)]</field>
+            <field name="view_id" ref="view_commission_worksheet_tree"/>
+            <field name="search_view_id" ref="view_commission_worksheet_search"/>
+        </record>
+        
+        <!-- Sales Person -->
+        <record id="view_salesperson_commission_rule" model="ir.ui.view">
+            <field name="model">res.users</field>
+            <field name="arch" type="xml">
+                <tree string="Salesperson Commission Rule" editable="top">
+                    <field name="name" readonly="1"/>
+                    <field name="commission_rule_id"/>
+                    <field name="last_pay_date_rule" attrs="{'required': [('commission_rule_id','!=',False)]}"/>
+                    <field name="require_paid"/>
+                    <field name="require_posted"/>
+                    <field name="allow_overdue"/>
+                    <field name="buffer_days"/>
+                    <field name="active" readonly="1"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="action_salesperson_commission_rule" model="ir.actions.act_window">
+            <field name="name">Salespersons</field>
+            <field name="res_model">res.users</field>
+            <field name="view_type">form</field>
+            <field name="view_id" ref="view_salesperson_commission_rule"/>
+        </record>        
+
+        <!-- Worksheet -->
+        <menuitem name="Commission Calc" id="menu_commission_calc" parent="base.menu_base_partner" groups="sale_commission_calc.group_sale_commission_calc_sale"/>
+        
+        <menuitem name="Salesperson Worksheet" id="menu_user_commission_worksheet" parent="menu_commission_calc" 
+            action="action_user_commission_worksheet_form"  sequence="10" groups="sale_commission_calc.group_sale_commission_calc_sale"/> 
+        <menuitem name="Team Worksheet" id="menu_team_commission_worksheet" parent="menu_commission_calc" 
+            action="action_team_commission_worksheet_form"  sequence="20" groups="sale_commission_calc.group_sale_commission_calc_user"/>  
+        
+        <!-- Config -->
+        <menuitem name="Configuration" id="menu_commission_calc_config" parent="menu_commission_calc" sequence="100"
+        	groups="sale_commission_calc.group_sale_commission_calc_user" />
+
+        <menuitem name="Salespersons" id="menu_salesperson_commission_rule" parent="menu_commission_calc_config" 
+            action="action_salesperson_commission_rule" sequence="20" groups="sale_commission_calc.group_sale_commission_calc_user"/>          
+        <menuitem name="Sale Teams" id="menu_sale_team" parent="menu_commission_calc_config"
+            action="action_sale_team_form" sequence="30" groups="sale_commission_calc.group_sale_commission_calc_user"/>        
+
+
+    </data>
+</openerp>

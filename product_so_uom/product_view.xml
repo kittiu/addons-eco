@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+    <data>
+        <record id="product_normal_form_view_ext" model="ir.ui.view">
+            <field name="name">product.normal.form.view.ext</field>
+            <field name="inherit_id" ref="product.product_normal_form_view" />
+            <field name="model">product.product</field>
+            <field name="arch" type="xml">
+                <data>
+					<xpath expr="/form/sheet/notebook/page[@string='Sales']/group[@name='sale']" position="before">
+						<group>
+							<group string="Sales">
+								<field name="uom_so_id"/>
+								<field name="uom_so_price_unit" on_change="onchange_uom_so_price_unit(uom_so_price_unit, uom_so_id, uom_id)"/>
+							</group>
+							<group>
+							</group>
+						</group>
+                    </xpath>                
+				</data>
+            </field>
+        </record>
+
+  	</data>
+</openerp>

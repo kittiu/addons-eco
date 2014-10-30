@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <record id="view_product_make_bom" model="ir.ui.view">
+            <field name="name">Create Product/BOM</field>
+            <field name="model">product.make.bom</field>
+            <field name="arch" type="xml">
+                <form string="Create invoices" version="7.0">
+                    <separator colspan="4" string="Do you really want to create the Product/BOM?" />
+                    <group>
+                    	<group>
+	                        <field name="product_name"/>
+	                    </group> 
+                    	<group>
+	                        <field name="product_uom_id"/>
+	                    </group>
+					</group>
+					<group>						
+						<field name="product_categ_id"/> 					
+					</group>
+                    <group name="property" string="Product Properties...">
+                    	<group>
+							<field name="type"/>
+							<field name="procure_method"/>
+	                    </group> 
+                    	<group>  
+							<field name="valuation"/>
+							<field name="supply_method"/>
+						</group>                 
+					</group>   
+                    <footer>
+                        <button name="make_bom" string="Create Product / BOM" type="object" class="oe_highlight"/>
+                        or
+                        <button string="Cancel" class="oe_link" special="cancel" />
+                    </footer>
+               </form>
+            </field>
+        </record>
+
+        <record id="action_product_make_bom" model="ir.actions.act_window">
+            <field name="name">Create Product/BOM</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">product.make.bom</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="view_product_make_bom"/>
+            <field name="target">new</field>
+            <field name="multi">True</field>
+        </record>
+
+        <record model="ir.values" id="product_make_bom">
+            <field name="model_id" ref="product.model_product_product" />
+            <field name="name">Create new Product/BOM</field>
+            <field name="key2">client_action_multi</field>
+            <field name="value" eval="'ir.actions.act_window,' + str(ref('action_product_make_bom'))" />
+            <field name="key">action</field>
+            <field name="model">product.product</field>
+        </record>
+    </data>
+</openerp>

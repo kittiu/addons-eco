@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+<data>
+
+    <record id="view_partner_bank_form_inherit_ext" model="ir.ui.view">
+        <field name="name">view.partner.bank.form.inherit.ext</field>
+        <field name="model">res.partner.bank</field>
+        <field name="inherit_id" ref="account.view_partner_bank_form_inherit"/>
+        <field name="arch" type="xml">
+            <field name="currency_id" position="after">
+                <field name="balance"/>
+            </field>
+        </field>
+    </record>
+    
+    <record id="view_partner_bank_tree_add_currency_ext" model="ir.ui.view">
+        <field name="name">view.partner.bank.tree.add.currency.ext</field>
+        <field name="model">res.partner.bank</field>
+        <field name="inherit_id" ref="account.view_partner_bank_tree_add_currency"/>
+        <field name="arch" type="xml">
+            <field name="currency_id" position="after">
+                <field name="balance"/>
+            </field>
+        </field>
+    </record>    
+
+</data>
+</openerp>

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data noupdate="1">
+		<function model="stock.picking" name="_update_date_string"/>
+		<function model="stock.move" name="_update_date_string"/>
+    </data>
+</openerp>

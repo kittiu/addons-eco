@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+    <data>
+        
+        <record id="view_picking_form_ext" model="ir.ui.view">
+            <field name="name">view.picking.form.ext</field>
+            <field name="inherit_id" ref="stock.view_picking_form" />
+            <field name="model">stock.picking</field>
+            <field name="arch" type="xml">
+                <data>     
+					<xpath expr="/form/sheet/h1" position="after">
+	                    <div class="oe_right oe_button_box">
+	                        <button name="%(action_view_stock_fill_move)d" string="Fill Move Lines" states="draft" type="action" context="{'move_type':'out'}"/>
+	                    </div>                    
+					</xpath>
+                </data>
+            </field>
+        </record>
+    </data>
+</openerp>

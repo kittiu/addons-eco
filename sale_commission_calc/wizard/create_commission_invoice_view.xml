@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+        <record id="view_create_commission_invoice" model="ir.ui.view">
+            <field name="name">view.create.commission.invoice</field>
+            <field name="model">create.commission.invoice</field>
+            <field name="arch" type="xml">
+                <form string="Commission Invoice" version="7.0">
+                    <group>
+                         <group name="label" colspan="2">
+                             <label string="Please confirm commission amount as following,"/>
+                         </group>
+                         <group name="commission_amt">
+                             <field name="commission_amt"/>
+                         </group>
+                         <group name="extra">
+                         </group>
+                    </group>
+                    <group>
+                    	<field name="comment"/>
+                    </group>
+                    <footer>
+                        <button string="Create Commission Invoice" name="create_commission_invoice" type="object" class="oe_highlight"/>
+                        or
+                        <button string="Cancel" class="oe_link" special="cancel"/>
+                    </footer>
+               </form>
+            </field>
+        </record>
+
+        <record id="action_create_commission_invoice" model="ir.actions.act_window">
+            <field name="name">Commission Invoice</field>
+            <field name="res_model">create.commission.invoice</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+           <field name="view_id" ref="view_create_commission_invoice"/>
+           <field name="target">new</field>
+        </record>
+
+    </data>
+</openerp>

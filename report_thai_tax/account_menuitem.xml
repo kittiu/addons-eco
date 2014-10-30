@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <menuitem id="menu_finance_thai_reporting" name="Thai Reports" parent="account.menu_finance_reports" sequence="110"/>
+    </data>
+</openerp>
+

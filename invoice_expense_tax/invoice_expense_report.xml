@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+        <report auto="False" id="invoice_expense.invoice_expenses" model="invoice.expense.expense" name="invoice.expense" rml="invoice_expense_tax/report/expense.rml" string="HR expenses"/>
+
+    </data>
+</openerp>

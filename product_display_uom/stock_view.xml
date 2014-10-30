@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+    <data>
+        <record id="view_move_tree_reception_picking_ext" model="ir.ui.view">
+            <field name="name">view.move.tree.reception.picking.ext</field>
+            <field name="inherit_id" ref="stock.view_move_tree_reception_picking" />
+            <field name="model">stock.move</field>
+            <field name="arch" type="xml">
+                <data>
+                    <xpath expr="//field[@name='product_qty']" position="before">
+						<field name="display_qty"/>
+						<field name="display_uom"/>
+                    </xpath>          
+				</data>
+            </field>
+        </record>
+        <record id="view_move_form_ext" model="ir.ui.view">
+            <field name="name">view.move.form.ext</field>
+            <field name="inherit_id" ref="stock.view_move_form" />
+            <field name="model">stock.move</field>
+            <field name="arch" type="xml">
+                <data>
+                    <xpath expr="//field[@name='product_qty']" position="before">
+	                    <field name="display_qty" class="oe_inline"/>
+	                    <field name="display_uom" class="oe_inline"/>
+                    </xpath>          
+				</data>
+            </field>
+        </record>
+  	</data>
+</openerp>

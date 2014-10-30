@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+    <data>
+        
+        <record id="view_purchase_requisition_form_ext" model="ir.ui.view">
+            <field name="name">view.purchase.requisition.form.ext</field>
+            <field name="inherit_id" ref="purchase_requisition.view_purchase_requisition_form" />
+            <field name="model">purchase.requisition</field>
+            <field name="arch" type="xml">
+                <data>
+                    <xpath expr="/form/sheet/notebook/page/field/tree/field[@name='product_uom_id']" position="before">
+						<field name="product_uom_category_id" invisible="1"/>
+					</xpath>
+                    <xpath expr="/form/sheet/notebook/page/field/tree/field[@name='product_uom_id']" position="attributes">
+						<attribute name="domain">[('category_id', '=', product_uom_category_id)]</attribute>						
+					</xpath>
+				</data>
+            </field>
+        </record>
+        
+    </data>
+</openerp>

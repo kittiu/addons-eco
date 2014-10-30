@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+        <record id="account_common_report_view_ext" model="ir.ui.view">
+            <field name="name">Common Report</field>
+            <field name="model">account.common.report</field>
+            <field name="inherit_id" ref="account.account_common_report_view"/>
+            <field name="arch" type="xml">
+           	 	<xpath expr="//notebook/page[@string='Filters']" position="after">
+			    	<page string="Accounting" name="account_ids">
+			    	    <group>
+				    	    <group>
+				    	        <field name="from_account" on_change="onchange_account(from_account, to_account)"/>
+				    	    </group>
+				    	    <group>
+				    	        <field name="to_account" on_change="onchange_account(from_account, to_account)"/>
+				    	    </group>
+			    	    </group>
+                    	<field name="account_ids" context="{'search_default_attr':0}"/>
+                	</page>
+				</xpath>
+            </field>
+        </record>
+    </data>
+</openerp>

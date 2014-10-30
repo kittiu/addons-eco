@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<openerp>
+	<data noupdate="0">
+	    <record id="report_thai_tax" model="ir.actions.report.xml">
+	        <field name="name">Tax Report</field>
+	        <field name="type">ir.actions.report.xml</field>
+	        <field name="model">account.move</field>
+	        <field name="report_name">report_thai_tax</field>
+	        <field name="report_rml">report_thai_tax/report/report_thai_tax.jrxml</field>
+	        <field name="report_type">pdf</field>
+	        <field name="jasper_report">True</field>
+	        <field name="jasper_output">pdf</field>
+	    </record>
+	</data>
+</openerp>

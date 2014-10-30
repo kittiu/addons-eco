@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+     <data>
+
+        <record id="account_cash_balance_view" model="ir.ui.view">
+            <field name="name">Cash Flow Projection</field>
+            <field name="model">account.cash.projection</field>
+            <!--<field name="inherit_id" ref="account_common_report_view" />-->
+            <field name="arch" type="xml">
+                <form string="Report Options" version="7.0">
+                    <separator string="Cash Flow Projection"/>
+                    <label string="Cash projection report is a more detailed report of your cash flow of operating activities, financial activities and Investing Activities."/>
+                    <group col="4">
+                        <field name="chart_account_id" widget='selection' on_change="onchange_chart_id(chart_account_id, context)"/>
+                        <field name="fiscalyear_id" invisible="1"/>
+                        <newline/>
+                        <field name="period_id" on_change="onchange_period(period_id, period_length)"/>
+                        <field name="period_length" on_change="onchange_period(period_id, period_length)"/>
+                        <newline/>
+                        <field name="date_from"/>
+                        <field name="period_length_day"/>
+                        <field name="no_columns"/>
+                        <newline/>
+                        
+                    </group>
+                    <notebook tabpos="up" colspan="4">
+                        <page string="Cash Inflow Operating Accounts">
+                            <field name="cash_in_op" colspan="4"  nolable="1"/>
+                        </page>
+                        <page string="Cash Outflow Operating Accounts">
+                            <field name="cash_out_op" colspan="4" nolable="1"/>
+                        </page>
+                        <page string="Cash Financing Accounts">
+                            <field name="cash_in_finance" colspan="4"  nolable="1"/>
+                        </page>
+                        <page string="Cash Investing Accounts">
+                            <field name="cash_in_invest" colspan="4"  nolable="1"/>
+                        </page>
+                        <page string="Bank Accounts">
+                            <field name="cash_in_bank" colspan="4"  nolable="1"/>
+                        </page>
+                    </notebook>
+                    <field name="journal_ids" required="0" invisible="1"/>
+                    <footer>
+                        <button name="check_report" string="Print" type="object" default_focus="1" class="oe_highlight"/>
+                        or
+                        <button string="Cancel" class="oe_link" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+         <record id="action_account_cash_balance_view" model="ir.actions.act_window">
+             <field name="name">Cash Flow Projection</field>
+             <field name="res_model">account.cash.projection</field>
+             <field name="type">ir.actions.act_window</field>
+             <field name="view_type">form</field>
+             <field name="view_mode">tree,form</field>
+             <field name="view_id" ref="account_cash_balance_view"/>
+             <field name="target">new</field>
+       </record>
+
+        <menuitem icon="STOCK_PRINT"
+            name="Cash Flow Projection"
+            action="action_account_cash_balance_view"
+            id="menu_cash_trial_balance"
+			sequence="120"        
+            parent="account.menu_finance_reports"/>
+    </data>
+</openerp>

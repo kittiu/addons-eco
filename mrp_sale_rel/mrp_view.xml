@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+    <data>
+	    <record id="mrp_production_form_view_ext" model="ir.ui.view">
+	        <field name="name">mrp.production.form.view.ext</field>
+	        <field name="model">mrp.production</field>
+	        <field name="inherit_id" ref="mrp.mrp_production_form_view"/>
+	        <field name="arch" type="xml">
+	            <xpath expr="/form/sheet/group//field[@name='origin']" position="after">
+	            	<field name="order_id"/>
+	            	<field name="parent_id"/>
+	            </xpath>
+	        </field>
+	    </record>
+	    
+	    <record id="mrp_production_tree_view_ext" model="ir.ui.view">
+	        <field name="name">mrp.production.tree.view.ext</field>
+	        <field name="model">mrp.production</field>
+	        <field name="inherit_id" ref="mrp.mrp_production_tree_view"/>
+	        <field name="arch" type="xml">
+	            <xpath expr="/tree/field[@name='product_uom']" position="after">
+	            	<field name="order_id"/>
+	            	<field name="parent_id"/>
+	            </xpath>
+	        </field>
+	    </record>
+	    
+	    <record id="view_mrp_production_filter_ext" model="ir.ui.view">
+	        <field name="name">view.mrp.production.filter.ext</field>
+	        <field name="model">mrp.production</field>
+	        <field name="inherit_id" ref="mrp.view_mrp_production_filter"/>
+	        <field name="arch" type="xml">
+	            <xpath expr="/search/field[@name='name']" position="replace">
+                    <field name="name" string="Production" filter_domain="['|','|',('name','ilike',self),('origin','ilike',self),('order_id','ilike',self)]"/>
+	            </xpath>		            
+	            <xpath expr="/search/group" position="inside">
+                    <filter string="Source SO" domain="[]" context="{'group_by':'order_id'}"/>
+                    <filter string="Source MO" domain="[]" context="{'group_by':'parent_id'}"/>
+	            </xpath>
+	        </field>
+	    </record>
+    </data>
+</openerp>

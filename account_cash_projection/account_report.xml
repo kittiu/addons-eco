@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+        <report
+            auto="False"
+            id="account_cash_projection_report"
+            menu="False"
+            model="account.account"
+            name="account.cash_projection_balance"
+            rml="account_cash_projection/report/account_cash_projection_report.rml"
+            string="Cash Projection"/>
+
+
+    </data>
+</openerp>

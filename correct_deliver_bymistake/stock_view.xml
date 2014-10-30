@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+    <data>
+        <!-- For Delivery Order --> 
+        <record id="view_picking_out_form_ext" model="ir.ui.view">
+            <field name="name">stock.picking.out.form.ext</field>
+            <field name="model">stock.picking.out</field>
+            <field name="inherit_id" ref="stock.view_picking_out_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="/form/sheet/h1/field[@name='name']" position="after">
+                	<field name="mistake_delivery" invisible="True"/>
+                	<label string=" (Mistake Delivery)" attrs="{'invisible': [('mistake_delivery','=',False)]}"/>
+                </xpath>        
+                <xpath expr="/form/header//button[@name='%(stock.act_stock_return_picking)d']" position="after">
+                    <button name="action_process_correct_delivery" string="Correct Mistake Delivery" 
+                        type="object" attrs="{'invisible': ['|',('state','not in',('done')),('mistake_delivery','=',True)]}"/>
+                </xpath>
+            </field>
+        </record>
+        <record id="view_picking_in_form_ext" model="ir.ui.view">
+            <field name="name">stock.picking.in.form.ext</field>
+            <field name="model">stock.picking.in</field>
+            <field name="inherit_id" ref="stock.view_picking_in_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="/form/sheet/h1/field[@name='name']" position="after">
+                	<field name="mistake_delivery" invisible="True"/>
+                	<label string=" (Mistake Delivery)" attrs="{'invisible': [('mistake_delivery','=',False)]}"/>
+                </xpath>            
+            </field>
+        </record>	
+        <!-- For Incoming Shipment --> 
+        <record id="view_picking_in_form_ext2" model="ir.ui.view">
+            <field name="name">stock.picking.in.form.ext</field>
+            <field name="model">stock.picking.in</field>
+            <field name="inherit_id" ref="stock.view_picking_in_form"/>
+            <field name="arch" type="xml">    
+                <xpath expr="/form/header//button[@name='%(stock.act_stock_return_picking)d']" position="after">
+                    <button name="action_process_correct_delivery" string="Correct Mistake Delivery" 
+                        type="object" attrs="{'invisible': ['|',('state','not in',('done')),('mistake_delivery','=',True)]}"/>
+                </xpath>
+            </field>
+        </record>	
+	</data>
+</openerp>

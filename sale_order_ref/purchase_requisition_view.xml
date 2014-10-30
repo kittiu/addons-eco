@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<openerp>
+    <data>
+	    <record model="ir.ui.view" id="view_purchase_requisition_form_ext">
+	        <field name="name">view.purchase.requisition.form.ext</field>
+	        <field name="model">purchase.requisition</field>
+	        <field name="inherit_id" ref="purchase_requisition.view_purchase_requisition_form"/>
+	        <field name="arch" type="xml">
+	            <xpath expr="/form/sheet/group//field[@name='warehouse_id']" position="after">
+	            	<field name="ref_order_id" options="{'limit': 10, 'create': false, 'create_edit': false}"/> 
+	            </xpath>		        
+			</field>
+	    </record>
+	</data>
+</openerp>

@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        
+        <record id="view_move_line_tree" model="ir.ui.view">
+            <field name="name">view.move.line.tree</field>
+            <field name="model">account.move.line</field>
+            <field eval="5" name="priority"/>
+            <field name="arch" type="xml">
+                <tree colors="red:credit != 0.0" string="Journal Items" create="true" on_write="on_create_write" version="7.0" editable="top">
+                    <field name="journal_id" options='{"no_open":True}' invisible="context.get('journal_id',False)"/>
+                    <field name="period_id" options='{"no_open":True}' invisible="context.get('period_id',False)"/>
+                    <field name="date"/>
+                    <field name="name"/>
+                    <field name="ref"/>
+                    <field name="statement_id" invisible="1"/>
+                    <field name="partner_id" on_change="onchange_partner_id(move_id, partner_id, account_id, debit, credit, date, journal_id)"/>
+                    <field name="account_id" options='{"no_open":True}' domain="[('journal_id','=',journal_id), ('company_id', '=', company_id)]" on_change="onchange_account_id(account_id, partner_id, context)"/>
+                    <field name="account_tax_id" options='{"no_open":True}' invisible="context.get('journal_type', False) not in ['sale','sale_refund','purchase','purchase_refund','general']"/>
+                    <field name="analytic_account_id" groups="analytic.group_analytic_accounting" domain="[('type','not in',['view','template'])]" invisible="not context.get('analytic_journal_id',False)"/>
+                    <field name="move_id" required="0"/>
+                    <field name="debit" invisible="1" sum="Total Debit"/>
+                    <field name="credit" invisible="1" sum="Total Credit"/>
+                    <field name="date_maturity"/>
+                    <field name="reconcile"/>
+                    <field name="invoice" invisible="1"/>
+                    <field name="amount_currency" readonly="True" invisible="not context.get('currency',False)"/>
+                    <field name="currency_id" readonly="True" invisible="not context.get('currency',False)" />
+                    <field name="amount_begin_balance"/>
+                    <field name="amount_residual2" sum="Residual Amount"/>
+                    <field name="amount_end_balance"/>
+                    <field name="state" invisible="1"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="action_account_payment_schedule" model="ir.actions.act_window">
+            <field name="name">Payment Schedule</field>
+            <field name="res_model">account.move.line</field>
+            <field name="view_id" ref="view_move_line_tree"/>
+            <field name="domain">[('is_payment_schedule','=',True)]</field>
+        	<field name="limit">2000</field>
+		</record>
+
+        <menuitem
+            action="action_account_payment_schedule"
+            id="menu_action_account_payment_schedule"
+            parent="account.menu_finance_bank_and_cash"
+            sequence="950"
+            groups="account.group_account_user"
+        />
+
+    </data>
+</openerp>

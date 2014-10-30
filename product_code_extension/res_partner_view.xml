@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+    <data>
+        <record id="view_partner_form_ext" model="ir.ui.view">
+            <field name="name">view.partner.form.ext</field>
+            <field name="inherit_id" ref="base.view_partner_form" />
+            <field name="model">res.partner</field>
+            <field name="arch" type="xml">
+                <data>
+                    <xpath expr="/form/sheet/group/group" position="before">
+                        <group>
+                            <field name="partner_code" />
+                        </group>       
+                        <group>
+                            <field name="partner_sub_code" />
+                        </group> 
+                	</xpath>
+                </data>
+            </field>
+        </record>
+  	</data>
+</openerp>

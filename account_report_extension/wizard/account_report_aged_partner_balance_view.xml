@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+     <data>
+         <record id="account_aged_balance_view_ext" model="ir.ui.view">
+            <field name="name">account.aged.balance.view</field>
+            <field name="model">account.aged.trial.balance</field>
+            <field name="inherit_id" ref="account.account_aged_balance_view" />
+            <field name="arch" type="xml">
+	            <data>
+			        <xpath expr="//field[@name='chart_account_id']" position="after">
+			        	<newline/>
+                    	<field name="partner_ids" widget="many2many_tags" domain="[('is_company','=',True)]" context="{'search_default_attr':0}"
+                    		options="{'limit': 10, 'create': false, 'create_edit': false}"/> 
+			        </xpath>
+	            </data>
+            </field>
+        </record>
+    </data>
+</openerp>

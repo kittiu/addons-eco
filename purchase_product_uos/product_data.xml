@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+      
+        <record id="product.decimal_product_uos_coeff" model="decimal.precision">
+            <field name="name">Product UoS Coeff</field>
+            <field name="digits" eval="9"/>
+        </record>        
+        
+        <record id="product.decimal_price" model="decimal.precision">
+            <field name="name">Product Price</field>
+            <field name="digits" eval="6"/>
+        </record>        
+        
+    </data>
+</openerp>

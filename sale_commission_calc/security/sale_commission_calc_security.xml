@@ -1,0 +1,34 @@
+<?xml version="1.0"?>
+<openerp>
+	<data>
+	    <record model="res.groups" id="group_sale_commission_calc_sale">
+	        <field name="name">See Own Worksheet</field>
+	        <field name="category_id" ref="module_category_sale_commission_calc"/>
+	    </record>
+	    <record model="res.groups" id="group_sale_commission_calc_user">
+	        <field name="name">User</field>
+	        <field name="category_id" ref="module_category_sale_commission_calc"/>
+       		<field name="implied_ids" eval="[(4, ref('group_sale_commission_calc_sale'))]"/>
+	    </record> 
+	    <record model="res.groups" id="group_sale_commission_calc_manager">
+	        <field name="name">Manager</field>
+	        <field name="category_id" ref="module_category_sale_commission_calc"/>
+	        <field name="implied_ids" eval="[(4, ref('group_sale_commission_calc_user'))]"/>
+	    </record>
+		<!-- Rule -->
+	    <record id="sale_commission_worksheet_personal_rule" model="ir.rule">
+	        <field name="name">Personal Commission Worksheet</field>
+	        <field ref="model_commission_worksheet" name="model_id"/>
+	        <field name="domain_force">['|',('salesperson_id','=',user.id),('salesperson_id','=',False)]</field>
+	        <field name="groups" eval="[(4, ref('group_sale_commission_calc_sale'))]"/>
+	    </record>
+	    <record id="sale_commission_worksheet_see_all_rule" model="ir.rule">
+	        <field name="name">See All Commission Worksheet</field>
+	        <field ref="model_commission_worksheet" name="model_id"/>
+        	<field name="domain_force">[(1,'=',1)]</field>
+	        <field name="groups" eval="[(4, ref('group_sale_commission_calc_user'))]"/>
+	    </record>
+	    	 
+	</data>
+</openerp>
+

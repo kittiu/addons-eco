@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+    <data>
+        <record id="view_picking_form_ext" model="ir.ui.view">
+            <field name="name">Incoming Picking Inherited</field>
+            <field name="model">stock.picking.in</field>
+            <field name="inherit_id" ref="stock.view_picking_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='origin']" position="after">
+                    <field name="ref_order_id" options="{'limit': 10, 'create': false, 'create_edit': false}"/>
+                </xpath>
+            </field>
+        </record>
+	</data>
+</openerp>

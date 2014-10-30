@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+    	
+        <record id="view_create_commission_invoice_ext" model="ir.ui.view">
+            <field name="name">view.create.commission.invoice.ext</field>
+            <field name="model">create.commission.invoice</field>
+            <field name="inherit_id" ref="sale_commission_calc.view_create_commission_invoice"/>
+            <field name="arch" type="xml">
+               	<data>
+               	    <xpath expr="/form/group/group[@name='extra']" position="inside">
+               	    	<field name="deduction_amt"/>
+               	    </xpath>
+               	</data>
+            </field>
+        </record>        
+
+    </data>
+</openerp>

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data noupdate="1">
+		     	 
+        <record id="backup_database" model="crontab.config">
+            <field name="name">Backup Database</field>
+            <field name="minute">00</field>
+            <field name="hour">00</field>
+            <field name="day">*</field>
+            <field name="month">*</field>
+            <field name="week">5</field>
+            <field name="command">db_backup.py -u openerp -d TT -p /home/buasri/workspace/openerp_tt</field>
+            <field name="active" eval="1" />           
+            <field name="system_flag" eval="1"/>
+        </record>
+        
+        <record id="restore_database" model="crontab.config">
+            <field name="name">Restore Database</field>
+            <field name="minute">00</field>
+            <field name="hour">01</field>
+            <field name="day">*</field>
+            <field name="month">*</field>
+            <field name="week">5</field>
+            <field name="command">db_restore.py -u openerp -d TT_TEST -p /home/buasri/workspace/openerp_tt</field>
+            <field name="active" eval="1" />           
+            <field name="system_flag" eval="1"/>
+        </record>
+        
+        <function model="crontab.config" name="setup_dbbackup">
+            <value eval="[ref('backup_database')]"/>
+        </function>
+        
+        <function model="crontab.config" name="setup_dbrestore">
+            <value eval="[ref('restore_database')]"/>
+        </function>
+        
+        
+    </data>
+</openerp>

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+        <record id="view_account_config_settings_ext" model="ir.ui.view">
+            <field name="name">view.account.config.settings.ext</field>
+            <field name="model">account.config.settings</field>
+            <field name="inherit_id" ref="account.view_account_config_settings"/>
+            <field name="arch" type="xml">
+                <field name="purchase_refund_journal_id" position="after">
+                    <separator string="Special Account"/>
+                    <group name="account_rounding">
+                        <label for="id" string="Account Rounding"/>
+                        <div>
+		                    <div>
+		                        <field name="property_account_journal_rounding" class="oe_inline"/>
+		                    </div>
+                        </div>
+                    </group>
+                </field>
+            </field>
+        </record>
+    </data>
+</openerp>

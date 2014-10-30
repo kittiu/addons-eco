@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+    <data>
+        <record id="view_tax_form_ext" model="ir.ui.view">
+		    <field name="name">view.tax.form.ext</field>
+		    <field name="model">account.tax</field>
+		    <field name="type">form</field>
+		    <field name="inherit_id" ref="account.view_tax_form"/>
+		    <field name="arch" type="xml">
+		        <field name="price_include" position="after">
+		            <field name="is_wht" on_change="onchange_is_wht(is_wht)" />
+		            <field name="threshold_wht" attrs="{'invisible': [('is_wht','=',False)]}"/>
+		            <field name="is_suspend_tax" on_change="onchange_is_suspend_tax(is_suspend_tax)" />
+		        </field>
+		        <field name="account_collected_id" position="after">
+		            <field name="account_suspend_collected_id" attrs="{'invisible': ['|',('is_wht','=',True),('is_suspend_tax','=',False)]}"/>
+		        </field>	
+	    		<field name="account_paid_id" position="after">
+		            <field name="account_suspend_paid_id" attrs="{'invisible': ['|',('is_wht','=',True),('is_suspend_tax','=',False)]}"/>
+		        </field>
+			</field>
+		</record>
+		<record id="view_tax_tree_ext" model="ir.ui.view">
+		    <field name="name">view.tax.tree.ext</field>
+		    <field name="model">account.tax</field>
+		    <field name="type">tree</field>
+		    <field name="inherit_id" ref="account.view_tax_tree"/>
+		    <field name="arch" type="xml">
+		        <field name="description" position="after">
+		            <field name="is_wht"/>
+		        </field>
+		    </field>
+		</record>    
+	</data>
+</openerp>

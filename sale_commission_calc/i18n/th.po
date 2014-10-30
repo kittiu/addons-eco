@@ -1,0 +1,1048 @@
+# Translation of OpenERP Server.
+# This file contains the translation of the following modules:
+#
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: OpenERP Server 7.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2014-05-02 15:06+0000\n"
+"PO-Revision-Date: 2014-05-02 15:06+0000\n"
+"Last-Translator: <>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: sale_commission_calc
+#: view:commission.rule:0
+#: field:commission.rule.rate,commission_rule_id:0
+#: model:ir.model,name:sale_commission_calc.model_commission_rule
+#: field:sale.team,commission_rule_id:0
+msgid "Commission Rule"
+msgstr "กฏคอมมิชชั่น"
+
+#. module: sale_commission_calc
+#: view:commission.rule:0
+#: model:ir.actions.act_window,name:sale_commission_calc.action_salesperson_commission_rule
+#: model:ir.ui.menu,name:sale_commission_calc.menu_salesperson_commission_rule
+msgid "Salespersons"
+msgstr "พนักงานขาย"
+
+#. module: sale_commission_calc
+#: view:invoice.info:0
+msgid "Invoice Line Tax Info"
+msgstr "ข้อมูลภาษีรายการใบแจ้งหนี้"
+
+#. module: sale_commission_calc
+#: field:account.invoice.team,commission_rule_id:0
+#: field:commission.worksheet,commission_rule_id:0
+#: field:res.users,commission_rule_id:0
+msgid "Applied Commission"
+msgstr "คอมมิชชั่นที่ใช้"
+
+#. module: sale_commission_calc
+#: selection:commission.worksheet,state:0
+#: selection:commission.worksheet.line,invoice_state:0
+#: selection:commission.worksheet.line,state:0
+msgid "Cancelled"
+msgstr "ยกเลิก"
+
+#. module: sale_commission_calc
+#: view:commission.worksheet:0
+msgid "Adjusted Total"
+msgstr "ยอดปรับรวม"
+
+#. module: sale_commission_calc
+#: view:commission.worksheet:0
+msgid "Create Commission invoice"
+msgstr "สร้างใบแจ้งหนี้คอมมิชชั่น"
+
+#. module: sale_commission_calc
+#: view:generate.commission.worksheet:0
+msgid "Generate Commission Worksheet Result"
+msgstr "สร้างเอกสารการคำนวณคอมมิชชั่น"
+
+#. module: sale_commission_calc
+#: model:ir.model,name:sale_commission_calc.model_account_invoice_team
+msgid "account.invoice.team"
+msgstr "account.invoice.team"
+
+#. module: sale_commission_calc
+#: view:sale.team:0
+msgid "Inherited Team"
+msgstr "ทีมงานที่เกี่ยวข้อง"
+
+#. module: sale_commission_calc
+#: view:commission.worksheet:0
+msgid "Name or Period"
+msgstr "ชื่อหรือช่วงเวลา"
+
+#. module: sale_commission_calc
+#: model:ir.actions.act_window,name:sale_commission_calc.action_product_rate
+#: model:ir.ui.menu,name:sale_commission_calc.menu_product_rate
+#: view:product.product:0
+msgid "Product Rates"
+msgstr "อัตราคอมมิชชั่นของสินค้า"
+
+#. module: sale_commission_calc
+#: help:commission.worksheet,state:0
+msgid "* The 'Draft' status is set when the work sheet in draft status.                     \n"
+"* The 'Confirmed' status is set when the work sheet is confirmed by related parties.                     \n"
+"* The 'Done' status is set when the work sheet is ready to pay for commission. This state can not be undone.                     \n"
+"* The 'Cancelled' status is set when a user cancel the work sheet."
+msgstr "* The 'Draft' status is set when the work sheet in draft status.                     \n* The 'Confirmed' status is set when the work sheet is confirmed by related parties.                     \n* The 'Done' status is set when the work sheet is ready to pay for commission. This state can not be undone.                     \n* The 'Cancelled' status is set when a user cancel the work sheet."
+
+#. module: sale_commission_calc
+#: code:addons/sale_commission_calc/commission_calc.py:358
+#, python-format
+msgid "You cannot confirm this worksheet. Period not yet over!"
+msgstr "คุณไม่สามารถยืนยันเอกสารนี้ได้ ยังไม่หมดช่วงเวลา"
+
+#. module: sale_commission_calc
+#: field:commission.worksheet.line,date_invoice:0
+msgid "Invoice Date"
+msgstr "วันที่ใบแจ้งหนี้"
+
+#. module: sale_commission_calc
+#: view:generate.commission.worksheet:0
+#: view:update.invoice.commission:0
+msgid "Update"
+msgstr "การปรับปรุงล่าสุด"
+
+#. module: sale_commission_calc
+#: field:commission.worksheet,require_posted:0
+#: field:res.users,require_posted:0
+#: field:sale.team,require_posted:0
+msgid "Require Payment Detail Posted"
+msgstr "จำเป็นต้องมีรายละเอียดการชำระเงินถูกโพสต์"
+
+#. module: sale_commission_calc
+#: field:product.product,limit_price:0
+msgid "Limit Price"
+msgstr "ราคาต่ำสุด"
+
+#. module: sale_commission_calc
+#: selection:generate.commission.worksheet,state:0
+#: selection:update.invoice.commission,state:0
+msgid "init"
+msgstr "init"
+
+#. module: sale_commission_calc
+#: view:commission.worksheet:0
+msgid "Calculate Commission"
+msgstr "คำนวณคอมมิชชั่น"
+
+#. module: sale_commission_calc
+#: field:account.invoice.team,salesperson_id:0
+#: field:commission.rule,salesperson_ids:0
+#: view:commission.worksheet:0
+#: field:commission.worksheet,salesperson_id:0
+msgid "Salesperson"
+msgstr "พนักงานขาย"
+
+#. module: sale_commission_calc
+#: help:res.users,require_posted:0
+#: help:sale.team,require_posted:0
+msgid "Require that all payment detail related to payments to invoice has been posted."
+msgstr "ต้องให้รายละเอียดการชำระเงินทั้งหมดที่เกี่ยวข้องกับการชำระเงินในใบแจ้งหนี้ที่ได้รับการโพสต์เสียก่อน"
+
+#. module: sale_commission_calc
+#: view:commission.worksheet:0
+msgid "(Update Line Status)"
+msgstr "(ปรับปรุงสถานะรายการ)"
+
+#. module: sale_commission_calc
+#: view:sale.team:0
+msgid "This team is the parent of the following teams"
+msgstr "ทีมนี้เป็นผู้ปกครองของทีมงานดังต่อไปนี้"
+
+#. module: sale_commission_calc
+#: field:invoice.info.line,price_subtotal:0
+msgid "Subtotal"
+msgstr "ยอดรวม"
+
+#. module: sale_commission_calc
+#: field:invoice.info.line,uos_id:0
+msgid "UoM"
+msgstr "UoM"
+
+#. module: sale_commission_calc
+#: help:product.product,limit_price:0
+msgid "Minimum product selling price to get commission"
+msgstr "ราคาขายขั้นต่ำที่จะได้รับค่าคอมมิชชั่น"
+
+#. module: sale_commission_calc
+#: field:commission.worksheet.line,last_pay_date:0
+msgid "Due Date"
+msgstr "วันครบกำหนด"
+
+#. module: sale_commission_calc
+#: view:generate.commission.worksheet:0
+msgid "This process look into each team/salesperson for worksheet that has not been created to date, and create them."
+msgstr "กระบวนการนี​​้จะดูว่าเอกสารยังไม่ได้ถูกสร้างขึ้นมาก่อนสำหรับ ทีม/พนักงานขาย และทำการสร้างให้"
+
+#. module: sale_commission_calc
+#: code:addons/sale_commission_calc/commission_calc.py:407
+#: code:addons/sale_commission_calc/commission_calc.py:738
+#, python-format
+msgid "Error!"
+msgstr "ข้อผิดพลาด!"
+
+#. module: sale_commission_calc
+#: field:commission.worksheet.line,invoice_amt:0
+msgid "Amount"
+msgstr "จำนวนเงิน"
+
+#. module: sale_commission_calc
+#: field:commission.worksheet,require_paid:0
+#: field:res.users,require_paid:0
+#: field:sale.team,require_paid:0
+msgid "Require Paid Invoice"
+msgstr "ต้องมีการชำระใบแจ้งหนี้ก่อน"
+
+#. module: sale_commission_calc
+#: view:commission.worksheet:0
+msgid "Receiver"
+msgstr "ผู้รับ"
+
+#. module: sale_commission_calc
+#: view:update.invoice.commission:0
+msgid "Invoice Updates Result"
+msgstr "ผลการการปรับปรุงใบแจ้งหนี้"
+
+#. module: sale_commission_calc
+#: code:addons/sale_commission_calc/commission_calc.py:482
+#, python-format
+msgid "Period: "
+msgstr "ช่วงเวลา: "
+
+#. module: sale_commission_calc
+#: help:commission.worksheet.line,adjust_amt:0
+msgid "Adjustment can be both positive or negative"
+msgstr "การปรับสามารถเป็นได้ทั้งบวกหรือลบ"
+
+#. module: sale_commission_calc
+#: code:addons/sale_commission_calc/commission_calc.py:739
+#, python-format
+msgid "You can't delete this Commission Worksheet,                                                 because commission has been issued for Invoice No. %s"
+msgstr "เอกสารนี้ลบไม่ได้ เพราะค่าคอมมิชชั่นได้ออกไปแล้วด้วยเอกสารใบแจ้งหนี้ %s"
+
+#. module: sale_commission_calc
+#: model:ir.ui.menu,name:sale_commission_calc.menu_commission_calc_config
+msgid "Configuration"
+msgstr "การปรับแต่ง"
+
+#. module: sale_commission_calc
+#: field:account.invoice,worksheet_id:0
+#: view:commission.worksheet:0
+#: field:commission.worksheet.line,worksheet_id:0
+#: model:ir.model,name:sale_commission_calc.model_commission_worksheet
+msgid "Commission Worksheet"
+msgstr "เอกสารการคำนวณคอมมิชชั่น"
+
+#. module: sale_commission_calc
+#: selection:commission.worksheet.line,force:0
+msgid "Skip"
+msgstr "ข้ามไป"
+
+#. module: sale_commission_calc
+#: model:ir.actions.act_window,name:sale_commission_calc.action_user_commission_worksheet_form
+#: model:ir.ui.menu,name:sale_commission_calc.menu_user_commission_worksheet
+msgid "Salesperson Worksheet"
+msgstr "เอกสารคอมมิชชั่นพนักงานขาย"
+
+#. module: sale_commission_calc
+#: help:commission.worksheet.line,note:0
+msgid "Reason for forcing"
+msgstr "เหตุผลในการบังคับให้"
+
+#. module: sale_commission_calc
+#: field:create.commission.invoice,commission_amt:0
+msgid "Commission Amount"
+msgstr "เงินค่าคอมมิชชั่น"
+
+#. module: sale_commission_calc
+#: view:commission.worksheet:0
+msgid "Accounts"
+msgstr "บัญชี"
+
+#. module: sale_commission_calc
+#: help:commission.worksheet.line,last_pay_date:0
+msgid "Last payment date that will make commission valid. This date is calculated by the due date condition"
+msgstr "วันที่ชำระเงินสุดท้ายที่จะให้คอมมิชชั่นถูกต้อง วันที่นี้ได้รับการคำนวณโดยการกำหนดเงื่อนไข"
+
+#. module: sale_commission_calc
+#: field:commission.worksheet,amount_valid:0
+#: selection:commission.worksheet.line,commission_state:0
+msgid "Ready"
+msgstr "พร้อม"
+
+#. module: sale_commission_calc
+#: field:commission.rule,rule_rates:0
+#: model:ir.ui.menu,name:sale_commission_calc.menu_commission_calc_rate
+#: view:product.product:0
+msgid "Rates"
+msgstr "อัตรา"
+
+#. module: sale_commission_calc
+#: view:commission.rule:0
+msgid "Commission Rate Steps is defined for each product. Please go to menu Rules & Rates / Product Rate Price Step to define it"
+msgstr "ขั้นอัตราค่าคอมมิชชั่นตอนถูกกำหนดสำหรับแต่ละสินค้า ไปที่เมนู กฎและอัตรา / ขั้นอัตราของสินค้า เพื่อกำหนดมัน"
+
+#. module: sale_commission_calc
+#: selection:commission.worksheet,state:0
+#: selection:commission.worksheet.line,state:0
+msgid "Confirmed"
+msgstr "ได้รับการยืนยัน"
+
+#. module: sale_commission_calc
+#: view:commission.worksheet:0
+msgid "Confirm"
+msgstr "ยืนยัน"
+
+#. module: sale_commission_calc
+#: view:create.commission.invoice:0
+#: model:ir.actions.act_window,name:sale_commission_calc.action_create_commission_invoice
+msgid "Commission Invoice"
+msgstr "ใบแจ้งหนี้ค่าคอมมิชชั่น"
+
+#. module: sale_commission_calc
+#: view:account.invoice:0
+msgid "onchange_user_id(user_id)"
+msgstr "onchange_user_id(user_id)"
+
+#. module: sale_commission_calc
+#: field:commission.worksheet.line,commission_amt:0
+msgid "Commission"
+msgstr "ค่าคอมมิชชั่น"
+
+#. module: sale_commission_calc
+#: field:commission.worksheet.line,commission_state:0
+msgid "State"
+msgstr "สถานะ"
+
+#. module: sale_commission_calc
+#: view:product.product:0
+msgid "Price over"
+msgstr "ราคาเกินกว่า"
+
+#. module: sale_commission_calc
+#: code:addons/sale_commission_calc/commission_calc.py:407
+#, python-format
+msgid "No commission rule specified for this salesperson/team!"
+msgstr "ไม่ได้ระบุกฏคอมมิชชั่นสำหรับ พนักงานขาย / ทีม นี้"
+
+#. module: sale_commission_calc
+#: sql_constraint:commission.worksheet:0
+msgid "Duplicate Sale Team / Period"
+msgstr "ทีมขาย / ช่วงเวลา ซ้ำ"
+
+#. module: sale_commission_calc
+#: field:commission.rule,type:0
+msgid "Type"
+msgstr "ประเภท"
+
+#. module: sale_commission_calc
+#: field:commission.worksheet,allow_overdue:0
+#: field:res.users,allow_overdue:0
+msgid "Allow Overdue Payment"
+msgstr "ยอมสำหรับการชำระเงินเกินกำหนด"
+
+#. module: sale_commission_calc
+#: model:ir.model,name:sale_commission_calc.model_product_category
+msgid "Product Category"
+msgstr "หมวดหมู่สินค้า"
+
+#. module: sale_commission_calc
+#: view:commission.worksheet:0
+msgid "Group By..."
+msgstr "จัดกลุ่มตาม..."
+
+#. module: sale_commission_calc
+#: selection:commission.rule,type:0
+msgid "Product Commission Rate"
+msgstr "อัตราคอมมิชชั่นสินค้า"
+
+#. module: sale_commission_calc
+#: field:product.product,rate_step_ids:0
+msgid "Commission Rate Steps"
+msgstr "อัตราคอมมิชชั่นขั้นบันได"
+
+#. module: sale_commission_calc
+#: view:commission.rule:0
+msgid "Commission Rate is defined for each product. Please go to menu Rules & Rates / Product Rates to define it"
+msgstr "อัตราคอมมิชชั่นกำหนดไว้สำหรับแต่ละสินค้า ไปที่เมนู กฎและอัตรา / อัตตราของสินค้าเพื่อกำหนดมัน"
+
+#. module: sale_commission_calc
+#: view:commission.rule:0
+msgid "Commission Rate is defined for each product category. Please go to Product Category window to define it"
+msgstr "อัตราคอมมิชชั่นกำหนดไว้สำหรับแต่ละสินค้า ไปที่เมนู กฎและอัตรา / อัตตราของประเภทสินค้าเพื่อกำหนดมัน"
+
+#. module: sale_commission_calc
+#: model:ir.actions.act_window,name:sale_commission_calc.action_sale_team_form
+#: model:ir.ui.menu,name:sale_commission_calc.menu_sale_team
+msgid "Sale Teams"
+msgstr "ทีมขาย"
+
+#. module: sale_commission_calc
+#: selection:commission.worksheet,last_pay_date_rule:0
+#: selection:res.users,last_pay_date_rule:0
+#: selection:sale.team,last_pay_date_rule:0
+msgid "Invoice Date + Customer Payment Term"
+msgstr "วันที่ใบแจ้งหนี้ + กำหนดการชำระเงินของลูกค้า"
+
+#. module: sale_commission_calc
+#: view:commission.worksheet:0
+msgid "Other Information"
+msgstr "ข้อมูลอื่นๆ"
+
+#. module: sale_commission_calc
+#: field:commission.rule.rate,amount_upto:0
+msgid "Amount Up-To"
+msgstr "จำนวนเงินถึง"
+
+#. module: sale_commission_calc
+#: model:ir.model,name:sale_commission_calc.model_update_invoice_commission
+msgid "Update Invoice Commission"
+msgstr "ปรับปรุงใบแจ้งหนี้คอมมิชชั่น"
+
+#. module: sale_commission_calc
+#: code:addons/sale_commission_calc/wizard/generate_commission_worksheet.py:46
+#, python-format
+msgid "Number of Salesperson Commission Worksheet"
+msgstr "จำนวนเอกสารคอมมิชชั่นสำหรับพนักงานขาย"
+
+#. module: sale_commission_calc
+#: code:addons/sale_commission_calc/commission_calc.py:358
+#: code:addons/sale_commission_calc/commission_calc.py:370
+#: code:addons/sale_commission_calc/commission_calc.py:456
+#, python-format
+msgid "Warning!"
+msgstr "คำเตือน!"
+
+#. module: sale_commission_calc
+#: view:commission.worksheet:0
+#: field:commission.worksheet,state:0
+#: field:commission.worksheet.line,invoice_state:0
+#: field:generate.commission.worksheet,state:0
+#: field:update.invoice.commission,state:0
+msgid "Status"
+msgstr "สถานะ"
+
+#. module: sale_commission_calc
+#: field:account.invoice.team,invoice_id:0
+#: field:commission.worksheet.line,invoice_id:0
+#: model:ir.model,name:sale_commission_calc.model_account_invoice
+msgid "Invoice"
+msgstr "ใบแจ้งหนี้"
+
+#. module: sale_commission_calc
+#: field:commission.worksheet,amount_skip:0
+#: selection:commission.worksheet.line,commission_state:0
+msgid "Skipped"
+msgstr "ข้าม"
+
+#. module: sale_commission_calc
+#: field:account.invoice,invoice_refund_refs:0
+msgid "Refunded Invoice"
+msgstr "ใบลดหนี้"
+
+#. module: sale_commission_calc
+#: field:commission.worksheet,worksheet_lines:0
+msgid "Calculation Lines"
+msgstr "รายการคำนวณ"
+
+#. module: sale_commission_calc
+#: view:generate.commission.worksheet:0
+#: view:invoice.info:0
+#: view:update.invoice.commission:0
+msgid "Close"
+msgstr "ปิด"
+
+#. module: sale_commission_calc
+#: field:sale.team,implied_ids:0
+msgid "Inherits"
+msgstr "สืบทอด"
+
+#. module: sale_commission_calc
+#: field:commission.rate.step,amount_over:0
+msgid "From Unit Price"
+msgstr "จากราคาต่อหน่วย"
+
+#. module: sale_commission_calc
+#: view:commission.worksheet:0
+msgid "Total Commission"
+msgstr "คอมมิชชั่นรวม"
+
+#. module: sale_commission_calc
+#: field:commission.worksheet,invoice_ids:0
+msgid "Invoices"
+msgstr "ใบแจ้งหนี้"
+
+#. module: sale_commission_calc
+#: selection:commission.worksheet.line,invoice_state:0
+msgid "Open"
+msgstr "เปิด"
+
+#. module: sale_commission_calc
+#: selection:commission.worksheet,last_pay_date_rule:0
+#: selection:res.users,last_pay_date_rule:0
+#: selection:sale.team,last_pay_date_rule:0
+msgid "Invoice Due Date (default)"
+msgstr "วันที่ครบกำหนดใบแจ้งหนี้ (ค่าเริ่มต้น)"
+
+#. module: sale_commission_calc
+#: view:account.invoice:0
+msgid "Salesperson/Team and Commission"
+msgstr "พนักงานขาย / ทีมงานและคอมมิชชั่น"
+
+#. module: sale_commission_calc
+#: code:addons/sale_commission_calc/wizard/generate_commission_worksheet.py:48
+#, python-format
+msgid "Number of Team Commission Worksheet"
+msgstr "จำนวนเอกสารคอมมิขชั่นทีมขาย"
+
+#. module: sale_commission_calc
+#: model:ir.ui.menu,name:sale_commission_calc.menu_commission_calc_rule
+msgid "Rules"
+msgstr "กฎ"
+
+#. module: sale_commission_calc
+#: view:product.product:0
+msgid "Commission Steps"
+msgstr "ขั้นอัตราคอมมิชชั่น"
+
+#. module: sale_commission_calc
+#: code:addons/sale_commission_calc/commission_calc.py:456
+#, python-format
+msgid "No Commission Invoice(s) can be created for Worksheet %s"
+msgstr "ไม่มีใบแจ้งหนี้คอมมิชชั่นสามารถสร้างขึ้นสำหรับเอกสาร %s"
+
+#. module: sale_commission_calc
+#: help:sale.team,buffer_days:0
+msgid "Additional days after last payment date to be eligible for commission."
+msgstr "วันเพิ่มเติมหลังจากวันที่ชำระเงินสุดท้ายที่จะมีสิทธิ์ได้รับค่าคอมมิชชั่น"
+
+#. module: sale_commission_calc
+#: selection:generate.commission.worksheet,state:0
+#: selection:update.invoice.commission,state:0
+msgid "done"
+msgstr "เสร็จ"
+
+#. module: sale_commission_calc
+#: help:res.users,require_paid:0
+#: help:sale.team,require_paid:0
+msgid "Require invoice to be paid in full amount."
+msgstr "ใบแจ้งหนี้ต้องจะต้องจ่ายเต็มจำนวน"
+
+#. module: sale_commission_calc
+#: model:ir.model,name:sale_commission_calc.model_res_users
+#: field:sale.team,users:0
+msgid "Users"
+msgstr "ผู้ใช้"
+
+#. module: sale_commission_calc
+#: help:commission.worksheet.line,done:0
+msgid "This flag show whether the commission has been issued."
+msgstr "สัญลักษณ์นี้แสดงให้เห็นว่าได้มีการออกคอมมิชชั่น"
+
+#. module: sale_commission_calc
+#: selection:commission.rule,type:0
+msgid "Fixed Commission Rate"
+msgstr "อัตราคอมมิชชั่นคงที่"
+
+#. module: sale_commission_calc
+#: model:ir.actions.act_window,name:sale_commission_calc.action_product_rate_price_step
+#: model:ir.ui.menu,name:sale_commission_calc.menu_product_rate_price_step
+#: view:product.product:0
+msgid "Product Rate Price Step"
+msgstr "อัตราตามขั้นราคาสินค้า"
+
+#. module: sale_commission_calc
+#: model:ir.ui.menu,name:sale_commission_calc.menu_update_invoice_commission
+#: view:update.invoice.commission:0
+msgid "Update Invoices"
+msgstr "ปรับปรุงใบแจ้งหนี้"
+
+#. module: sale_commission_calc
+#: field:account.invoice.team,sale_team_id:0
+#: view:commission.worksheet:0
+#: field:commission.worksheet,sale_team_id:0
+msgid "Team"
+msgstr "ทีม"
+
+#. module: sale_commission_calc
+#: view:update.invoice.commission:0
+msgid "This process will find all customer invoices which has no commission updated yet, then update commission rule according to the salesperson of those invoices. Make sure, each salesperson has commission rule assigned."
+msgstr "กระบวนการนี​​้จะหาใบแจ้งหนี้ของลูกค้าทั้งหมดที่ยังไม่มีการให้คอมมิชชั่นแล้วปรับปรุงตามกฏคอมมิชชั่นของพนักงานขาย เพื่อให้แน่ใจว่าแต่ละพนักงานขายมีกฎคอมมิชชั่น"
+
+#. module: sale_commission_calc
+#: field:commission.worksheet.line,note:0
+msgid "Note"
+msgstr "หมายเหตุ"
+
+#. module: sale_commission_calc
+#: help:commission.worksheet.line,paid_date:0
+msgid "The date of payment that make this invoice marked as paid"
+msgstr "วันที่การชำระเงินที่ทำให้ใบแจ้งหนี้นี้ที่ระบุว่าจ่ายแล้ว"
+
+#. module: sale_commission_calc
+#: view:commission.worksheet:0
+#: selection:commission.worksheet,state:0
+#: selection:commission.worksheet.line,state:0
+msgid "Draft"
+msgstr "ร่าง"
+
+#. module: sale_commission_calc
+#: view:commission.worksheet:0
+msgid "Set to Draft"
+msgstr "ทำให้เป็นค่าร่าง"
+
+#. module: sale_commission_calc
+#: view:commission.worksheet:0
+#: field:invoice.info.line,invoice_info_id:0
+#: model:ir.actions.act_window,name:sale_commission_calc.action_invoice_info
+#: model:ir.model,name:sale_commission_calc.model_invoice_info
+msgid "Invoice Info"
+msgstr "ข้อมูลใบแจ้งหนี้"
+
+#. module: sale_commission_calc
+#: view:commission.rule:0
+msgid "Applied To"
+msgstr "นำไปใช้กับ"
+
+#. module: sale_commission_calc
+#: field:commission.rate.step,percent_commission:0
+#: field:commission.rule.rate,percent_commission:0
+#: field:product.category,percent_commission:0
+#: field:product.product,percent_commission:0
+msgid "Commission (%)"
+msgstr "คอมมิชชั่น (%)"
+
+#. module: sale_commission_calc
+#: field:commission.rule,rule_conditions:0
+msgid "Conditions"
+msgstr "เงื่อนไข"
+
+#. module: sale_commission_calc
+#: field:sale.team,allow_overdue:0
+msgid "Allow overdue payment"
+msgstr "ยอมให้การชำระเงินเลยกำหนด"
+
+#. module: sale_commission_calc
+#: help:res.users,allow_overdue:0
+#: help:sale.team,allow_overdue:0
+msgid "Allow paying commission with overdue payment."
+msgstr "ยอมให้จ่ายเงินค่าคอมมิชชั่นสำหรับการชำระเงินที่เลยกำหนด"
+
+#. module: sale_commission_calc
+#: model:ir.ui.menu,name:sale_commission_calc.menu_generate_commission_worksheet
+msgid "Create Worksheet(s)"
+msgstr "สร้างเอกสารคอมมิชชั่น (s)"
+
+#. module: sale_commission_calc
+#: view:commission.worksheet:0
+#: field:commission.worksheet,amount_total:0
+msgid "Total Amount"
+msgstr "รวมทั้งสิ้น"
+
+#. module: sale_commission_calc
+#: view:commission.worksheet:0
+#: selection:commission.worksheet.line,invoice_state:0
+msgid "Paid"
+msgstr "จ่ายแล้ว"
+
+#. module: sale_commission_calc
+#: view:create.commission.invoice:0
+#: view:generate.commission.worksheet:0
+#: view:update.invoice.commission:0
+msgid "or"
+msgstr "หรือ"
+
+#. module: sale_commission_calc
+#: view:create.commission.invoice:0
+#: model:ir.model,name:sale_commission_calc.model_create_commission_invoice
+msgid "Create Commission Invoice"
+msgstr "สร้างใบแจ้งหนี้คอมมิชชั่น"
+
+#. module: sale_commission_calc
+#: model:ir.actions.act_window,name:sale_commission_calc.action_team_commission_worksheet_form
+#: model:ir.ui.menu,name:sale_commission_calc.menu_team_commission_worksheet
+msgid "Team Worksheet"
+msgstr "เอกสารคอมมิชชั่นสำหรับทีม"
+
+#. module: sale_commission_calc
+#: view:sale.team:0
+msgid "Groups"
+msgstr "กลุ่ม"
+
+#. module: sale_commission_calc
+#: field:commission.rule,active:0
+msgid "Active"
+msgstr "ใช้งาน"
+
+#. module: sale_commission_calc
+#: view:commission.worksheet:0
+msgid "Commission Invoices"
+msgstr "ใบแจ้งหนี้คอมมิชชั่น"
+
+#. module: sale_commission_calc
+#: model:res.groups,name:sale_commission_calc.group_sale_commission_calc_user
+msgid "User"
+msgstr "ผู้ใช้"
+
+#. module: sale_commission_calc
+#: field:create.commission.invoice,comment:0
+msgid "Comment"
+msgstr "ความเห็น"
+
+#. module: sale_commission_calc
+#: view:commission.worksheet:0
+msgid "Adjust Amount"
+msgstr "ปรับจำนวน"
+
+#. module: sale_commission_calc
+#: field:commission.worksheet,amount_draft:0
+#: selection:commission.worksheet.line,commission_state:0
+msgid "Not Ready"
+msgstr "ไม่พร้อม"
+
+#. module: sale_commission_calc
+#: sql_constraint:commission.worksheet:0
+msgid "Duplicate Salesperson / Period"
+msgstr "พนักงานขาย / ช่วงเวลา ซ้ำ"
+
+#. module: sale_commission_calc
+#: field:account.invoice,sale_team_ids:0
+#: view:commission.rule:0
+#: field:commission.rule,sale_team_ids:0
+msgid "Teams"
+msgstr "ทีม"
+
+#. module: sale_commission_calc
+#: field:commission.worksheet.line,state:0
+msgid "Worksheet State"
+msgstr "สถานะเอกสาร"
+
+#. module: sale_commission_calc
+#: help:commission.worksheet.line,posted:0
+msgid "This flag show whether all payment has been posted as Payment Details"
+msgstr "สัญลักษณ์นี้แสดงให้เห็นว่าการชำระเงินทั้งหมดที่ได้รับการโพสต์เป็นรายละเอียดการชำระเงิน"
+
+#. module: sale_commission_calc
+#: field:commission.worksheet,amount_invalid:0
+#: selection:commission.worksheet.line,commission_state:0
+msgid "Invalid"
+msgstr "ไม่ถูกต้อง"
+
+#. module: sale_commission_calc
+#: model:ir.model,name:sale_commission_calc.model_commission_rule_rate
+msgid "Commission Rule Rate"
+msgstr "อัตราคอมมิชชั่น"
+
+#. module: sale_commission_calc
+#: field:invoice.info.line,quantity:0
+msgid "Quantity"
+msgstr "จำนวน"
+
+#. module: sale_commission_calc
+#: code:addons/sale_commission_calc/wizard/update_invoice_commission.py:69
+#: model:ir.actions.act_window,name:sale_commission_calc.action_update_invoice_commission
+#, python-format
+msgid "Update Invoice's Commission"
+msgstr "ปรับปรุงใบแจ้งหนี้คอมมิชชั่น"
+
+#. module: sale_commission_calc
+#: field:commission.worksheet.line,force:0
+msgid "Force"
+msgstr "บังคับ"
+
+#. module: sale_commission_calc
+#: view:commission.worksheet:0
+msgid "Worksheet "
+msgstr "เอกสาร "
+
+#. module: sale_commission_calc
+#: view:commission.worksheet:0
+#: field:commission.worksheet,period_id:0
+msgid "Period"
+msgstr "ช่วงเวลา"
+
+#. module: sale_commission_calc
+#: model:ir.model,name:sale_commission_calc.model_commission_rate_step
+msgid "commission.rate.step"
+msgstr "commission.rate.step"
+
+#. module: sale_commission_calc
+#: view:commission.rule:0
+msgid "Rule Rates"
+msgstr "อัตราตามกฏ"
+
+#. module: sale_commission_calc
+#: view:commission.worksheet:0
+#: field:commission.worksheet,amount_done:0
+#: selection:commission.worksheet,state:0
+#: selection:commission.worksheet.line,commission_state:0
+#: field:commission.worksheet.line,done:0
+#: selection:commission.worksheet.line,state:0
+msgid "Done"
+msgstr "เสร็จ"
+
+#. module: sale_commission_calc
+#: field:commission.worksheet,last_pay_date_rule:0
+#: field:res.users,last_pay_date_rule:0
+#: field:sale.team,last_pay_date_rule:0
+msgid "Last Pay Date Rule"
+msgstr "กฎวันที่สุดท้ายการชำระเงิน"
+
+#. module: sale_commission_calc
+#: view:commission.worksheet:0
+#: view:create.commission.invoice:0
+#: view:generate.commission.worksheet:0
+#: view:update.invoice.commission:0
+msgid "Cancel"
+msgstr "ยกเลิก"
+
+#. module: sale_commission_calc
+#: selection:commission.rule,type:0
+msgid "Commission Rate By Order Amount"
+msgstr "อัตราคอมมิชชั่นตามยอดสั่งขาย"
+
+#. module: sale_commission_calc
+#: view:product.product:0
+msgid "Beginning Commission"
+msgstr "คอมมิชชั่นเริ่มต้น"
+
+#. module: sale_commission_calc
+#: view:res.users:0
+msgid "Salesperson Commission Rule"
+msgstr "กฎคอมมิชชั่นสำหรับพนักงานขาย"
+
+#. module: sale_commission_calc
+#: field:commission.worksheet,buffer_days:0
+#: field:res.users,buffer_days:0
+#: field:sale.team,buffer_days:0
+msgid "Buffer Days"
+msgstr "จำนวนวันกันชน"
+
+#. module: sale_commission_calc
+#: code:addons/sale_commission_calc/wizard/generate_commission_worksheet.py:81
+#: view:generate.commission.worksheet:0
+#: model:ir.actions.act_window,name:sale_commission_calc.action_generate_commission_worksheet
+#: model:ir.model,name:sale_commission_calc.model_generate_commission_worksheet
+#, python-format
+msgid "Generate Commission Worksheet"
+msgstr "สร้างเอกสารคอมมิชชั่น"
+
+#. module: sale_commission_calc
+#: model:ir.model,name:sale_commission_calc.model_commission_worksheet_line
+msgid "Commission Worksheet Lines"
+msgstr "รายการในเอกสารคอมมิชชั่น"
+
+#. module: sale_commission_calc
+#: field:commission.rule.rate,amount_over:0
+msgid "Amount Over"
+msgstr "จำนวนเงินมากกว่า"
+
+#. module: sale_commission_calc
+#: view:create.commission.invoice:0
+msgid "Please confirm commission amount as following,"
+msgstr "กรุณายืนยันจำนวนเงินคอมมิชชั่นดังต่อไปนี้,"
+
+#. module: sale_commission_calc
+#: view:commission.rule:0
+#: model:ir.actions.act_window,name:sale_commission_calc.action_commission_rule_form
+#: model:ir.ui.menu,name:sale_commission_calc.menu_commission_rule
+msgid "Commission Rules"
+msgstr "กฎคอมมิชชั่น"
+
+#. module: sale_commission_calc
+#: selection:commission.rule,type:0
+msgid "Product Commission Rate Steps"
+msgstr "อัตราค่าคอมมิชชั่นสินค้าขั้นบันได"
+
+#. module: sale_commission_calc
+#: field:invoice.info.line,price_unit:0
+msgid "Unit Price"
+msgstr "ราคาต่อหน่วย"
+
+#. module: sale_commission_calc
+#: help:sale.team,implied_ids:0
+msgid "Users of this group automatically inherit those groups"
+msgstr "ผู้ใช้กลุ่มนี้สืบทอดกลุ่มเหล่านั้นโดยอัตโนมัติ"
+
+#. module: sale_commission_calc
+#: view:sale.team:0
+msgid "Team Member"
+msgstr "สมาชิกในทีม"
+
+#. module: sale_commission_calc
+#: field:generate.commission.worksheet,result:0
+#: field:update.invoice.commission,result:0
+msgid "Result"
+msgstr "ผลลัพธ์"
+
+#. module: sale_commission_calc
+#: field:commission.rate.step,product_id:0
+#: field:invoice.info.line,product_id:0
+#: model:ir.model,name:sale_commission_calc.model_product_product
+msgid "Product"
+msgstr "สินค้า"
+
+#. module: sale_commission_calc
+#: view:commission.worksheet:0
+msgid "Worksheet Details"
+msgstr "รายละเอียดเอกสาร"
+
+#. module: sale_commission_calc
+#: field:invoice.info.line,name:0
+msgid "Description"
+msgstr "รายละเอียด"
+
+#. module: sale_commission_calc
+#: sql_constraint:sale.team:0
+msgid "The name of the team must be unique !"
+msgstr "ชื่อของทีมจะต้องไม่ซ้ำกัน !"
+
+#. module: sale_commission_calc
+#: selection:commission.rule,type:0
+msgid "Product Category Commission Rate"
+msgstr "อัตราคอมมิชชั่นตามหมวดหมู่สินค้า"
+
+#. module: sale_commission_calc
+#: model:ir.ui.menu,name:sale_commission_calc.menu_commission_calc
+msgid "Commission Calc"
+msgstr "การคำนวนคอมมิชชั่น"
+
+#. module: sale_commission_calc
+#: field:invoice.info,invoice_id:0
+msgid "Invoice Number"
+msgstr "เลขใบแจ้งหนี้"
+
+#. module: sale_commission_calc
+#: model:ir.module.category,name:sale_commission_calc.module_category_sale_commission_calc
+msgid "Sales Commission"
+msgstr "คอมมิชชั่นการขาย"
+
+#. module: sale_commission_calc
+#: field:commission.worksheet.line,posted:0
+msgid "Posted"
+msgstr "โพสต์แล้ว"
+
+#. module: sale_commission_calc
+#: field:commission.worksheet.line,partner_id:0
+msgid "Customer"
+msgstr "ลูกค้า"
+
+#. module: sale_commission_calc
+#: field:commission.rule,name:0
+#: field:commission.worksheet,name:0
+#: field:sale.team,name:0
+msgid "Name"
+msgstr "ชื่อ"
+
+#. module: sale_commission_calc
+#: model:ir.actions.act_window,name:sale_commission_calc.action_product_categ_rate
+#: model:ir.ui.menu,name:sale_commission_calc.menu_product_categ_rate
+#: view:product.category:0
+msgid "Product Category Rates"
+msgstr "อัตราตามกลุ่มสินค้า"
+
+#. module: sale_commission_calc
+#: code:addons/sale_commission_calc/commission_calc.py:483
+#, python-format
+msgid ", Invoice: "
+msgstr ", ใบแจ้งหนี้: "
+
+#. module: sale_commission_calc
+#: view:account.invoice:0
+msgid "Salesperson/Teams and Commissions"
+msgstr "พนักงานขาย/ทีมงาน และคอมมิชชั่น"
+
+#. module: sale_commission_calc
+#: field:commission.worksheet.line,adjust_amt:0
+msgid "Adjust"
+msgstr "ปรับ"
+
+#. module: sale_commission_calc
+#: selection:commission.worksheet.line,force:0
+msgid "Allow"
+msgstr "อนุญาต"
+
+#. module: sale_commission_calc
+#: view:commission.rule:0
+msgid "Commission Rates"
+msgstr "อัตราค่าคอมมิขขั่น"
+
+#. module: sale_commission_calc
+#: field:commission.worksheet.line,overdue:0
+msgid "Overdue"
+msgstr "เกินกำหนด"
+
+#. module: sale_commission_calc
+#: help:commission.worksheet.line,overdue:0
+msgid "For the paid invoice, is it over due?"
+msgstr "สำหรับใบแจ้งหนี้ที่ชำระแล้ว มันเลยกำหนดหรือไม่?"
+
+#. module: sale_commission_calc
+#: field:commission.worksheet.line,paid_date:0
+msgid "Paid Date"
+msgstr "วันที่ชำระเงิน"
+
+#. module: sale_commission_calc
+#: code:addons/sale_commission_calc/commission_calc.py:370
+#, python-format
+msgid "Worksheet(s) has issued commission(s) and can not be cancelled!"
+msgstr "เอกกสารได้ออกค่าคอมมิชชั่นแล้วและไม่สามารถยกเลิกได้!"
+
+#. module: sale_commission_calc
+#: field:commission.rule,fix_percent:0
+msgid "Fix Percentage"
+msgstr "เปอร์เซนต์คงที่"
+
+#. module: sale_commission_calc
+#: view:commission.worksheet:0
+msgid "Worksheet Lines"
+msgstr "รายการในเอกสาร"
+
+#. module: sale_commission_calc
+#: view:product.product:0
+msgid "Base Commission"
+msgstr "คอมมิชชั่นเริ่มต้น"
+
+#. module: sale_commission_calc
+#: code:addons/sale_commission_calc/wizard/update_invoice_commission.py:65
+#, python-format
+msgid "Number of invoice updated"
+msgstr "จำนวนใบแจ้งหนี้ที่ได้รับการปรับปรุง"
+
+#. module: sale_commission_calc
+#: model:ir.model,name:sale_commission_calc.model_sale_team
+#: view:sale.team:0
+msgid "Sales Team"
+msgstr "ทีมขาย"
+
+#. module: sale_commission_calc
+#: model:res.groups,name:sale_commission_calc.group_sale_commission_calc_manager
+msgid "Manager"
+msgstr "ผู้จัดการ"
+
+#. module: sale_commission_calc
+#: view:invoice.info:0
+#: field:invoice.info,invoice_info_line:0
+#: model:ir.model,name:sale_commission_calc.model_invoice_info_line
+msgid "Invoice Info Lines"
+msgstr "รายการข้อมูลใบแจ้งหนี้"
+
+#. module: sale_commission_calc
+#: field:commission.worksheet.line,amount_subtotal:0
+msgid "Total"
+msgstr "ยอดรวมทั้งหมด"
+
+#. module: sale_commission_calc
+#: model:res.groups,name:sale_commission_calc.group_sale_commission_calc_sale
+msgid "See Own Worksheet"
+msgstr "เห็นเอกสารของต้วเอง"
+

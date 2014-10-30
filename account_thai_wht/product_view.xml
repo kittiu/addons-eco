@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+<!--        <record id="product_normal_form_view_ext" model="ir.ui.view">-->
+<!--            <field name="name">product.normal.form.view.ext</field>-->
+<!--            <field name="model">product.product</field>-->
+<!--            <field name="inherit_id" ref="product.product_normal_form_view"/>-->
+<!--            <field name="priority">26</field>-->
+<!--            <field name="arch" type="xml">-->
+<!--                <!-- field name="type" position="attributes">-->
+<!--                	<attribute name="on_change">onchange_type(type)</attribute>-->
+<!--                </field -->-->
+<!--                <xpath expr="//group[@name='properties']" position="after">-->
+<!--                    <group colspan="2" col="2">-->
+<!--                        <field name="use_suspend_account"/>-->
+<!--                    </group>-->
+<!--                </xpath>-->
+<!--            </field>-->
+<!--        </record>-->
+
+    </data>
+</openerp>

@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+    <data>
+        <record id="crontab_config_form" model="ir.ui.view">
+            <field name="name">crontab.config.form</field>
+            <field name="model">crontab.config</field>
+            <field name="arch" type="xml">
+                <form string="Crontab Configuration" version="7.0"> 
+                    <header>
+                        <button name="action_button_confirm" class="oe_highlight" states="draft" string="Confirm" type="object" groups="base.group_user"/>
+                        <button name="action_button_execute" class="oe_highlight"  confirm="Are you sure to executing?" states="done" string="Execute" type="object" groups="base.group_user"/>
+                        <button name="action_button_cancel" states="done" string="Cancel" type="object" groups="base.group_user"/>
+                        <button name="action_button_draft" class="oe_highlight" states="cancel" string="Set to Draft" type="object" groups="base.group_user"/>
+                        <field name="state" widget="statusbar"/>
+                	</header>
+                    <group>
+                    	<field name="name" attrs="{'readonly': [('state','!=','draft')]}"/>
+                    	<field name="note"/>
+                    </group>                                        	
+                    	<group col="1" string="Scheduling">                    	    
+                    		<group col="5">
+                    			<label for="minute" string="Minute" style="width: 2%%"/> 
+                    			<label for="hour" string="Hour" style="width: 2%%"/>  
+                    			<label for="day" string="Day" style="width: 2%%"/>
+                     			<label for="month" string="Month" style="width: 2%%"/>    
+                     			<label for="week" string="Week" style="width: 2%%"/> 
+                    		</group>			 
+                    		<group col="5">                    					
+                    			<field name="minute" nolabel="1" style="width: 10%%"/>                    					                   				
+                    			<field name="hour" nolabel="1" style="width: 10%%"/>                            					
+                    			<field name="day" nolabel="1" style="width: 10%%"/>                            					
+                    			<field name="month" nolabel="1" style="width: 10%%"/>                            					
+                    			<field name="week" nolabel="1" style="width: 10%%"/>                            					
+                    		</group>                    			           		                   		                 		
+                    	</group>                    	 					 
+                     <group>
+                    	<field name="working_path"/>
+                    	<field name="command"/>
+                    	<field name="attfile" class="oe_avatar oe_left"/>
+                     </group>
+                     <group>
+                    	<field name="active"/>
+                    	<field name="system_flag" readonly="1"/>
+                    	<field name="last_exec"/>
+                     </group>
+                </form>
+           </field>
+        </record>
+        
+        <record id="crontab_config_tree" model="ir.ui.view">
+            <field name="name">crontab.config.tree</field>
+            <field name="model">crontab.config</field>
+            <field name="arch" type="xml">
+                <tree string="Sales PreQuotation">
+                    <field name="name"/>
+                    <field name="active"/>
+                    <field name="last_exec"/>
+                </tree>
+            </field>
+        </record>
+        
+        <record id="view_crontab_search" model="ir.ui.view">
+            <field name="name">crontab.config.search</field>
+            <field name="model">crontab.config</field>
+            <field name="arch" type="xml">
+            	<search string="Crontab Config">
+            		<field name="name" filter_domain="[('name','ilike',self)]"/>
+                    <separator/>
+                    <filter icon="terp-document-new" string="Active" name="active" domain="[('active','=',True)]"/>
+            	</search>
+            </field>
+        </record>
+
+        <record id="action_crontab_config" model="ir.actions.act_window">
+            <field name="name">Crontab Configuration</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">crontab.config</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+           <field name="search_view_id" ref="view_crontab_search"/>
+            <field name="context">{}</field>
+            <field name="domain">[]</field>
+            <field name="help" type="html">
+              <p class="oe_view_nocontent_create">
+                Click to create a crontab configuration that can be automatic running job on OS System. 
+              </p>
+              <p>
+                OpenERP will help you efficiently handle the schedule :
+                Backup and Restore database.
+              </p>
+            </field>
+        </record>
+        
+        <menuitem action="action_crontab_config" id="menu_crontab_config" parent="base.menu_ir_cron" sequence="11"/>
+
+    </data>
+</openerp>

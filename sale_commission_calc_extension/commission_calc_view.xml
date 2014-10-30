@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<openerp>
+    <data>
+	    <record model="ir.ui.view" id="view_commission_worksheet_form_ext">
+	        <field name="name">view.commission.worksheet.form.ext</field>
+	        <field name="model">commission.worksheet</field>
+	        <field name="inherit_id" ref="sale_commission_calc.view_commission_worksheet_form"/>
+	        <field name="arch" type="xml">
+	        	<xpath expr="/form/notebook/page[@string='Commission Invoices']/field/tree/field[@name='amount_untaxed']" position="after">
+					<field name="add_disc_amt" string="Deduct Amount"/>
+	        	</xpath>
+			</field>
+	    </record>
+	</data>
+</openerp>

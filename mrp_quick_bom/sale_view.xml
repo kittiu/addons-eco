@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <!-- 
+		Create Product/BOM from Lines
+		-->
+        <record id="view_order_form_ext" model="ir.ui.view">
+            <field name="name">view.order.form.ext</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_order_form"/>
+            <field name="arch" type="xml">
+                <data>
+                    <field name="name" position="after">
+	                    <div class="oe_right oe_button_box" name="buttons">
+                    		<button string="Create Product/BOM from lines" name="%(action_product_make_bom)d" 
+                    			attrs="{ 'invisible':[('state', 'not in', ('progress','manual','done'))]}" 
+                    			type="action"/> 
+	                    </div>
+                    </field>
+                </data>
+           </field>
+        </record>	
+    </data>
+</openerp>

@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <record id="stock_card_location_view" model="ir.ui.view">
+            <field name="name">stock.card.location_view</field>
+            <field name="model">product_stock.card.location</field>            
+            <field name="arch" type="xml">
+            	<form string="Select Location" version="7.0">
+	            	<group>
+	            		<group>
+	                    	<field name="location_id" options="{'limit': 10, 'create': false, 'create_edit': false}"/>
+	                    	<field name="from_date"/>
+	                    	<field name="to_date"/>      
+	                    </group>
+	                    <group>
+	                    </group>             
+	                </group>
+                    <footer>
+                        <button string="View Stock Card" name="open_stock_card" type="object" default_focus="1" class="oe_highlight"/>
+                        <button string="Print Stock Card" name="print_stock_card" type="object" default_focus="1" class="oe_highlight"/>
+                        or
+                        <button string="Cancel" class="oe_link" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+        
+        <record id="stock_card_location_view2" model="ir.ui.view">
+            <field name="name">stock.card.location_view</field>
+            <field name="model">product_stock.card.location</field>            
+            <field name="arch" type="xml">
+            	<form string="Select Location" version="7.0">
+	            	<group>
+	            		<group>
+	            			<field name="product_id" required="1" options="{'limit': 10, 'create': false, 'create_edit': false}"></field>
+	                    	<field name="location_id" options="{'limit': 10, 'create': false, 'create_edit': false}"/>
+	                    	<field name="from_date"/>
+	                    	<field name="to_date"/>      
+	                    </group>
+	                    <group>
+	                    </group>             
+	                </group>
+                    <footer>
+                        <button string="View Stock Card" name="open_stock_card" type="object" default_focus="1" class="oe_highlight"/>
+                        <button string="Print Stock Card" name="print_stock_card" type="object" default_focus="1" class="oe_highlight"/>
+                        or
+                        <button string="Cancel" class="oe_link" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+        
+        <act_window name="Stock Card"
+            res_model="product_stock.card.location"
+            src_model="product.product"
+            view_mode="form"
+            target="new"
+            key2="client_action_multi"
+            view_id="stock_card_location_view"
+            id="action_product_stock_card_location"/>
+       
+       <record id="action_report_stock_card" model="ir.actions.act_window">
+            <field name="name">Stock Card</field>
+            <field name="res_model">product_stock.card.location</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="stock_card_location_view2"/>
+            <field name="target">new</field>
+            <field name="help">Stock Card</field>
+        </record>
+
+        <menuitem action="action_report_stock_card"
+            id="menu_report_stock_card"
+            parent="stock.menu_stock_inventory_control" sequence="25" />
+    </data>
+</openerp>

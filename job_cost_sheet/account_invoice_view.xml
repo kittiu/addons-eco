@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+    <data>
+        <record id="invoice_supplier_form_ext" model="ir.ui.view">
+            <field name="name">invoice.supplier.form.ext</field>
+            <field name="inherit_id" ref="account.invoice_supplier_form" />
+            <field name="model">account.invoice</field>
+            <field name="arch" type="xml">
+                <data>
+                	<field name="currency_id" position="after" >
+                		<field name="ref_sale_order_id" options="{'limit': 10, 'create': false, 'create_edit': false}"/>
+                    </field>	
+				</data>
+            </field>
+        </record>   
+    </data>
+</openerp>
