@@ -62,18 +62,38 @@ class job_cost_sheet_report(osv.osv):
                         to_char(so.date_order, 'YYYY') as year,
                         to_char(so.date_order, 'MM') as month,
                         to_char(so.date_order, 'YYYY-MM-DD') as day,
-                        avg(so.amount_net) as amount_net,
+                        case when curr.type_ref_base = 'smaller' then
+                avg(so.amount_net) / coalesce(cr.rate, 1)
+             else
+                avg(so.amount_net) * coalesce(cr.rate, 1)
+             end as amount_net,
                         sum(aml.debit-aml.credit) as amount_cost
                 from account_move_line aml
                 join account_account aa on aa.id = aml.account_id and aa.job_cost_sheet = true
                 join sale_order so on so.id = aml.ref_sale_order_id
-                group by aml.id,
-                        aml.ref_sale_order_id,
-                        aml.move_id,
-                        aml.account_id,
-                        aml.product_id,
-                        so.date_order,
-                        so.user_id
+                -- Get Currency Rate
+                JOIN product_pricelist prc on so.pricelist_id = prc.id
+                JOIN res_currency_rate cr ON (cr.currency_id = prc.currency_id)
+                    AND
+                    cr.id IN (SELECT id
+                          FROM res_currency_rate cr2
+                          WHERE (cr2.currency_id = prc.currency_id)
+                              AND ((so.date_order IS NOT NULL AND cr2.name <= so.date_order)
+                                OR (so.date_order IS NULL AND cr2.name <= NOW()))
+                          ORDER BY name DESC LIMIT 1)
+
+            -- kittiu
+            JOIN res_currency curr ON curr.id = cr.currency_id                
+            --
+                    group by aml.id,
+                            aml.ref_sale_order_id,
+                            aml.move_id,
+                            aml.account_id,
+                            aml.product_id,
+                            so.date_order,
+                            so.user_id,
+                            cr.rate,
+                            curr.type_ref_base
             )
         """)
         # Count SO
