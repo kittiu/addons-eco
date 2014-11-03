@@ -183,9 +183,9 @@ class account_invoice_landedcost_alloc(osv.osv):
             sign = 1
             account_id = line.landedcost_account_id.id
             if inv.type in ('out_invoice', 'in_invoice'):
-                sign = 1
-            else:
                 sign = -1
+            else:
+                sign = 1
 
             # Dr
             res.append({
