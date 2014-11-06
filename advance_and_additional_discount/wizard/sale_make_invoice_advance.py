@@ -61,7 +61,7 @@ class sale_advance_payment_inv(osv.osv_memory):
         }
 
     _defaults = {
-        'retention': lambda self, cr, uid, c: c.get('retention', False)
+        'retention': lambda self, cr, uid, c: c.get('retention', False) # kittiu: not sure why we need this.
     }
 
     def create_invoices(self, cr, uid, ids, context=None):
@@ -70,6 +70,10 @@ class sale_advance_payment_inv(osv.osv_memory):
 
         wizard = self.browse(cr, uid, ids[0], context)
         sale_obj = self.pool.get('sale.order')
+        
+        # Make sure installment must not be 0
+        if wizard.advance_paymtn_method == 'line_percentage' and not wizard.line_percentage:
+            raise osv.except_osv(_('Warning!'), _('You did not specify installment!'))
 
         # Update retention percentage
         sale_id = context.get('active_id', False)
