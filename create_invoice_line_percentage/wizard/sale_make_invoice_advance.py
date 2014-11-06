@@ -57,6 +57,8 @@ class sale_advance_payment_inv(osv.osv_memory):
         wizard = self.browse(cr, uid, ids[0], context)
         # Additional case, Line Percentage
         if wizard.advance_payment_method == 'line_percentage':
+            if not wizard.line_percent:
+                raise osv.except_osv(_('Warning!'), _('You did not specify installment!'))
             # Getting Sale Order Line IDs of this SO
             sale_obj = self.pool.get('sale.order')
             sale_ids = context.get('active_ids', [])
