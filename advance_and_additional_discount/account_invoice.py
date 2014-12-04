@@ -19,6 +19,7 @@
 #
 ##############################################################################
 
+import time
 import openerp.addons.decimal_precision as dp
 from openerp.osv import fields, osv
 from common import AdditionalDiscountable
@@ -200,6 +201,75 @@ class account_invoice(AdditionalDiscountable, osv.Model):
         self._reset_delivery_2binvoiced(cr, uid, ids, 'purchase.order', context)
         super(account_invoice, self).action_cancel(cr, uid, ids, context)
         return True
+
+    # For Advance/Deposit/Retension case, calc gain/loss on exchange.
+    def compute_invoice_totals(self, cr, uid, inv, company_currency, ref, invoice_move_lines, context=None):
+        total, total_currency, invoice_move_lines = super(account_invoice, self).compute_invoice_totals(cr, uid, inv, company_currency, ref, invoice_move_lines, context=context)
+        # If move_line contain advance, recalculate based on the 1st invoice (not cancel)
+        invoice_obj = self.pool.get('account.invoice')
+        cur_obj = self.pool.get('res.currency')
+        new_invoice_move_lines = []
+        for i in invoice_move_lines:
+            if i['name'] in (_('Advance Amount'), _('Deposit Amount'), _('Retention Amount')):
+                if inv.sale_order_ids:
+                    sale = inv.sale_order_ids[0]
+                    invoice_ids = [x.id for x in sale.invoice_ids]
+                    invoice_ids.sort()
+                    for invoice in invoice_obj.browse(cr, uid, invoice_ids, context=context):
+                        if invoice.state not in ('draft', 'cancel'):
+                            date = invoice.date_invoice
+                            context.update({'date': date or time.strftime('%Y-%m-%d')})
+                            new_price = cur_obj.compute(cr, uid, inv.currency_id.id,
+                                    company_currency, i['amount_currency'],
+                                    context=context)
+                            if i['price'] * new_price < 0: # Change sign
+                                new_price = -new_price
+                            amount_gainloss = i['price'] - new_price
+                            gain_account_id = inv.company_id.income_currency_exchange_account_id.id
+                            loss_account_id = inv.company_id.expense_currency_exchange_account_id.id
+                            account_id = amount_gainloss > 0 and loss_account_id or gain_account_id
+                            i['price'] = new_price
+                            # Add the gain/loss line
+                            i2 = i.copy()
+                            i2['account_id'] = account_id
+                            i2['price'] = amount_gainloss
+                            i2['price_unit'] = abs(amount_gainloss)
+                            i2['name'] = _('Gain/Loss Exchange Rate')
+                            i2['amount_currency'] = False
+                            i2['currency_id'] = False
+                            new_invoice_move_lines.append(i2)
+                            break
+                new_invoice_move_lines.append(i)
+            else:
+                new_invoice_move_lines.append(i)  
+            
+        return total, total_currency, new_invoice_move_lines
+            
+#         if context is None:
+#             context={}
+#         total = 0
+#         total_currency = 0
+#         cur_obj = self.pool.get('res.currency')
+#         for i in invoice_move_lines:
+#             if inv.currency_id.id != company_currency:
+#                 context.update({'date': inv.date_invoice or time.strftime('%Y-%m-%d')})
+#                 i['currency_id'] = inv.currency_id.id
+#                 i['amount_currency'] = i['price']
+#                 i['price'] = cur_obj.compute(cr, uid, inv.currency_id.id,
+#                         company_currency, i['price'],
+#                         context=context)
+#             else:
+#                 i['amount_currency'] = False
+#                 i['currency_id'] = False
+#             i['ref'] = ref
+#             if inv.type in ('out_invoice','in_refund'):
+#                 total += i['price']
+#                 total_currency += i['amount_currency'] or i['price']
+#                 i['price'] = - i['price']
+#             else:
+#                 total -= i['price']
+#                 total_currency -= i['amount_currency'] or i['price']
+#         return total, total_currency, invoice_move_lines
 
 account_invoice()
 
