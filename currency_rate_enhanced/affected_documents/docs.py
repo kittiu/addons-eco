@@ -89,7 +89,7 @@ class res_currency(osv.osv):
                 round=True, currency_rate_type_from=False, currency_rate_type_to=False, context=None):
         if not context:
             context = {}
-        if cr.pricelist_type:  # because problem with stock.do_partial(), which not pass context, we pass it this here.
+        if hasattr(cr, 'pricelist_type') and cr.pricelist_type:  # because problem with stock.do_partial(), which not pass context, we pass it this here.
             context.update({'pricelist_type': cr.pricelist_type})
         return super(res_currency, self).compute(cr, uid, from_currency_id, to_currency_id, from_amount,
                 round=round, currency_rate_type_from=currency_rate_type_from, currency_rate_type_to=currency_rate_type_to, context=context)
