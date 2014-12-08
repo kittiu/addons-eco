@@ -36,7 +36,7 @@ Features:
 
 """,
     "depends": [
-        "base", "product","account"
+        "base", "product","account","stock"
         ],
     "data": [
         "res_currency_view.xml",
