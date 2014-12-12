@@ -48,6 +48,7 @@ class account_invoice(osv.osv):
     _columns = {
         'landedcost_alloc_move_id': fields.many2one('account.move', 'Journal Entry (Landed Cost)', readonly=True, select=1, ondelete='restrict', help="Link to the automatically generated Journal Items for Landed Cost Allocation."),
         'landedcost_alloc_move_date': fields.related('landedcost_alloc_move_id', 'date', type="date", string="Journal Date (Landed Cost)", readonly=True),
+        'force_landedcost_alloc_date': fields.date('Force Date'),
         'landedcost_alloc_ids': fields.one2many('account.invoice.landedcost.alloc', 'invoice_id', 'Landed Cost Lines'),
         'is_landedcost_alloc': fields.function(_is_landedcost_alloc, type='boolean', string='Landed Cost Allocated',
                     store={
@@ -75,7 +76,7 @@ class account_invoice(osv.osv):
             # one move line per invoice line
             iml = self.pool.get('account.invoice.landedcost.alloc').landedcost_move_line_get(cr, uid, inv.id, context=ctx)
 
-            date = time.strftime('%Y-%m-%d')
+            date = inv.force_landedcost_alloc_date or time.strftime('%Y-%m-%d')
             part = self.pool.get("res.partner")._find_accounting_partner(inv.partner_id)
             line = map(lambda x: (0, 0, self.line_get_convert(cr, uid, x, part.id, date, context=ctx)), iml)
             line = self.group_lines(cr, uid, iml, line, inv)
@@ -191,7 +192,7 @@ class account_invoice_landedcost_alloc(osv.osv):
             if inv.currency_id.id != company_currency:
                 amount_company_currency = cur_obj.compute(cr, uid, inv.currency_id.id, company_currency, line.landedcost_amount_alloc, context=ctx)
             else:
-                amount_company_currency = False
+                amount_company_currency = line.landedcost_amount_alloc
 
             sign = 1
             account_id = line.landedcost_account_id.id
