@@ -61,7 +61,7 @@ class sale_advance_payment_inv(osv.osv_memory):
         }
 
     _defaults = {
-        'retention': lambda self, cr, uid, c: c.get('retention', False)
+        'retention': lambda self, cr, uid, c: c.get('retention', False) # kittiu: not sure why we need this.
     }
 
     def create_invoices(self, cr, uid, ids, context=None):

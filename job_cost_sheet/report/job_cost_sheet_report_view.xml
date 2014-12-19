@@ -16,6 +16,7 @@
                 <field name="year" invisible="1"/>
                 <field name="day" invisible="1"/>
                 <field name="month" invisible="1"/>
+                <field name="state" invisible="1"/>
                 <field name="amount_net" sum="Total Amount"/>
                 <field name="amount_cost" sum="Total Cost"/>
                 <field name="amount_margin" sum="Total Margin"/>
@@ -45,6 +46,7 @@
                 <separator/>
                 <filter icon="terp-personal" string="My Sales" help="My Sales" domain="[('user_id','=',uid)]"/>
                 <group expand="1" string="Group By...">
+                    <filter string="State" name="State" context="{'group_by':'state'}"/>
                     <filter string="Salesperson" icon="terp-personal" name="User" context="{'group_by':'user_id'}"/>
                     <filter string="Sales Order" name="group_sale_order_id" context="{'group_by':'sale_order_id'}"/>
                     <filter string="Account" name="group_account_id" context="{'group_by':'account_id'}"/>

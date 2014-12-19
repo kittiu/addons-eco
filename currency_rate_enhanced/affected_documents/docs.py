@@ -58,4 +58,49 @@ class account_voucher(osv.osv):
         return super(account_voucher, self).action_move_line_create(cr, uid, ids, context=context)
 
 account_voucher()
+
+
+class stock_picking(osv.osv):
+    
+    _inherit = "stock.picking"
+
+    def do_partial(self, cr, uid, ids, partial_datas, context=None):
+        # pass pricelist_type variable based on pick.type, this will be passed to the currency.compute()
+        pick_types = list(set([x.type for x in self.browse(cr, uid, ids)]))
+        if len(pick_types) > 1:
+            raise osv.except_osv(_('Error'), _('Mixed Picking In/Out not allowed!'))
+        if len(pick_types) == 1:
+            if pick_types[0] == 'in':
+                context.update({'pricelist_type': 'purchase'})
+                cr.pricelist_type = 'sale'  # Actually this is not a proper way of passing value, but no choice.
+            elif pick_types[0] == 'out':
+                context.update({'pricelist_type': 'sale'})
+            #cr.pricelist_type = 'purchase'
+        return super(stock_picking, self).do_partial(cr, uid, ids, partial_datas, context=context)
+        
+stock_picking()
+
+
+class res_currency(osv.osv):
+    
+    _inherit = "res.currency"
+
+    def compute(self, cr, uid, from_currency_id, to_currency_id, from_amount,
+                round=True, currency_rate_type_from=False, currency_rate_type_to=False, context=None):
+        if not context:
+            context = {}
+        if hasattr(cr, 'pricelist_type') and cr.pricelist_type:  # because problem with stock.do_partial(), which not pass context, we pass it this here.
+            context.update({'pricelist_type': cr.pricelist_type})
+        return super(res_currency, self).compute(cr, uid, from_currency_id, to_currency_id, from_amount,
+                round=round, currency_rate_type_from=currency_rate_type_from, currency_rate_type_to=currency_rate_type_to, context=context)
+        
+res_currency()
+
+
+
+
+        
+        
+        
+        
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

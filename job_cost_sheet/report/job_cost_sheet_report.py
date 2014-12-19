@@ -40,6 +40,18 @@ class job_cost_sheet_report(osv.osv):
             ('10', 'October'), ('11', 'November'), ('12', 'December')], 'Month', readonly=True),
         'day': fields.char('Day', size=128, readonly=True),
         'user_id': fields.many2one('res.users', 'Salesperson', readonly=True),
+        'state': fields.selection([
+                ('draft', 'Draft Quotation'),
+                ('sent', 'Quotation Sent'),
+                ('cancel', 'Cancelled'),
+                ('waiting_date', 'Waiting Schedule'),
+                ('progress', 'Sales Order'),
+                ('manual', 'Sale to Invoice'),
+                ('shipping_except', 'Shipping Exception'),
+                ('invoice_except', 'Invoice Exception'),
+                ('done', 'Done'),
+            ], 'Status', readonly=True, track_visibility='onchange',
+            help="Gives the status of the quotation or sales order. \nThe exception status is automatically set when a cancel operation occurs in the processing of a document linked to the sales order. \nThe 'Waiting Schedule' status is set when the invoice is confirmed but waiting for the scheduler to run on the order date.", select=True),
         'amount_net': fields.float('Amount', readonly=True),
         'amount_cost': fields.float('Cost', readonly=True),
         'amount_margin': fields.float('Margin', readonly=True),
@@ -59,21 +71,43 @@ class job_cost_sheet_report(osv.osv):
                         aml.product_id,
                         so.date_order as date,
                         so.user_id,
+                        so.state,
                         to_char(so.date_order, 'YYYY') as year,
                         to_char(so.date_order, 'MM') as month,
                         to_char(so.date_order, 'YYYY-MM-DD') as day,
-                        avg(so.amount_net) as amount_net,
+                        case when curr.type_ref_base = 'smaller' then
+                avg(so.amount_net) / coalesce(cr.rate, 1)
+             else
+                avg(so.amount_net) * coalesce(cr.rate, 1)
+             end as amount_net,
                         sum(aml.debit-aml.credit) as amount_cost
                 from account_move_line aml
                 join account_account aa on aa.id = aml.account_id and aa.job_cost_sheet = true
                 join sale_order so on so.id = aml.ref_sale_order_id
-                group by aml.id,
-                        aml.ref_sale_order_id,
-                        aml.move_id,
-                        aml.account_id,
-                        aml.product_id,
-                        so.date_order,
-                        so.user_id
+                -- Get Currency Rate
+                JOIN product_pricelist prc on so.pricelist_id = prc.id
+                JOIN res_currency_rate cr ON (cr.currency_id = prc.currency_id)
+                    AND
+                    cr.id IN (SELECT id
+                          FROM res_currency_rate cr2
+                          WHERE (cr2.currency_id = prc.currency_id)
+                              AND ((so.date_order IS NOT NULL AND cr2.name <= so.date_order)
+                                OR (so.date_order IS NULL AND cr2.name <= NOW()))
+                          ORDER BY name DESC LIMIT 1)
+
+            -- kittiu
+            JOIN res_currency curr ON curr.id = cr.currency_id                
+            --
+                    group by aml.id,
+                            aml.ref_sale_order_id,
+                            aml.move_id,
+                            aml.account_id,
+                            aml.product_id,
+                            so.date_order,
+                            so.user_id,
+                            so.state,
+                            cr.rate,
+                            curr.type_ref_base
             )
         """)
         # Count SO
@@ -98,6 +132,7 @@ class job_cost_sheet_report(osv.osv):
                             a.product_id,
                             a.date,
                             a.user_id,
+                            a.state,
                             a.year,
                             a.month,
                             a.day,
