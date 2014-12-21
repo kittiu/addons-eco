@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+	<data>
+
+    	<menuitem id="menu_account_boi" name="BOI" parent="account.menu_finance" sequence="5"/>
+
+        <record id="view_account_boi_tree" model="ir.ui.view">
+            <field name="name">account.boi.tree</field>
+            <field name="model">account.boi</field>
+            <field name="arch" type="xml">
+                <tree string="BOI">
+                    <field name="name"/>
+                    <field name="active"/>
+                    <field name="analytic_account_id"/>
+                    <field name="date_start"/>
+                    <field name="date_end"/>
+                    <field name="warehouse_ids"/>
+                </tree>
+            </field>
+        </record>
+        <record id="view_account_boi_search" model="ir.ui.view">
+            <field name="name">account.boi.search</field>
+            <field name="model">account.boi</field>
+            <field name="arch" type="xml">
+                <search string="Search Bank Statements">
+                    <field name="name" string="BOI Cert."/>
+                    <filter string="Active" domain="[('active','=',True)]" />
+                    <filter string="Inactive" domain="[('active','=',False)]" />
+                    <!-- <group expand="0" string="Group By...">
+                        <filter string="Journal" context="{'group_by': 'journal_id'}" icon="terp-folder-orange"/>
+                        <filter string="Status" context="{'group_by': 'state'}" icon="terp-stock_effects-object-colorize"/>
+                        <filter string="Period" context="{'group_by': 'period_id'}" icon="terp-go-month"/>
+                    </group> -->
+                </search>
+            </field>
+        </record>
+        <record id="view_account_boi_form" model="ir.ui.view">
+            <field name="name">account.boi.form</field>
+            <field name="model">account.boi</field>
+            <field name="priority">1</field>
+            <field name="arch" type="xml">
+                <form string="Bank Statement" version="7.0">
+                <header>
+<!--                     <button name="button_confirm_bank" states="draft" string="Confirm" type="object" class="oe_highlight"/>
+                    <button name="button_dummy" states="draft" string="Compute" type="object" class="oe_highlight"/>
+                    <button name="button_cancel" states="confirm" string="Cancel Statement" type="object"/>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,confirm"/-->
+                </header>
+                <sheet>
+                    <label for="name" class="oe_edit_only"/>
+                    <h1><field name="name"/></h1>
+                    <group>
+                        <group>
+                            <field name="analytic_account_id" widget="selection"/>
+                            <field name="fiscal_position" widget="selection"/>
+                        	<field name="warehouse_ids" widget="many2many_tags"/>
+                        </group><group>
+                        	<field name="active" />
+                            <field name="date_start" />
+                            <field name="date_end" />
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="BOI Items/Quotas">
+                            <field name="boi_items" >
+                                <tree editable="bottom" string="Product Lines">
+                                	<field name="name"/>
+                                    <field name="quota_qty"/>
+                                    <field name="quota_uom"/>
+                                    <field name="invoiced_qty"/>
+                                </tree>
+                            </field>
+                        </page>
+                        <page string="Products Avail/Borrows">
+                            <field name="boi_product_line" context="{'boi_id': active_id}">
+                                <tree editable="bottom" string="Product Lines">
+                                    <field name="boi_id" invisible="1"/>
+                                    <field name="boi_item_id"/>
+                                    <field name="product_id"/>
+                                    <field name="avail_qty"/>
+                                    <field name="borrowed_qty"/>
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="action_account_boi" model="ir.actions.act_window">
+            <field name="name">BOI Cert.</field>
+            <field name="res_model">account.boi</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form,graph</field>
+            <field name="domain">[]</field>
+            <field name="context">{}</field>
+            <field name="search_view_id" ref="view_account_boi_search"/>
+            <field name="help" type="html">
+              <p class="oe_view_nocontent_create">
+                Click to register a new BOI Certificate
+              </p><p>
+                A BOI Certificate will have all information related to how BOI rule will be applied
+                to your organization. I.e., valid date, products in BOI, etc...
+              </p>
+            </field>
+        </record>
+        <record model="ir.actions.act_window.view" id="action_account_boi_tree">
+            <field name="sequence" eval="1"/>
+            <field name="view_mode">tree</field>
+            <field name="view_id" ref="view_account_boi_tree"/>
+            <field name="act_window_id" ref="action_account_boi"/>
+        </record>
+        <record model="ir.actions.act_window.view" id="action_account_boi_form">
+            <field name="sequence" eval="1"/>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="view_account_boi_form"/>
+            <field name="act_window_id" ref="action_account_boi"/>
+        </record>
+
+        <menuitem string="BOI Cert." action="action_account_boi" id="menu_account_boi_tree" parent="menu_account_boi" sequence="5"/>
+
+	</data>
+</openerp>

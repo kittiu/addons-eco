@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<openerp>
+    <data>
+	    <record model="ir.ui.view" id="view_purchase_requisition_form_ext">
+	        <field name="name">view.purchase.requisition.form.ext</field>
+	        <field name="model">purchase.requisition</field>
+	        <field name="inherit_id" ref="purchase_requisition.view_purchase_requisition_form"/>
+	        <field name="arch" type="xml">
+	            <xpath expr="/form/sheet/group/group/field[@name='exclusive']" position="after">
+	            	<field name="boi_id" on_change="onchange_boi_id(boi_id)" widget="selection"/>
+	            </xpath>
+	            <xpath expr="/form/sheet/group//group/field[@name='warehouse_id']" position="attributes">
+	            	<attribute name="domain">[('boi_id','=',False)]</attribute>
+	            	<attribute name="widget">False</attribute>
+	            	<attribute name="options">{'limit': 10, 'create': false, 'create_edit': false}</attribute>
+	            </xpath>
+			</field>
+	    </record>
+	</data>
+</openerp>
