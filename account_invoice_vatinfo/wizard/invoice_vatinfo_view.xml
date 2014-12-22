@@ -18,7 +18,8 @@
 	                    <group>
 	                        <field name="vatinfo_base_amount" on_change="onchange_vat(vatinfo_tax_id, vatinfo_base_amount, vatinfo_tax_amount, context)" context="{'change_field':'base_amt'}" widget="monetary" options="{'currency_field': 'currency_id'}"/>
 	                        <field name="vatinfo_tax_id" on_change="onchange_vat(vatinfo_tax_id, vatinfo_base_amount, vatinfo_tax_amount, context)" context="{'change_field':'tax_id'}" options="{'limit': 10, 'create': false, 'create_edit': false}"/>
-	                        <field name="vatinfo_tax_amount" on_change="onchange_vat(vatinfo_tax_id, vatinfo_base_amount, vatinfo_tax_amount, context)" context="{'change_field':'tax_amt'}" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+	                        <!-- <field name="vatinfo_tax_amount" on_change="onchange_vat(vatinfo_tax_id, vatinfo_base_amount, vatinfo_tax_amount, context)" context="{'change_field':'tax_amt'}" widget="monetary" options="{'currency_field': 'currency_id'}"/> -->
+	                        <field name="vatinfo_tax_amount" context="{'change_field':'tax_amt'}" widget="monetary" options="{'currency_field': 'currency_id'}"/>
 	                    </group>                    
 	                </group>
                     <footer>
