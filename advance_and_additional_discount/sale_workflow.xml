@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <record id="sale.trans_wait_invoice_invoice_manual_except" model="workflow.transition">
+            <field name="act_from" ref="sale.act_invoice_except"/>
+            <field name="act_to" ref="sale.act_invoice"/>
+            <field name="signal">manual_invoice</field>
+        </record>
+    </data>
+</openerp>
