@@ -36,6 +36,7 @@ For Retention, following are how it works,
                    'wizard/sale_line_invoice.xml',
                    'decimal_data.xml',
                    'all_view.xml','partner_view.xml','res_config_view.xml',
+                   'sale_workflow.xml'
                    ],
     'demo_xml': [],
     'test': [
