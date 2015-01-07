@@ -53,6 +53,7 @@ class account_invoice(osv.osv):
             'invoice_id_ref': False,
             'picking_ids':[],
             'sale_order_ids':[],
+            'invoice_refund_refs':[]
             })
         return super(account_invoice, self).copy(cr, uid, id, default, context)
 
