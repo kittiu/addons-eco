@@ -64,5 +64,17 @@
 				</data>
             </field>
         </record>
+        <record id="view_expenses_tree_ext" model="ir.ui.view">
+            <field name="name">view.expenses.tree.ext</field>
+            <field name="inherit_id" ref="hr_expense.view_expenses_tree" />
+            <field name="model">hr.expense.expense</field>
+            <field name="arch" type="xml">
+                <data>
+                    <xpath expr="/tree/field[@name='employee_id']" position="before">
+                		<field name="number" />
+	               	</xpath>
+				</data>
+            </field>
+        </record>
     </data>
 </openerp>
