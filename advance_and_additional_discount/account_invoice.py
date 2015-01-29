@@ -210,7 +210,8 @@ class account_invoice(AdditionalDiscountable, osv.Model):
         cur_obj = self.pool.get('res.currency')
         new_invoice_move_lines = []
         for i in invoice_move_lines:
-            if i['name'] in (_('Advance Amount'), _('Deposit Amount'), _('Retention Amount')):
+            if i['name'] in (_('Advance Amount'), _('Deposit Amount'), _('Retention Amount')) \
+                and i['amount_currency']:  # Only apply for case with currency
                 if inv.sale_order_ids:
                     sale = inv.sale_order_ids[0]
                     invoice_ids = [x.id for x in sale.invoice_ids]
