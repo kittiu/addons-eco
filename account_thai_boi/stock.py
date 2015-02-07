@@ -39,6 +39,15 @@ class stock_picking_in(osv.osv):
 
 stock_picking_in()
 
+class stock_picking_out(osv.osv):
+
+    _inherit = 'stock.picking.out'
+    _columns = {
+        'boi_id': fields.many2one('account.boi', 'BOI Cert.', ondelete='restrict'),
+    }
+
+stock_picking_out()
+
 class stock_picking(osv.osv):
 
     _inherit = "stock.picking"
@@ -51,6 +60,11 @@ class stock_picking(osv.osv):
             purchase = self.pool.get('purchase.order').browse(cr, uid, vals.get('purchase_id'))
             vals.update({
                 'boi_id': purchase.boi_id and purchase.boi_id.id or False,
+            })
+        if vals.get('sale_id', False):
+            sale = self.pool.get('sale.order').browse(cr, uid, vals.get('sale_id'))
+            vals.update({
+                'boi_id': sale.boi_id and sale.boi_id.id or False,
             })
         res = super(stock_picking, self).create(cr, uid, vals, context=context)
         return res

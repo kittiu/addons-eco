@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="withholding_cert" language="groovy" pageWidth="555" pageHeight="802" columnWidth="555" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0">
 	<property name="ireport.zoom" value="1.2100000000000077"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="536"/>
+	<property name="ireport.y" value="0"/>
 	<parameter name="SUBREPORT_DIR" class="java.lang.String">
 		<defaultValueExpression><![CDATA["/home/kittiu/workspace/openerp_ecosoft/ecosoft_addons/jrxml_reports/custom_reports/"]]></defaultValueExpression>
 	</parameter>
@@ -117,7 +117,7 @@ where $X{IN, av.id, PIDS}]]>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{taxid}.length()==13?$F{taxid}.substring( 10, 11 ):""]]></textFieldExpression>
 			</textField>
 			<textField pattern="" isBlankWhenNull="true">
-				<reportElement x="39" y="149" width="281" height="20"/>
+				<reportElement x="39" y="149" width="311" height="20"/>
 				<textElement verticalAlignment="Bottom" lineSpacing="1_1_2">
 					<font fontName="Monospaced" size="9" pdfFontName="Garuda.ttf" pdfEncoding="Identity-H"/>
 				</textElement>
@@ -224,7 +224,7 @@ $F{partner_type} == "partnership"]]></printWhenExpression>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{taxid}.length()==13?$F{taxid}.substring( 3, 4 ):""]]></textFieldExpression>
 			</textField>
 			<textField pattern="" isBlankWhenNull="true">
-				<reportElement x="43" y="98" width="465" height="22"/>
+				<reportElement x="43" y="98" width="544" height="22"/>
 				<textElement verticalAlignment="Bottom" lineSpacing="1_1_2">
 					<font fontName="Monospaced" size="9" pdfFontName="Garuda.ttf" pdfEncoding="Identity-H"/>
 				</textElement>
@@ -281,7 +281,7 @@ $F{partner_type} == "partnership"]]></printWhenExpression>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{taxid}.length()==13?$F{taxid}.substring( 0, 1 ):""]]></textFieldExpression>
 			</textField>
 			<textField pattern="" isBlankWhenNull="true">
-				<reportElement x="44" y="175" width="458" height="20"/>
+				<reportElement x="44" y="175" width="543" height="20"/>
 				<textElement verticalAlignment="Bottom" lineSpacing="1_1_2">
 					<font fontName="Monospaced" size="9" pdfFontName="Garuda.ttf" pdfEncoding="Identity-H"/>
 				</textElement>

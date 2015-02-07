@@ -34,6 +34,7 @@
                  'analytic',
                  'purchase_requisition',
                  'purchase',
+                 'sale',
                  'ext_purchase', # This one can be removed if not SQP
                  'picking_invoice_relation'
     ],
@@ -42,6 +43,7 @@
               'stock_view.xml',
               'purchase_requisition_view.xml',
               'purchase_view.xml',
+              'sale_view.xml',
               'account_invoice_view.xml'
     ],
     'test' : [
