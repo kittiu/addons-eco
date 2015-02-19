@@ -44,8 +44,7 @@ class common_voucher(object):
         currency_obj = self.pool.get('res.currency')
         inv_currency_id = invoice.currency_id.id
         cur_currency_id = journal.currency and journal.currency.id or journal.company_id.currency_id.id
-        if inv_currency_id != cur_currency_id:
-            amount = currency_obj.compute(cr, uid, inv_currency_id, cur_currency_id, float(amount), context=ctx)
+        amount = currency_obj.compute(cr, uid, inv_currency_id, cur_currency_id, float(amount), context=ctx)
         return amount
 
 common_voucher()
