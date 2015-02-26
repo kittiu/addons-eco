@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+    <data>
+        <record id="view_sale_advance_payment_inv_ext2" model="ir.ui.view">
+            <field name="name">view.sale.advance.payment.inv.ext</field>
+            <field name="model">sale.advance.payment.inv</field>
+            <field name="inherit_id" ref="create_invoice_line_percentage.view_sale_advance_payment_inv_ext"/>
+            <field name="arch" type="xml">
+                <xpath expr="//label[@for='line_percent']" position="before">
+					<field name="line_amount" on_change="onchange_line_amount(line_amount, context)"/>
+                </xpath>
+			</field>
+        </record>
+	</data>
+</openerp>

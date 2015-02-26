@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+    <data>
+        <record id="view_purchase_advance_payment_inv_ext2" model="ir.ui.view">
+            <field name="name">view.purchase.advance.payment.inv.ext</field>
+            <field name="model">purchase.advance.payment.inv</field>
+            <field name="inherit_id" ref="create_invoice_line_percentage.view_purchase_advance_payment_inv_ext"/>
+            <field name="arch" type="xml">
+                <xpath expr="//group[@name='line_percentage']" position="before">
+					<group name="line_amount" invisible="(context.get('advance_type', False) and not context.get('num_invoice', False)) or context.get('invoice_method') not in ['line_percentage']">
+						<field name="line_amount" on_change="onchange_line_amount(line_amount, context)"/>
+					</group> 
+                </xpath>
+			</field>
+        </record>
+	</data>
+</openerp>
