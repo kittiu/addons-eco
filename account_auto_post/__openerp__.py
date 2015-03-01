@@ -33,6 +33,7 @@ Arguments:
 
 * () --> Post all journals
 * ([1,2,3],) --> Post journals with journal_id in (1,2,3)   
+* ([],[4,5,6],) --> Exclude journals with journal_id in (4,5,6)  
 
     """,
     'category': 'Accounting',

@@ -28,13 +28,17 @@ class account_move(osv.osv):
 
     _inherit = 'account.move'
 
-    def process_account_post(self, cr, uid, journal_ids=None, context=None):
+    def process_account_post(self, cr, uid, journal_ids=None, exclude_journal_ids=None, context=None):
         if context is None:
             context = {}
-        if journal_ids:
-            filters = ['&', ('state', '=', 'draft'), ('journal_id', 'in', journal_ids)]
+        if not journal_ids and not exclude_journal_ids:
+            filters = [('state', '=', 'draft')]
         else:
             filters = [('state', '=', 'draft')]
+            if journal_ids:
+                filters.append(('journal_id', 'in', journal_ids))
+            if exclude_journal_ids:
+                filters.append(('journal_id', 'not in', exclude_journal_ids))            
         ids_move = self.search(cr, uid, filters, context=context)
         try:
             if ids_move:
