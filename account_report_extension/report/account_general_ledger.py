@@ -45,14 +45,14 @@ class general_ledger_ext(general_ledger):
         if account_ids:
             self.query += ' AND l.account_id in (%s) ' % ','.join(str(x) for x in account_ids)
         else:
-            self.query += ' AND false ' + self.query
+            self.query += ' AND false '
         start = self.init_query.lower().index('and l.account_id in')
         end = self.init_query.lower().index(')', start)
         self.init_query = self.init_query[:start] + self.init_query[(end+1):]     
         if account_ids:
             self.init_query += ' AND l.account_id in (%s) ' % ','.join(str(x) for x in account_ids)
         else:
-            self.init_query += ' AND false ' + self.init_query
+            self.init_query += ' AND false '
         return res
 
 report_sxw.report_sxw('report.account.general.ledger_ext', 'account.account', 'account_general_ledger.rml', parser=general_ledger_ext, header='internal')
