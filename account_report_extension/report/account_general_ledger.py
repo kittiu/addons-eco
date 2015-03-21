@@ -35,13 +35,24 @@ class general_ledger_ext(general_ledger):
 
     def set_context(self, objects, data, ids, report_type=None):
         account_ids = data['form'].get('account_ids', False)
+        if not account_ids:
+            account_ids = []
+        res = super(general_ledger_ext, self).set_context(objects, data, account_ids, report_type)
+        #self.query+=" AND l.account_id = (select id from account_account a  where a.id = l.account_id and  type1 not in ('view') )"
+        start = self.query.lower().index('and l.account_id in')
+        end = self.query.lower().index(')', start)
+        self.query = self.query[:start] + self.query[(end+1):]
         if account_ids:
-            res = super(general_ledger_ext, self).set_context(objects, data, account_ids, report_type)
-            #self.query+=" AND l.account_id = (select id from account_account a  where a.id = l.account_id and  type1 not in ('view') )"
             self.query += ' AND l.account_id in (%s) ' % ','.join(str(x) for x in account_ids)
+        else:
+            self.query += ' AND false ' + self.query
+        start = self.init_query.lower().index('and l.account_id in')
+        end = self.init_query.lower().index(')', start)
+        self.init_query = self.init_query[:start] + self.init_query[(end+1):]     
+        if account_ids:
             self.init_query += ' AND l.account_id in (%s) ' % ','.join(str(x) for x in account_ids)
         else:
-            res = super(general_ledger_ext, self).set_context(objects, data, ids, report_type)
+            self.init_query += ' AND false ' + self.init_query
         return res
 
 report_sxw.report_sxw('report.account.general.ledger_ext', 'account.account', 'account_general_ledger.rml', parser=general_ledger_ext, header='internal')
