@@ -6,8 +6,17 @@
             <field name="model">sale.advance.payment.inv</field>
             <field name="inherit_id" ref="create_invoice_line_percentage.view_sale_advance_payment_inv_ext"/>
             <field name="arch" type="xml">
+            	<!-- Invisible percent -->
+                <xpath expr="//label[@for='line_percent']" position="attributes">
+                	<attribute name="invisible">True</attribute>
+                </xpath>
+                <xpath expr="//div[2]" position="attributes">
+                	<attribute name="invisible">True</attribute>
+                </xpath>
+                <!-- Add amount -->
                 <xpath expr="//label[@for='line_percent']" position="before">
-					<field name="line_amount" on_change="onchange_line_amount(line_amount, context)"/>
+					<field name="line_amount" on_change="onchange_line_amount(line_amount, context)"
+						attrs="{'invisible': [('advance_payment_method', 'not in', ('line_percentage'))]}"/>
                 </xpath>
 			</field>
         </record>

@@ -20,6 +20,7 @@
 ##############################################################################
 
 from openerp.osv import fields, osv
+import inspect
 
 class sale_order_line(osv.osv):
     
@@ -32,12 +33,19 @@ class sale_order_line(osv.osv):
         for this in self.browse(cr, uid, ids, context=context):
             # kittiu, if product line, we need to calculate carefully
             if this.product_id and not this.product_uos: # TODO: uos case is not covered yet.
-                oline_qty = uom_obj._compute_qty(cr, uid, this.product_uom.id, this.product_uom_qty, this.product_id.uom_id.id)
+                args, v, k, d = inspect.getargspec(uom_obj._compute_qty)
+                if 'round' in args:
+                    oline_qty = uom_obj._compute_qty(cr, uid, this.product_uom.id, this.product_uom_qty, this.product_id.uom_id.id, round=False)
+                else:
+                    oline_qty = uom_obj._compute_qty(cr, uid, this.product_uom.id, this.product_uom_qty, this.product_id.uom_id.id)
                 iline_qty = 0.0
                 for iline in this.invoice_lines:
                     if iline.invoice_id.state != 'cancel':
                         if not this.product_uos: # Normal Case
-                            iline_qty += uom_obj._compute_qty(cr, uid, iline.uos_id.id, iline.quantity, iline.product_id and iline.product_id.uom_id.id or False)
+                            if 'round' in args:
+                                iline_qty += uom_obj._compute_qty(cr, uid, iline.uos_id.id, iline.quantity, iline.product_id.uom_id.id, round=False)
+                            else:
+                                iline_qty += uom_obj._compute_qty(cr, uid, iline.uos_id.id, iline.quantity, iline.product_id.uom_id.id)
                         else: # UOS case.
                             iline_qty += iline.quantity / (iline.product_id.uos_id and iline.product_id.uos_coeff or 1)                        
                 # Test quantity
