@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <record model="ir.cron" id="cronjob_account_period_close">
+            <field name='name'>Accounting Period Auto Close</field>
+            <field name='interval_number'>8</field>
+            <field name='interval_type'>hours</field>
+            <field name="numbercall">-1</field>
+            <field name="active">True</field>
+            <field name="doall" eval="False" />
+            <field name="model">account.period</field>
+            <field name="function">process_account_period_close</field>
+            <field name="args">(8,)</field>
+        </record>
+    </data>
+</openerp>
