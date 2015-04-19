@@ -14,6 +14,27 @@
 	            	<attribute name="widget">False</attribute>
 	            	<attribute name="options">{'limit': 10, 'create': false, 'create_edit': false}</attribute>
 	            </xpath>
+	            <xpath expr="/form/sheet/notebook/page/field[@name='order_line']" position="attributes">
+	            	<attribute name="attrs">{'invisible': [('boi_id','!=', False)]}</attribute>
+	            </xpath>
+	            <xpath expr="/form/sheet/notebook/page/field[@name='order_line']" position="after">
+	                <field name="boi_order_line" attrs="{'invisible': [('boi_id','=', False)]}">
+	                    <tree string="Purchase Order Lines" editable="bottom">
+                			<field name="boi_item_id" on_change="onchange_boi_item_id(boi_item_id)" required="1"/>
+	                        <field name="product_id" on_change="onchange_product_id(parent.pricelist_id,product_id,0,False,parent.partner_id, parent.date_order,parent.fiscal_position,date_planned,name,price_unit,context)" required="1"/>
+	                        <field name="name"/>
+	                        <field name="date_planned"/>
+	                        <field name="company_id" groups="base.group_multi_company" widget="selection"/>
+	                        <field name="account_analytic_id" groups="purchase.group_analytic_accounting" domain="[('type','not in',('view','template'))]"/>
+	                        <field name="product_qty" on_change="onchange_product_id(parent.pricelist_id,product_id,product_qty,product_uom,parent.partner_id,parent.date_order,parent.fiscal_position,date_planned,name,price_unit,context)"/>
+	                        <field name="product_uom" groups="product.group_uom" on_change="onchange_product_uom(parent.pricelist_id,product_id,product_qty,product_uom,parent.partner_id, parent.date_order,parent.fiscal_position,date_planned,name,price_unit,context)"/>
+	                        <field name="price_unit"/>
+	                        <field name="discount"/>
+	                        <field name="taxes_id" widget="many2many_tags" domain="[('parent_id','=',False),('type_tax_use','!=','sale')]"/>
+	                        <field name="price_subtotal"/>
+	                    </tree>
+	                </field>	            
+	            </xpath>
 			</field>
 	    </record>
 	</data>

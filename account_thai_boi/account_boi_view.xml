@@ -77,8 +77,8 @@
                                     <field name="boi_id" invisible="1"/>
                                     <field name="boi_item_id"/>
                                     <field name="product_id"/>
-                                    <field name="avail_qty"/>
-                                    <field name="borrowed_qty"/>
+                                    <field name="qty_available"/>
+                                    <field name="qty_borrowed"/>
                                 </tree>
                             </field>
                         </page>

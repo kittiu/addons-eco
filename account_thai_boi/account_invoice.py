@@ -29,8 +29,8 @@ class account_invoice(osv.osv):
         for invoice in self.browse(cr, uid, ids, context=context):
             if invoice.purchase_order_ids:  # PO
                 res[invoice.id] = invoice.purchase_order_ids[0] and invoice.purchase_order_ids[0].boi_id.id or False
-            elif invoice.sale_order_ids:  # SO
-                res[invoice.id] = invoice.sale_order_ids[0] and invoice.sale_order_ids[0].boi_id.id or False
+#             elif invoice.sale_order_ids:  # SO
+#                 res[invoice.id] = invoice.sale_order_ids[0] and invoice.sale_order_ids[0].boi_id.id or False
         return res    
         
     _columns = {

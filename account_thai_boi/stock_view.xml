@@ -9,7 +9,7 @@
 		    <field name="arch" type="xml">
                 <data>
                 	<field name="company_id" position="before">
-                		<field name="boi_id" widget="selection" />
+                		<field name="boi_id" widget="selection" readonly="0"/>
                 	</field>
 				</data>
 			</field>

@@ -18,7 +18,7 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 ##############################################################################
-
+import openerp.addons.decimal_precision as dp
 from openerp.osv import fields, osv
 
 class account_boi(osv.osv):
@@ -32,7 +32,7 @@ class account_boi(osv.osv):
         'fiscal_position': fields.many2one('account.fiscal.position', 'Fiscal Position'),
         'date_start': fields.date('Permit Start Date'),
         'date_end': fields.date('Permit End Date'),
-        'warehouse_ids': fields.one2many('stock.warehouse', 'boi_id', 'Warehouses', readonly=True, help="In Warehouse window, you can specify warehouse for this BOI"),
+        'warehouse_ids': fields.one2many('stock.warehouse', 'boi_id', 'Warehouses', readonly=False, help="In Warehouse window, you can specify warehouse for this BOI"),
         'boi_items': fields.one2many('account.boi.item', 'boi_id', 'BOI Products', readonly=False),
         'boi_product_line': fields.one2many('account.boi.product', 'boi_id', 'BOI Products', readonly=False),
     }
@@ -64,12 +64,51 @@ class account_boi_product(osv.osv):
     _name = "account.boi.product"
     _description = "BOI Products Avail & Borrows"
     _rec_name = "product_id"
+    
+    def _product_available(self, cr, uid, ids, field_names=None, arg=False, context=None):
+        """ Finds the incoming and outgoing quantity of product.
+        @return: Dictionary of values
+        """
+        if not field_names:
+            field_names = []
+        if context is None:
+            context = {}
+        res = {}
+        product_ids = []
+        boi_product = {}
+        boi = self.browse(cr, uid, ids[0]).boi_id
+        warehouses= boi.warehouse_ids
+        for id in ids:
+            res[id] = {}.fromkeys(field_names, 0.0)
+            obj = self.browse(cr, uid, id)
+            product_id = obj.product_id.id
+            product_ids.append(product_id)
+            boi_product.update({id: product_id})
+        for f in field_names:
+            c = context.copy()
+            if f == 'qty_available':
+                c.update({ 'states': ('done',), 'what': ('in', 'out') })
+#             if f == 'virtual_available':
+#                 c.update({ 'states': ('confirmed','waiting','assigned','done'), 'what': ('in', 'out') })
+#             if f == 'incoming_qty':
+#                 c.update({ 'states': ('confirmed','waiting','assigned'), 'what': ('in',) })
+#             if f == 'outgoing_qty':
+#                 c.update({ 'states': ('confirmed','waiting','assigned'), 'what': ('out',) })
+            for warehouse in warehouses:
+                c.update({'warehouse': warehouse.id})
+                stock = self.pool.get('product.product').get_product_available(cr, uid, product_ids, context=c)
+                for id in ids:
+                    res[id][f] += stock.get(boi_product[id], 0.0)
+        return res
+    
     _columns = {
         'boi_id': fields.many2one('account.boi', 'BOI Cert.', required=True, ondelete='cascade', select=True, ),
         'boi_item_id': fields.many2one('account.boi.item', 'BOI Item', ondelete='restrict', domain="[('boi_id','=',boi_id)]", required=True),
         'product_id': fields.many2one('product.product', 'Product', domain=[('purchase_ok','=',True)], required=True),
-        'avail_qty': fields.float('Available Qty'),
-        'borrowed_qty': fields.float('Borrowed Qty'),
+        'qty_available': fields.function(_product_available, multi='qty_available',
+                type='float',  digits_compute=dp.get_precision('Product Unit of Measure'),
+                string='Available Qty'),
+        'qty_borrowed': fields.float('Borrowed Qty'),
     }
     _defaults = {
         'boi_id': lambda s, cr, uid, c: c.get('boi_id', False)
