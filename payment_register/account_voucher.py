@@ -133,7 +133,7 @@ class account_voucher(osv.osv):
             register_ids = payment_register_pool.search(cr, uid, [('voucher_id', '=', voucher.id), ('state', '<>', 'cancel')], limit=1)
             if register_ids:  # if at least 1 record not cancelled, raise error
                 raise osv.except_osv(_('Error!'), _('You can not cancel this Payment.\nYou need to cancel all Payment Details associate with this payment first.'))
-            register_ids = payment_register_pool.search(cr, uid, [('voucher_id', '=', voucher.id)])
+            #register_ids = payment_register_pool.search(cr, uid, [('voucher_id', '=', voucher.id)])
             if register_ids == []:  # All register has been deleted.
                 self.write(cr, uid, [voucher.id], {'is_paydetail_created': False})
         # Normal call
