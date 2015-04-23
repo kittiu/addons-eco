@@ -58,7 +58,7 @@
                 <header invisible="0">
                     <button name="validate_register" string="Validate" states="draft" class="oe_highlight"/>
                     <button name="cancel_register" string="Cancel" states="draft"/>
-                    <button name="cancel_register" string="Cancel" type="object" states="posted" confirm="Are you sure to cancel this record ?"/>
+                    <button name="cancel_register" string="Cancel" type="object" states="posted,bounce_check" confirm="Are you sure to cancel this record ?"/>
                     <button name="bounce_check" string="Bounced Check" type="object" states="posted" confirm="Are you sure to mark this as bounced check and create new one ?"/>
                     <button name="cancel_to_draft" string="Set to Draft" type="object" states="cancel" invisible="0"/>
                     <field name="state" widget="statusbar" statusbar_visible="draft,posted" statusbar_colors='{"posted":"blue"}'/>
