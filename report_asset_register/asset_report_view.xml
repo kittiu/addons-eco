@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <report 
+            auto="False" 
+            id="report_asset_categories" 
+            model="account.asset.asset"
+            name="asset.categories" 
+            rml="report_asset_register/report/asset_categories_report.rml"
+            string="Assets Register Report" />
+    </data>
+</openerp>

@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+        <menuitem id="menu_asset_report" name="Assets" parent="account.menu_finance_generic_reporting" sequence="3" />
+
+        <record id="fixed_asset_register_report_view" model="ir.ui.view">
+            <field name="name">Asset Register</field>
+            <field name="model">fixed.asset.register.report</field>
+            <field name="arch" type="xml">
+                <form string="Report Options" version="7.0">
+                    <group col="4">
+                        <field name="company_id" widget="selection"/>
+                        <field name="fiscalyear_id" domain="[('company_id','=',company_id)]" />
+                        <field name="excel_report" />
+                    </group>
+                    <notebook tabpos="up" colspan="4">
+                        <page string="Filters" name="filters">
+                            <group>
+                                <field name="filter" on_change="onchange_filter(filter, fiscalyear_id)" />
+                            </group>
+                            <group string="Dates" attrs="{'invisible':[('filter', '!=', 'filter_date')], 'required':[('filter', '=', 'filter_date')]}">
+                                <field name="date_from" attrs="{'invisible':[('filter', '!=', 'filter_date')], 'required':[('filter', '=', 'filter_date')]}" />
+                                <field name="date_to"  attrs="{'invisible':[('filter', '!=', 'filter_date')], 'required':[('filter', '=', 'filter_date')]}"/>
+                            </group>
+                            <group string="Periods" attrs="{'invisible':[('filter','!=','filter_period')], 'required':[('filter', '=', 'filter_period')]}">
+                                <field name="period_from" attrs="{'invisible':[('filter','!=','filter_period')], 'required':[('filter', '=', 'filter_period')]}" domain="[('fiscalyear_id', '=', fiscalyear_id)]" />
+                                <field name="period_to" attrs="{'invisible':[('filter','!=','filter_period')], 'required':[('filter', '=', 'filter_period')]}" domain="[('fiscalyear_id', '=', fiscalyear_id)]" />
+                            </group>
+                        </page>
+                        <page string="Asset Categories" name="asset_categ_ids">
+                            <field name="asset_categ_ids" />
+                        </page>
+                    </notebook>
+                    <footer>
+                    <!-- <button name="print_report" string="Print" type="object" default_focus="1" 
+                        class="oe_highlight"/> -->
+                    <button name="check_report" string="Print" type="object" default_focus="1" class="oe_highlight" />
+                        or
+                    <button string="Cancel" class="oe_link" special="cancel" />
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <record id="action_fixed_asset_register_report_menu" model="ir.actions.act_window">
+            <field name="name">Assets Register</field>
+            <field name="res_model">fixed.asset.register.report</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="fixed_asset_register_report_view" />
+            <field name="target">new</field>
+        </record>
+
+        <menuitem name="Assets Register" parent="menu_asset_report"
+        action="action_fixed_asset_register_report_menu" id="menu_account_asset_categories"
+        icon="STOCK_PRINT" />
+
+
+        <record id="wizard_xls_report_download" model="ir.ui.view">
+            <field name="name">Invoice Reports</field>
+            <field name="model">xls.report.wizard</field>
+            <field name="arch" type="xml">
+            <form string="Invoive Report" version="7.0">
+                <group>
+                    <field name="data" filename="name" />
+                    <field name="name" invisible="1" />
+                </group>
+                <footer>
+                    <button special="cancel" string="Cancel" class="oe_link" />
+                </footer>
+            </form>
+            </field>
+        </record>
+
+    </data>
+</openerp>
