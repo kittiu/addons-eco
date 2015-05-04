@@ -14,7 +14,7 @@
                     <field name="analytic_account_id"/>
                     <field name="date_start"/>
                     <field name="date_end"/>
-                    <field name="warehouse_ids"/>
+                    <field name="location_ids"/>
                 </tree>
             </field>
         </record>
@@ -53,7 +53,7 @@
                         <group>
                             <field name="analytic_account_id" widget="selection"/>
                             <field name="fiscal_position" widget="selection"/>
-                        	<field name="warehouse_ids" widget="many2many_tags"/>
+                        	<field name="location_ids" widget="many2many_tags"/>
                         </group><group>
                         	<field name="active" />
                             <field name="date_start" />
@@ -79,6 +79,25 @@
                                     <field name="product_id"/>
                                     <field name="qty_available"/>
                                     <field name="qty_borrowed"/>
+                                    <button name="action_view_borrowed_move"
+                                        string="View Borrowed Movement" type="object"
+                                        icon="STOCK_ZOOM_IN" />
+                                    <field name="qty_consumed"/>
+                                    <button name="action_view_consumed_move"
+                                        string="View Consumed Movement" type="object"
+                                        icon="STOCK_ZOOM_IN" />
+                                </tree>
+                            </field>
+                        </page>
+                        <page string="Borrow Details">
+                            <field name="boi_product_borrow_detail" >
+                                <tree string="Product Lines">
+                                    <field name="boi_id" />
+                                    <field name="boi_location_id"/>
+                                    <field name="borrow_location_id"/>
+                                    <field name="product_id" />
+                                    <field name="quantity"/>
+                                    <field name="uom_name"/>
                                 </tree>
                             </field>
                         </page>

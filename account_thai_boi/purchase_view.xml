@@ -37,5 +37,24 @@
 	            </xpath>
 			</field>
 	    </record>
+		<record id="view_purchase_order_filter_ext" model="ir.ui.view">
+            <field name="name">view.purchase.order.filter.ext</field>
+            <field name="model">purchase.order</field>
+            <field name="inherit_id" ref="purchase.view_purchase_order_filter" />
+            <field name="arch" type="xml">
+                <data>
+                    <xpath expr="/search/field[@name='name']" position="after">
+                    	<field name="boi_id" string="BOI Cert."/>
+                    </xpath>
+                    <xpath expr="/search/field[@name='name']" position="after">
+                    	<filter name="boi_true" string="BOI" domain="[('boi_id','!=',False)]" />
+                    	<filter name="boi_false" string="Non-BOI" domain="[('boi_id','=',False)]" />
+                    </xpath>
+                	<xpath expr="/search/group" position="inside">
+                        <filter string="BOI Cert." domain="[]" context="{'group_by':'boi_id'}"/>
+         			</xpath> 
+				</data>
+            </field>
+        </record>     
 	</data>
 </openerp>

@@ -1,16 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <openerp>
 	<data>
-        <record id="view_warehouse_ext" model="ir.ui.view">
-		    <field name="name">view.warehouse.ext</field>
-		    <field name="model">stock.warehouse</field>
+         <record id="view_location_form_ext" model="ir.ui.view">
+		    <field name="name">view.location.form.ext</field>
+		    <field name="model">stock.location</field>
 		    <field name="type">form</field>
-		    <field name="inherit_id" ref="stock.view_warehouse"/>
+		    <field name="inherit_id" ref="stock.view_location_form"/>
 		    <field name="arch" type="xml">
                 <data>
-                	<field name="company_id" position="before">
-                		<field name="boi_id" widget="selection" readonly="0"/>
-                	</field>
+                	<h2 position="after">
+	                    <label for="boi_id" class="oe_edit_only"/>
+	                    <h2><field name="boi_id"/></h2>
+                	</h2>
 				</data>
 			</field>
 		</record>
@@ -22,6 +23,18 @@
             <field name="arch" type="xml">
                 <xpath expr="//field[@name='stock_journal_id']" position="after">
                 	<field name="boi_id" widget="selection" />
+                	<field name="is_borrow" invisible="1"/>
+                	<group string="Borrow Details" colspan="2" attrs="{'invisible': [('is_borrow','=',False)]}">
+                		<field name="boi_product_borrow_detail" nolabel="1" >
+							<tree string="Product Lines">
+							    <field name="boi_id" />
+							    <field name="boi_location_id"/>
+							    <field name="product_id" />
+							    <field name="quantity"/>
+							    <field name="uom_name"/>
+							</tree>                		
+                    	</field>
+                	</group>
                 </xpath>
             </field>
         </record>
@@ -32,6 +45,7 @@
             <field name="arch" type="xml">
                 <xpath expr="//field[@name='stock_journal_id']" position="after">
                 	<field name="boi_id" widget="selection" />
+                	<field name="boi_product_borrow_detail" />
                 </xpath>
             </field>
         </record>
