@@ -73,13 +73,17 @@ class sale_order(osv.osv):
     def onchange_boi_id(self, cr, uid, ids, boi_id=False, context=None):
         shop_ids = self.pool.get('sale.shop').search(cr, uid, [('boi_id','=',boi_id)])
         if boi_id:
-            fiscal_position_id = self.pool.get('account.boi').browse(cr, uid, boi_id).fiscal_position.id
+            boi = self.pool.get('account.boi').browse(cr, uid, boi_id)
+            analytic_account_id = boi.analytic_account_id and boi.analytic_account_id.id
+            fiscal_position_id = boi.fiscal_position and boi.fiscal_position.id
             res = {'value': {'shop_id': shop_ids and shop_ids[0] or False,
-                             'fiscal_position': fiscal_position_id},
+                             'fiscal_position': fiscal_position_id,
+                             'project_id': analytic_account_id},
                    'domain': {'shop_id': [('id', 'in', shop_ids)]}}
         else:
             res = {'value': {'shop_id': shop_ids and shop_ids[0] or False,
                              'fiscal_position': False},
+                             'project_id': False,
                    'domain': {'shop_id': [('id', 'in', shop_ids)]}}
         return res
     
