@@ -21,24 +21,53 @@
 import openerp.addons.decimal_precision as dp
 from openerp.osv import fields, osv
 from openerp import tools
+from datetime import datetime
 
 
 class account_boi(osv.osv):
 
     _name = "account.boi"
     _description = "BOI Certificate"
+
+    def _search_is_active(self, cr, uid, obj, name, args, domain=None, context=None):
+        if not len(args):
+            return []
+        today = fields.date.context_today(self,cr,uid,context=context)
+        for arg in args:
+            if arg[1] == '=':
+                if arg[2]:  # Active = True
+                    cr.execute("select id from account_boi where %s between date_start and date_end", (today,))
+                else:
+                    cr.execute("select id from account_boi where %s not between date_start and date_end", (today,))
+                ids = map(lambda x: x[0], cr.fetchall())
+            else:
+                return []
+        return [('id', 'in', [id for id in ids])]
+
+    def _is_active(self, cr, uid, ids, field_names, arg=None, context=None):
+        res =  dict.fromkeys(ids, False)
+        today = datetime.strptime(fields.date.context_today(self,cr,uid,context=context), '%Y-%m-%d')
+        for boi in self.browse(cr, uid, ids):
+            date_start = datetime.strptime(boi.date_start, '%Y-%m-%d')
+            date_end = datetime.strptime(boi.date_end, '%Y-%m-%d')
+            if date_start <= today <= date_end:
+                res[boi.id] = True
+        return res  
+      
     _columns = {
         'name': fields.char('BOI Cert.', size=64, required=True),
-        'active': fields.boolean('Active'),
+        'active': fields.function(_is_active, string='Active', type='boolean', fnct_search=_search_is_active,
+                                  help="This active flag will be automatically reset based on date"),
         'analytic_account_id': fields.many2one('account.analytic.account', 'Analytic Account', domain=[('type','=','boi')], required=True, help="Analytic Account of type BOI"),
         'fiscal_position': fields.many2one('account.fiscal.position', 'Fiscal Position'),
         'date_start': fields.date('Permit Start Date'),
         'date_end': fields.date('Permit End Date'),
         'location_ids': fields.one2many('stock.location', 'boi_id', 'Locations', readonly=False, help="Specify location for this BOI"),
-        'boi_items': fields.one2many('account.boi.item', 'boi_id', 'BOI Products', readonly=False),
-        'boi_product_line': fields.one2many('account.boi.product', 'boi_id', 'BOI Products', readonly=False),
+        'boi_items': fields.one2many('account.boi.item', 'boi_id', 'BOI Products', domain=[('is_fg','=',False)], readonly=False),
+        'boi_items_fg': fields.one2many('account.boi.item', 'boi_id', 'BOI Products', domain=[('is_fg','=',True)], readonly=False),
+        'boi_product_line': fields.one2many('account.boi.product', 'boi_id', 'BOI Products', domain=[('is_fg','=',False)], readonly=False),
+        'boi_product_line_fg': fields.one2many('account.boi.product', 'boi_id', 'BOI Products', domain=[('is_fg','=',True)], readonly=False),
         'boi_product_borrow_detail': fields.one2many('account.boi.product.borrow.detail', 'boi_id', 'Borrow Details', readonly=True)
-        
     }
     _defaults = {
         'active': True,
@@ -83,8 +112,6 @@ class account_boi_item(osv.osv):
         """, (tuple(ids),))
         for x in cr.fetchall():
             res[x[0]] = x[1]
-            print x
-        print res
         return res
     
     _columns = {
@@ -93,10 +120,13 @@ class account_boi_item(osv.osv):
         'quota_qty': fields.float('Quota Qty', required=True, help="??? Should quota be specified by BOI Item ???"),
         'quota_uom': fields.many2one('product.uom', 'UoM'),
         'invoiced_qty': fields.function(_invoiced_qty, string='Invoiced Quantity', type='float', help="Quantity of this BOI Item that suppliers has invoiced (Supplier Invoice)"),
+        'is_fg': fields.boolean('Finished Goods')
         #'invoiced_qty': fields.float('xxxx')
         #'used_qty': fields.function('Used Quantity', type='float', help="Quantity of this BOI Item that has been used in manufacturing (moved to production area)"),
     }
-
+    _defaults = {
+        'is_fg': lambda self,cr,uid,c: c.get('is_fg', False),
+    }
 account_boi_item()
 
 class account_boi_product(osv.osv):
@@ -239,7 +269,7 @@ class account_boi_product(osv.osv):
     _columns = {
         'boi_id': fields.many2one('account.boi', 'BOI Cert.', required=True, ondelete='cascade', select=True, ),
         'boi_item_id': fields.many2one('account.boi.item', 'BOI Item', ondelete='restrict', domain="[('boi_id','=',boi_id)]", required=True),
-        'product_id': fields.many2one('product.product', 'Product', domain=[('purchase_ok','=',True)], required=True),
+        'product_id': fields.many2one('product.product', 'Product', domain="['|', ('sale_ok','=',is_fg), ('purchase_ok','!=',is_fg)]", required=True),
         'qty_available': fields.function(_product_available,
                 type='float',  digits_compute=dp.get_precision('Product Unit of Measure'), multi='qty',
                 string='Available Qty'),
@@ -249,10 +279,11 @@ class account_boi_product(osv.osv):
         'qty_consumed': fields.function(_product_used, 
                 type='float',  digits_compute=dp.get_precision('Product Unit of Measure'),
                 string='Consumed Qty', multi="qty_used"),
-        #'qty_borrowed': fields.float('XXX')
+        'is_fg': fields.boolean('Finished Goods')        #'qty_borrowed': fields.float('XXX')
     }
     _defaults = {
-        'boi_id': lambda s, cr, uid, c: c.get('boi_id', False)
+        'boi_id': lambda self,cr,uid,c: c.get('boi_id', False),
+        'is_fg': lambda self,cr,uid,c: c.get('is_fg', False),
     }
     
     def action_view_borrowed_move(self, cr, uid, ids, context=None):
@@ -301,7 +332,6 @@ class account_boi_product(osv.osv):
 #                             '|', '&', ('location_id','in',this_loc_ids), ('location_dest_id','in',other_loc_ids),
 #                                  '&', ('location_dest_id','in',this_loc_ids), ('location_id','in',other_loc_ids)]
         result['context'] = {}
-        print result['domain']
         return result
     
 account_boi_product()

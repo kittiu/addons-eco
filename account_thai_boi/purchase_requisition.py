@@ -30,10 +30,10 @@ class purchase_requisition(osv.osv):
         warehouse_ids = self.pool.get('stock.warehouse').search(cr, uid, [('boi_id','=',boi_id)])
         if boi_id:
             res = {'value': {'warehouse_id': warehouse_ids and warehouse_ids[0] or False},
-                   'domain': {'warehouse_id': [('boi_id', '=', boi_id)]}}
+                   'domain': {'warehouse_id': [('id', '=', warehouse_ids)]}}
         else:
             res = {'value': {'warehouse_id': warehouse_ids and warehouse_ids[0] or False},
-                   'domain': {'warehouse_id': [('boi_id', '=', False)]}}
+                   'domain': {'warehouse_id': [('id', '=', warehouse_ids)]}}
         return res
     
     _columns = {

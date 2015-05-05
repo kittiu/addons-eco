@@ -1,6 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <openerp>
-	<data>
+	<data>        
+		<record id="view_warehouse_ext" model="ir.ui.view">
+		    <field name="name">view.warehouse.ext</field>
+		    <field name="model">stock.warehouse</field>
+		    <field name="type">form</field>
+		    <field name="inherit_id" ref="stock.view_warehouse"/>
+		    <field name="arch" type="xml">
+                <data>
+                	<field name="company_id" position="before">
+                		<field name="boi_id" widget="selection" readonly="0"/>
+                	</field>
+				</data>
+			</field>
+		</record>
+		
          <record id="view_location_form_ext" model="ir.ui.view">
 		    <field name="name">view.location.form.ext</field>
 		    <field name="model">stock.location</field>
@@ -45,7 +59,6 @@
             <field name="arch" type="xml">
                 <xpath expr="//field[@name='stock_journal_id']" position="after">
                 	<field name="boi_id" widget="selection" />
-                	<field name="boi_product_borrow_detail" />
                 </xpath>
             </field>
         </record>

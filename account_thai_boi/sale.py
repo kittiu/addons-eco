@@ -22,26 +22,69 @@
 import types
 from openerp.osv import fields,osv
 
-class purchase_order(osv.osv):
+
+class sale_shop(osv.osv):
+
+    _inherit = "sale.shop"
+
+    def _get_boi_id(self, cr, uid, ids, field_names, arg=None, context=None):
+        """ BOI Cert. from Stock Location of this warehouse """
+        res =  dict.fromkeys(ids, False)
+        for shop in self.browse(cr, uid, ids):
+            res[shop.id] = shop.warehouse_id.boi_id and shop.warehouse_id.boi_id.id or False
+        return res  
+     
+    def _search_boi_id(self, cr, uid, obj, name, args, domain=None, context=None):
+        if not len(args):
+            return []
+        today = fields.date.context_today(self,cr,uid,context=context)
+        ids = []
+        for arg in args:
+            if arg[1] == '=':
+                if arg[2]:
+                    cr.execute("""
+                        select shop.id, active from sale_shop shop
+                        join stock_warehouse wh on wh.id = shop.warehouse_id
+                        join stock_location loc on wh.lot_stock_id = loc.id
+                        where loc.boi_id = %s and active = True
+                    """, (arg[2],))
+                else:
+                    cr.execute("""
+                        select shop.id, active from sale_shop shop
+                        join stock_warehouse wh on wh.id = shop.warehouse_id
+                        join stock_location loc on wh.lot_stock_id = loc.id
+                        where loc.boi_id is null and active = True
+                    """)
+                 
+                ids = map(lambda x: x[0], cr.fetchall())
+        return [('id', 'in', [id for id in ids])] 
+       
+    _columns = {
+        'boi_id': fields.function(_get_boi_id, fnct_search=_search_boi_id, string='BOI Cert.', type='many2one', relation='account.boi',
+                                  help="This BOI Cert. is retrieved from Stock Location of this shop"),
+    }
+
+sale_shop()
+
+class sale_order(osv.osv):
     
-    _inherit = "purchase.order"
+    _inherit = "sale.order"
     
     def onchange_boi_id(self, cr, uid, ids, boi_id=False, context=None):
-        warehouse_ids = self.pool.get('stock.warehouse').search(cr, uid, [('boi_id','=',boi_id)])
+        shop_ids = self.pool.get('sale.shop').search(cr, uid, [('boi_id','=',boi_id)])
         if boi_id:
             fiscal_position_id = self.pool.get('account.boi').browse(cr, uid, boi_id).fiscal_position.id
-            res = {'value': {'warehouse_id': warehouse_ids and warehouse_ids[0] or False,
+            res = {'value': {'shop_id': shop_ids and shop_ids[0] or False,
                              'fiscal_position': fiscal_position_id},
-                   'domain': {'warehouse_id': [('id', 'in', warehouse_ids)]}}
+                   'domain': {'shop_id': [('id', 'in', shop_ids)]}}
         else:
-            res = {'value': {'warehouse_id': warehouse_ids and warehouse_ids[0] or False,
+            res = {'value': {'shop_id': shop_ids and shop_ids[0] or False,
                              'fiscal_position': False},
-                   'domain': {'warehouse_id': [('id', 'in', warehouse_ids)]}}
+                   'domain': {'shop_id': [('id', 'in', shop_ids)]}}
         return res
     
     _columns = {
         'boi_id': fields.many2one('account.boi', 'BOI Cert.', ondelete='restrict'),
-        'boi_order_line': fields.one2many('purchase.order.line', 'order_id', 'Order Lines', states={'approved':[('readonly',True)],'done':[('readonly',True)]}),
     }    
     
 #     def write(self, cr, uid, ids, vals, context=None):
@@ -61,17 +104,21 @@ class purchase_order(osv.osv):
 #                     purchase_line_obj.write(cr, uid, [line.id], {'taxes_id': [(6, 0, taxes)]})
 #         return res
     
-purchase_order()
+sale_order()
 
 
-class purchase_order_line(osv.osv):
+class sale_order_line(osv.osv):
     
-    _inherit = "purchase.order.line"
+    _inherit = "sale.order.line"
     
     _columns = {
-        'boi_item_id': fields.many2one('account.boi.item', 'BOI Item', domain="[('boi_id','=',parent.boi_id), ('is_fg','=',False)]", ondelete='restrict'),   
+        'boi_id': fields.many2one('account.boi', 'BOI Cert.'),
+        'boi_item_id': fields.many2one('account.boi.item', 'BOI Item', domain="[('boi_id','=',parent.boi_id), ('is_fg','=',True)]", ondelete='restrict'),   
     }    
-  
+    _defaults = {
+        'boi_id': lambda self,cr,uid,c: c.get('boi_id', False),
+    }
+    
     def onchange_boi_item_id(self, cr, uid, ids, boi_item_id, context=None):
         if not boi_item_id:
             return {'value': {'account_analytic_id': False,
@@ -84,6 +131,6 @@ class purchase_order_line(osv.osv):
         return {'value': {'account_analytic_id': boi_item.boi_id.analytic_account_id and boi_item.boi_id.analytic_account_id.id},
                 'domain': {'product_id': [('id','in',product_ids)]}}
   
-purchase_order_line()
+sale_order_line()
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

@@ -21,6 +21,47 @@
 
 from openerp.osv import fields, osv
 
+class stock_warehouse(osv.osv):
+
+    _inherit = "stock.warehouse"
+
+    def _get_boi_id(self, cr, uid, ids, field_names, arg=None, context=None):
+        """ BOI Cert. from Stock Location of this warehouse """
+        res =  dict.fromkeys(ids, False)
+        for wh in self.browse(cr, uid, ids):
+            res[wh.id] = wh.lot_stock_id.boi_id and wh.lot_stock_id.boi_id.id or False
+        return res  
+    
+    def _search_boi_id(self, cr, uid, obj, name, args, domain=None, context=None):
+        if not len(args):
+            return []
+        today = fields.date.context_today(self,cr,uid,context=context)
+        ids = []
+        for arg in args:
+            if arg[1] == '=':
+                if arg[2]:
+                    cr.execute("""
+                        select wh.id, active from stock_warehouse wh 
+                        join stock_location loc on wh.lot_stock_id = loc.id
+                        where loc.boi_id = %s and active = True
+                    """, (arg[2],))
+                else:
+                    cr.execute("""
+                        select wh.id, active from stock_warehouse wh 
+                        join stock_location loc on wh.lot_stock_id = loc.id
+                        where loc.boi_id is null and active = True
+                    """)
+                
+                ids = map(lambda x: x[0], cr.fetchall())
+        return [('id', 'in', [id for id in ids])] 
+       
+    _columns = {
+        'boi_id': fields.function(_get_boi_id, fnct_search=_search_boi_id, string='BOI Cert.', type='many2one', relation='account.boi',
+                                  help="This BOI Cert. is retrieved from Stock Location of this warehouse"),
+    }
+
+stock_warehouse()
+
 class stock_location(osv.osv):
 
     _inherit = "stock.location"
@@ -61,7 +102,7 @@ class stock_picking_out(osv.osv):
         'boi_product_borrow_detail': fields.function(_get_boi_product_borrow_detail, method=True, type='one2many', relation='account.boi.product.borrow.detail', string='Borrow Details'),
         'is_borrow': fields.function(_is_borrow, type='boolean', string='Borrow')
     }
-
+    
 stock_picking_out()
 
 class stock_picking(osv.osv):
@@ -89,6 +130,7 @@ class stock_picking(osv.osv):
         return res
     
     _columns = {
+        'boi_id': fields.many2one('account.boi', 'BOI Cert.', ondelete='restrict'), 
         'boi_product_borrow_detail': fields.function(_get_boi_product_borrow_detail, method=True, type='one2many', relation='account.boi.product.borrow.detail', string='Borrow Details'),
         'is_borrow': fields.function(_is_borrow, type='boolean', string='Borrow')
     }    

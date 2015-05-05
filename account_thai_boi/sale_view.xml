@@ -1,0 +1,72 @@
+<?xml version="1.0"?>
+<openerp>
+    <data>
+    
+
+        <record id="view_sale_shop_form_inherit" model="ir.ui.view">
+            <field name="name">sale.shop.inherit.form</field>
+            <field name="model">sale.shop</field>
+            <field name="inherit_id" ref="sale.view_shop_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='project_id']" position="before">
+                	<field name="boi_id" />
+                </xpath>
+            </field>
+        </record>
+		   
+	    <record model="ir.ui.view" id="view_order_form_ext">
+	        <field name="name">view.order.form.ext</field>
+	        <field name="model">sale.order</field>
+	        <field name="inherit_id" ref="sale.view_order_form"/>
+	        <field name="arch" type="xml">
+	            <xpath expr="/form/sheet/group/group/field[@name='partner_shipping_id']" position="after">
+	            	<field name="boi_id" on_change="onchange_boi_id(boi_id)" widget="selection"/>
+	            </xpath>
+	            <xpath expr="/form/sheet/notebook/page/field[@name='order_line']" position="attributes">
+	            	<attribute name="context">{'boi_id': boi_id}</attribute>
+	            </xpath>
+	            <xpath expr="/form/sheet/notebook/page/field[@name='order_line']/form//field[@name='product_id']" position="before">
+	            	<field name="boi_id" invisible="1"/>
+            		<field name="boi_item_id" on_change="onchange_boi_item_id(boi_item_id)" attrs="{'invisible': [('boi_id','=',False)], 'required': [('boi_id','!=',False)]}"/>
+	            </xpath>
+	            <xpath expr="/form/sheet/notebook/page/field[@name='order_line']/tree/field[@name='product_id']" position="before">
+            		<field name="boi_item_id" />
+	            </xpath>
+			</field>
+	    </record>
+	    <record model="ir.ui.view" id="view_order_form_inherit">
+	        <field name="name">view.order.form.inherit</field>
+	        <field name="model">sale.order</field>
+	        <field name="inherit_id" ref="sale_stock.view_order_form_inherit"/>
+	        <field name="arch" type="xml">
+	            <xpath expr="//field[@name='shop_id']" position="attributes">
+	            	<attribute name="domain">[('boi_id','=',False)]</attribute>
+	            	<attribute name="widget">False</attribute>
+	            	<attribute name="options">{'limit': 10, 'create': false, 'create_edit': false}</attribute>
+	            </xpath>
+			</field>
+	    </record>
+	    
+	    
+	    
+		<record id="view_sale_orders_filter_ext" model="ir.ui.view">
+            <field name="name">view.sales.order.filter.ext</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_sales_order_filter" />
+            <field name="arch" type="xml">
+                <data>
+                    <xpath expr="/search/field[@name='name']" position="after">
+                    	<field name="boi_id" string="BOI Cert."/>
+                    </xpath>
+                    <xpath expr="/search/field[@name='name']" position="after">
+                    	<filter name="boi_true" string="BOI" domain="[('boi_id','!=',False)]" />
+                    	<filter name="boi_false" string="Non-BOI" domain="[('boi_id','=',False)]" />
+                    </xpath>
+                	<xpath expr="/search/group" position="inside">
+                        <filter string="BOI Cert." domain="[]" context="{'group_by':'boi_id'}"/>
+         			</xpath> 
+				</data>
+            </field>
+        </record>     
+	</data>
+</openerp>

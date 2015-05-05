@@ -2,7 +2,7 @@
 <openerp>
 	<data>
 
-    	<menuitem id="menu_account_boi" name="BOI" parent="account.menu_finance" sequence="5"/>
+    	<menuitem id="menu_account_boi" name="BOI" parent="account.menu_finance" sequence="4"/>
 
         <record id="view_account_boi_tree" model="ir.ui.view">
             <field name="name">account.boi.tree</field>
@@ -24,8 +24,8 @@
             <field name="arch" type="xml">
                 <search string="Search Bank Statements">
                     <field name="name" string="BOI Cert."/>
-                    <filter string="Active" domain="[('active','=',True)]" />
-                    <filter string="Inactive" domain="[('active','=',False)]" />
+                    <filter string="Active" name="active" domain="[('active','=',True)]" />
+                    <filter string="Inactive" name="inactive" domain="[('active','=',False)]" />
                     <!-- <group expand="0" string="Group By...">
                         <filter string="Journal" context="{'group_by': 'journal_id'}" icon="terp-folder-orange"/>
                         <filter string="Status" context="{'group_by': 'state'}" icon="terp-stock_effects-object-colorize"/>
@@ -60,48 +60,86 @@
                             <field name="date_end" />
                         </group>
                     </group>
-                    <notebook>
-                        <page string="BOI Items/Quotas">
-                            <field name="boi_items" >
-                                <tree editable="bottom" string="Product Lines">
-                                	<field name="name"/>
-                                    <field name="quota_qty"/>
-                                    <field name="quota_uom"/>
-                                    <field name="invoiced_qty"/>
-                                </tree>
-                            </field>
-                        </page>
-                        <page string="Products Avail/Borrows">
-                            <field name="boi_product_line" context="{'boi_id': active_id}">
-                                <tree editable="bottom" string="Product Lines">
-                                    <field name="boi_id" invisible="1"/>
-                                    <field name="boi_item_id"/>
-                                    <field name="product_id"/>
-                                    <field name="qty_available"/>
-                                    <field name="qty_borrowed"/>
-                                    <button name="action_view_borrowed_move"
-                                        string="View Borrowed Movement" type="object"
-                                        icon="STOCK_ZOOM_IN" />
-                                    <field name="qty_consumed"/>
-                                    <button name="action_view_consumed_move"
-                                        string="View Consumed Movement" type="object"
-                                        icon="STOCK_ZOOM_IN" />
-                                </tree>
-                            </field>
-                        </page>
-                        <page string="Borrow Details">
-                            <field name="boi_product_borrow_detail" >
-                                <tree string="Product Lines">
-                                    <field name="boi_id" />
-                                    <field name="boi_location_id"/>
-                                    <field name="borrow_location_id"/>
-                                    <field name="product_id" />
-                                    <field name="quantity"/>
-                                    <field name="uom_name"/>
-                                </tree>
-                            </field>
-                        </page>
-                    </notebook>
+                    <group string="Raw Material">
+	                    <notebook>
+	                        <page string="BOI Items/Quotas">
+	                            <field name="boi_items" context="{'is_fg': True}">
+	                                <tree editable="bottom" string="Product Lines">
+	                                	<field name="name"/>
+	                                    <field name="quota_qty"/>
+	                                    <field name="quota_uom"/>
+	                                    <field name="invoiced_qty"/>
+	                                    <field name="is_fg" invisible="1"/>
+	                                </tree>
+	                            </field>
+	                        </page>
+	                        <page string="Products Avail/Borrows">
+	                            <field name="boi_product_line" context="{'boi_id': active_id, 'is_fg': False}">
+	                                <tree editable="bottom" string="Product Lines">
+	                                    <field name="boi_id" invisible="1"/>
+	                                    <field name="boi_item_id" domain="[('is_fg','=',False)]"/>
+	                                    <field name="product_id"/>
+	                                    <field name="qty_available"/>
+	                                    <field name="qty_borrowed"/>
+	                                    <button name="action_view_borrowed_move"
+	                                        string="View Borrowed Movement" type="object"
+	                                        icon="STOCK_ZOOM_IN" />
+	                                    <field name="qty_consumed"/>
+	                                    <button name="action_view_consumed_move"
+	                                        string="View Consumed Movement" type="object"
+	                                        icon="STOCK_ZOOM_IN" />
+	                                    <field name="is_fg" invisible="1"/>
+	                                </tree>
+	                            </field>
+	                        </page>
+	                        <page string="Borrow Details">
+	                            <field name="boi_product_borrow_detail" >
+	                                <tree string="Product Lines">
+	                                    <field name="boi_id" />
+	                                    <field name="boi_location_id"/>
+	                                    <field name="borrow_location_id"/>
+	                                    <field name="product_id" />
+	                                    <field name="quantity"/>
+	                                    <field name="uom_name"/>
+	                                </tree>
+	                            </field>
+	                        </page>
+	                    </notebook>
+	            	</group>
+	            	<group string="Finished Goods" >
+	                    <notebook>
+	                        <page string="BOI Items">
+	                            <field name="boi_items_fg" context="{'is_fg': True}">
+	                                <tree editable="bottom" string="Product Lines">
+	                                	<field name="name"/>
+	                                    <field name="quota_qty" />
+	                                    <field name="quota_uom" />
+	                                    <field name="invoiced_qty" string="Sold"/>
+	                                    <field name="is_fg" invisible="1"/>
+	                                </tree>
+	                            </field>
+	                        </page>
+	                        <page string="Products Avail">
+	                            <field name="boi_product_line_fg" context="{'boi_id': active_id, 'is_fg': True}">
+	                                <tree editable="bottom" string="Product Lines">
+	                                    <field name="boi_id" invisible="1"/>
+	                                    <field name="boi_item_id" domain="[('is_fg','=',True)]"/>
+	                                    <field name="product_id"/>
+	                                    <field name="qty_available"/>
+	                                    <field name="qty_borrowed"/>
+	                                    <button name="action_view_borrowed_move"
+	                                        string="View Borrowed Movement" type="object"
+	                                        icon="STOCK_ZOOM_IN" />
+	                                    <field name="qty_consumed"/>
+	                                    <button name="action_view_consumed_move"
+	                                        string="View Consumed Movement" type="object"
+	                                        icon="STOCK_ZOOM_IN" />
+	                                    <field name="is_fg" invisible="1"/>
+	                                </tree>
+	                            </field>
+	                        </page>
+	                	</notebook>
+	            	</group>
                 </sheet>
                 </form>
             </field>
@@ -113,7 +151,7 @@
             <field name="view_type">form</field>
             <field name="view_mode">tree,form,graph</field>
             <field name="domain">[]</field>
-            <field name="context">{}</field>
+            <field name="context">{'search_default_active': 1, 'search_default_inactive': 1}</field>
             <field name="search_view_id" ref="view_account_boi_search"/>
             <field name="help" type="html">
               <p class="oe_view_nocontent_create">
@@ -137,7 +175,7 @@
             <field name="act_window_id" ref="action_account_boi"/>
         </record>
 
-        <menuitem string="BOI Cert." action="action_account_boi" id="menu_account_boi_tree" parent="menu_account_boi" sequence="5"/>
+        <menuitem string="BOI Cert." action="action_account_boi" id="menu_account_boi_tree" parent="menu_account_boi" sequence="3"/>
 
 	</data>
 </openerp>
