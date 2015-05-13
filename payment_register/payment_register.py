@@ -64,16 +64,25 @@ class payment_register(osv.osv):
         res = {}
         rate = 1.0
         for register in self.browse(cr, uid, ids, context=context):
+            ctx = context.copy()
+            # to be compatible with res_currency_enahnced, without having to install it.
+            is_bigger = False
             if register.currency_id:
                 if register.company_id.currency_id.id == register.original_pay_currency_id.id:
                     rate = 1 / register.exchange_rate
                 else:
                     ctx = context.copy()
                     ctx.update({'date': register.date})
-                    voucher_rate = self.browse(cr, uid, register.id, context=ctx).currency_id.rate
+                    voucher_currency = self.browse(cr, uid, register.id, context=ctx).currency_id
+                    voucher_rate = voucher_currency.rate
+                    try:
+                        if voucher_currency.type_ref_base == 'bigger':
+                            is_bigger = True
+                    except ValueError:
+                        pass
                     company_currency_rate = register.company_id.currency_id.rate
-                    rate = voucher_rate * company_currency_rate
-            res[register.id] = register.amount / rate
+                    rate = voucher_rate / company_currency_rate
+            res[register.id] = is_bigger and register.amount * rate or register.amount / rate
         return res
 
     _name = 'payment.register'

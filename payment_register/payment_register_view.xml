@@ -73,7 +73,7 @@
                             <field name="journal_transit_id" invisible="1"/>
                	 			<field name="account_transit_id" invisible="1"/>
                	 			<field name="original_pay_currency_id" readonly="1" invisible="1"/>
-                            <field name="original_pay_amount" readonly="1" invisible="1	" widget="monetary" options="{'currency_field': 'original_pay_currency_id'}"/>
+                            <field name="original_pay_amount" readonly="1" invisible="0" widget="monetary" options="{'currency_field': 'original_pay_currency_id'}"/>
                         </group>
                         <group>
                             <field name="company_id" invisible="1"/>
