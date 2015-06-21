@@ -45,9 +45,10 @@ To-Be:
     'category': 'Accounting',
     'website' : 'http://www.ecosoft.co.th',
     'images' : [],
-    'depends' : ['account'],
+    'depends' : ['account',],
     'demo' : [],
     'data' : [
+        'account_invoice_view.xml'
     ],
     'test' : [
     ],

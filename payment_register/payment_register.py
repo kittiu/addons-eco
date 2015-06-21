@@ -78,7 +78,7 @@ class payment_register(osv.osv):
                     try:
                         if voucher_currency.type_ref_base == 'bigger':
                             is_bigger = True
-                    except ValueError:
+                    except AttributeError:
                         pass
                     company_currency_rate = register.company_id.currency_id.rate
                     rate = voucher_rate / company_currency_rate

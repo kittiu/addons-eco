@@ -32,7 +32,7 @@ import xlwt
 import cStringIO
 import base64
 
-from osv import osv, fields
+from openerp.osv import osv, fields
 from account_cash_projection.report import account_cash_projection_report
 
 class account_cash_projection_balance(osv.osv_memory):

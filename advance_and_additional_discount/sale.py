@@ -47,7 +47,7 @@ class sale_order(AdditionalDiscountable, osv.osv):
                     # We change from amount_net back to amount_untaxed again, due to case #2059 (may need to double check)
                     tot += not invoice.is_deposit and not invoice.is_advance and invoice.amount_untaxed
             if tot:
-                res[sale.id] = min(100.0, tot * 100.0 / (sale.amount_untaxed or 1.00))  # <-- changed back to untaxed
+                res[sale.id] = min(100.0, round(tot * 100.0 / (sale.amount_untaxed or 1.00)))  # <-- changed back to untaxed
             else:
                 res[sale.id] = 0.0
         return res

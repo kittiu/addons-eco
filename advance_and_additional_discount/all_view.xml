@@ -85,6 +85,14 @@
             <field name="type">form</field>
             <field name="inherit_id" ref="account.invoice_form"/>
             <field name="arch" type="xml">
+            	<header position="inside">
+            		<field name="is_deposit" invisible="1" />
+            		<field name="is_advance" invisible="1" />
+            	</header>
+            	<button name="action_cancel_draft" position="attributes" >
+            		<attribute name='states'></attribute>
+            		<attribute name="attrs">{'invisible': ['|', '|',  ('is_deposit','=',True), ('is_advance','=',True), ('state','not in',('cancel'))]}</attribute>
+            	</button>
                 <field name="amount_untaxed" position="after">
                   	<field name="add_disc" />
                 	<field name="add_disc_amt"  widget="monetary" options="{'currency_field': 'currency_id'}"/>

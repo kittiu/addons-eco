@@ -612,7 +612,9 @@ class account_voucher_tax(common_voucher, osv.osv):
                         # -------------------> Adding Tax for Posting 1) Contra-Suspend 2) Non-Suspend
                         elif use_suspend_acct:
                             # First: Do the Cr: with Non-Suspend Account
+                            refer_tax = tax_obj.browse(cr, uid, val['tax_id']).refer_tax_id
                             if voucher.type in ('receipt', 'payment'):
+                                val['tax_id'] = refer_tax and refer_tax.id or val['tax_id'] # refer_tax if any
                                 val['invoice_id'] = invoice.id
                                 val['base_code_id'] = tax['base_code_id']
                                 val['tax_code_id'] = tax['tax_code_id']
@@ -621,6 +623,7 @@ class account_voucher_tax(common_voucher, osv.osv):
                                 val['account_id'] = tax['account_collected_id'] or line.account_id.id
                                 val['account_analytic_id'] = tax['account_analytic_collected_id']
                             else:
+                                val['tax_id'] = refer_tax and refer_tax.id or val['tax_id'] # refer_tax if any
                                 val['invoice_id'] = invoice.id
                                 val['base_code_id'] = tax['ref_base_code_id']
                                 val['tax_code_id'] = tax['ref_tax_code_id']
