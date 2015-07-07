@@ -1,0 +1,624 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report_thai_tax_output" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
+	<property name="ireport.zoom" value="2.3579476910000112"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="145"/>
+	<style name="table" lineSpacing="Single">
+		<box topPadding="0" leftPadding="2" bottomPadding="0" rightPadding="2">
+			<pen lineWidth="1.0" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="detail" lineSpacing="Single">
+		<box topPadding="0" leftPadding="2" bottomPadding="0" rightPadding="2">
+			<pen lineWidth="1.0" lineColor="#000000"/>
+			<topPen lineWidth="0.25"/>
+			<bottomPen lineWidth="0.25"/>
+		</box>
+	</style>
+	<parameter name="company_id" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="period_id" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="tax_id" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="base_code_id" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="tax_code_id" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="type_tax_use" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[select * from
+(
+
+select company_name, tax, period, fiscalyear, partner_name, vat, branch,
+invoice_tax.date_invoice, invoice_tax.doc_id, invoice_tax.doc_number, invoice_tax.supplier_doc_number, invoice_tax.tax_amount, invoice_base.base_amount from
+
+----------------------
+-- TAX FROM INVOICE --
+----------------------
+(select company_name, tax, period, fiscalyear, partner_name, vat, branch,
+date_invoice, doc_id, doc_number, supplier_doc_number, sum(tax_amount) as tax_amount
+from (
+select rc.name as company_name, rp.vat as tax,
+ap.name as period, af.name as fiscalyear,
+partner.name as partner_name, ai.id as doc_id, partner.vat, partner.branch,
+ai.number as doc_number, ai.supplier_invoice_number as supplier_doc_number, ai.date_invoice, (aml.credit - aml.debit) as tax_amount
+-- Main Tables
+from account_move am join account_move_line aml on am.id = aml.move_id
+join account_invoice ai on ai.move_id = am.id and ai.state in ('open','paid')
+-- Header Info
+join res_company rc on rc.id = am.company_id
+join res_partner rp on rp.id = rc.partner_id
+join account_period ap on ap.id = am.period_id
+join account_fiscalyear af on af.id = ap.fiscalyear_id
+-- Line Info
+join res_partner partner on partner.id = ai.partner_id
+-- All Tax from Account Invoice
+where am.company_id = $P{company_id} and am.period_id = $P{period_id} and aml.tax_code_id = $P{tax_code_id}
+-- Only non-suspend account_id
+	and (aml.account_id in (select account_collected_id from account_tax tax where tax.tax_code_id = $P{tax_code_id})
+	or aml.account_id in (select account_paid_id from account_tax tax where tax.ref_tax_code_id = $P{tax_code_id}))
+) a
+group by company_name, tax, period, fiscalyear, partner_name, vat, branch, date_invoice, doc_id, doc_number, supplier_doc_number) invoice_tax
+-------------------------
+
+join
+
+-----------------------
+-- BASE FROM INVOICE --
+-----------------------
+(select date_invoice, doc_id, doc_number, supplier_doc_number, sum(base_amount) as base_amount
+from (
+select  ai.id as doc_id, ai.number as doc_number, ai.date_invoice, ai.supplier_invoice_number as supplier_doc_number, (aml.credit - aml.debit) as base_amount
+-- Main Tables
+from account_move am join account_move_line aml on am.id = aml.move_id
+join account_invoice ai on ai.move_id = am.id and ai.state in ('open','paid')
+
+-- All Tax from Account Invoice
+where am.company_id = $P{company_id} and am.period_id = $P{period_id} and aml.tax_code_id = $P{base_code_id}
+-- For Base Amount, require deduction of Additional Discount, Advance Amount, Deposit Amount
+or aml.name in ('Additional Discount', 'Advance Amount', 'Deposit Amount', 'Gain/Loss Exchange Rate')
+order by doc_number
+) a
+group by date_invoice, doc_id, doc_number, supplier_doc_number) invoice_base
+--------------------------------
+
+on invoice_tax.doc_id = invoice_base.doc_id
+
+
+----------------------------------
+-- union Payment Tax -----
+----------------------------------
+union
+(
+select rc.name as company_name, rp.vat as tax, ap.name as period, af.name as fiscalyear,
+partner.name as partner_name, partner.vat, partner.branch,
+av.date as date_invoice, av.id as doc_id, av.number as doc_number, av.reference as supplier_doc_number,
+CASE WHEN av.type in ('sale','receipt') THEN avt.amount ELSE avt.amount END as tax_amount,
+CASE WHEN av.type in ('sale','receipt') THEN avt.amount ELSE avt.amount END as tax_amount
+from account_voucher_tax avt
+join account_voucher av on av.id = avt.voucher_id and av.state in ('posted')
+join res_company rc on rc.id = av.company_id
+join res_partner rp on rp.id = rc.partner_id
+join account_period ap on ap.id = av.period_id
+join account_fiscalyear af on af.id = ap.fiscalyear_id
+join res_partner partner on partner.id = av.partner_id
+where av.company_id = $P{company_id} and av.period_id = $P{period_id}
+	and avt.tax_id = $P{tax_id}
+	and avt.amount > 0)
+
+------------------------------------
+-- union Cancelled Payment Tax -----
+------------------------------------
+union
+(
+select rc.name as company_name, rp.vat as tax, ap.name as period, af.name as fiscalyear,
+'CANCELLED' as partner_name, '-' as vat, '-' as branch,
+av.date as date_invoice, av.id as doc_id, av.number as doc_number, av.reference as supplier_doc_number, 0.0 as tax_amount, 0.0 as base_amount
+from account_voucher_tax avt
+join account_voucher av on av.id = avt.voucher_id and av.state in ('cancel')
+join res_company rc on rc.id = av.company_id
+join res_partner rp on rp.id = rc.partner_id
+join account_period ap on ap.id = av.taxinv_period_id
+join account_fiscalyear af on af.id = ap.fiscalyear_id
+join res_partner partner on partner.id = av.partner_id
+where av.company_id = $P{company_id} and av.period_id = $P{period_id}
+	and avt.tax_id = $P{tax_id}
+	and avt.amount > 0)
+----------------------------------------
+-- union Cancelled Invoice (Sales) -----
+----------------------------------------
+union
+(select rc.name as company_name, rp.vat as tax, ap.name as period, af.name as fiscalyear,
+'CANCELLED' as partner_name, '-' as vat, '-' as branch,
+ai.date_invoice, ai.id as doc_id, ai.internal_number as doc_number, null as supplier_doc_number, 0.0 as tax_amount, 0.0 as base_amount
+from account_invoice ai
+join res_company rc on rc.id = ai.company_id
+join res_partner rp on rp.id = rc.partner_id
+join account_period ap on ap.id = ai.period_id
+join account_fiscalyear af on af.id = ap.fiscalyear_id
+join res_partner partner on partner.id = ai.partner_id
+-- only invoice with lines that has the tax_id selected
+and ai.id in (select distinct ai.id from account_invoice ai
+join account_invoice_line ail on ail.invoice_id = ai.id
+join account_invoice_line_tax ailt on ailt.invoice_line_id = ail.id
+where ai.company_id = $P{company_id} and ai.period_id = $P{period_id} and ailt.tax_id = $P{tax_id}
+and ai.state = 'cancel' and ai.type in ('out_invoice', 'out_refund') and ai.internal_number is not null))
+
+
+------------------------------------------
+
+----------------------------------
+-- union VAT INFO (Purchase) -----
+----------------------------------
+union
+(select rc.name as company_name, rp.vat as tax, ap.name as period, af.name as fiscalyear,
+ail.vatinfo_supplier_name as partner_name, ail.vatinfo_tin as vat, ail.vatinfo_branch as branch,
+ail.vatinfo_date as date_invoice, ai.id as doc_id, null as doc_number, ail.vatinfo_number as supplier_doc_number, -ail.vatinfo_tax_amount as tax_amount, -ail.vatinfo_base_amount as base_amount
+from account_invoice_line ail
+join account_invoice ai on ai.id = ail.invoice_id and ai.state in ('open','paid') -- For purhcase, we don't need cancel state
+join account_move am on am.id = ai.vatinfo_move_id
+join res_company rc on rc.id = am.company_id
+join res_partner rp on rp.id = rc.partner_id
+join account_period ap on ap.id = am.period_id
+join account_fiscalyear af on af.id = ap.fiscalyear_id
+where am.company_id = $P{company_id} and am.period_id = $P{period_id} and ail.vatinfo_tax_id = $P{tax_id}
+and ail.vatinfo_tax_amount > 0)
+------------------------------------------
+
+----------------------------------
+-- union HR EXPENSE (Purchase) ---
+----------------------------------
+union
+(select rc.name as company_name, rp.vat as tax, ap.name as period, af.name as fiscalyear,
+hel.vatinfo_supplier_name as partner_name, hel.vatinfo_tin as vat, hel.vatinfo_branch as branch,
+hel.vatinfo_date as date_invoice, he.id as doc_id, null as doc_number, hel.vatinfo_number as supplier_doc_number, -hel.vatinfo_tax_amount as tax_amount, -hel.vatinfo_base_amount as base_amount
+from hr_expense_line hel
+join hr_expense_expense he on he.id = hel.expense_id and he.state in ('done','paid')
+join account_move am on am.id = he.vatinfo_move_id
+join res_company rc on rc.id = am.company_id
+join res_partner rp on rp.id = rc.partner_id
+join account_period ap on ap.id = am.period_id
+join account_fiscalyear af on af.id = ap.fiscalyear_id
+where am.company_id = $P{company_id} and am.period_id = $P{period_id} and hel.vatinfo_tax_id = $P{tax_id}
+and hel.vatinfo_tax_amount > 0)
+------------------------------------------
+
+) b
+
+order by date_invoice, doc_number, supplier_doc_number]]>
+	</queryString>
+	<field name="company_name" class="java.lang.String"/>
+	<field name="tax" class="java.lang.String"/>
+	<field name="period" class="java.lang.String"/>
+	<field name="fiscalyear" class="java.lang.String"/>
+	<field name="partner_name" class="java.lang.String"/>
+	<field name="vat" class="java.lang.String"/>
+	<field name="branch" class="java.lang.String"/>
+	<field name="date_invoice" class="java.sql.Date"/>
+	<field name="doc_id" class="java.lang.Integer"/>
+	<field name="doc_number" class="java.lang.String"/>
+	<field name="supplier_doc_number" class="java.lang.String"/>
+	<field name="tax_amount" class="java.math.BigDecimal"/>
+	<field name="base_amount" class="java.math.BigDecimal"/>
+	<variable name="base_amount" class="java.lang.Number">
+		<variableExpression><![CDATA[$P{type_tax_use}.equals("purchase") ? -$F{base_amount} : $F{base_amount}]]></variableExpression>
+	</variable>
+	<variable name="tax_amount" class="java.lang.Number">
+		<variableExpression><![CDATA[$P{type_tax_use}.equals("purchase") ? -$F{tax_amount} : $F{tax_amount}]]></variableExpression>
+	</variable>
+	<variable name="sum_base" class="java.lang.Number" calculation="Sum">
+		<variableExpression><![CDATA[$V{base_amount}]]></variableExpression>
+	</variable>
+	<variable name="sum_tax" class="java.lang.Number" calculation="Sum">
+		<variableExpression><![CDATA[$V{tax_amount}]]></variableExpression>
+	</variable>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="107" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="555" height="20">
+					<printWhenExpression><![CDATA[$P{type_tax_use} == "sale" ? true : false]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Center" lineSpacing="Single" markup="none">
+					<font fontName="Monospaced" size="14" isBold="false" pdfFontName="Garuda.ttf" pdfEncoding="Identity-H" isPdfEmbedded="false"/>
+				</textElement>
+				<text><![CDATA[รายงานภาษีขาย]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="16" y="28" width="115" height="15"/>
+				<textElement textAlignment="Right" lineSpacing="Single" markup="none">
+					<font fontName="Monospaced" size="11" isBold="false" pdfFontName="Garuda.ttf" pdfEncoding="Identity-H" isPdfEmbedded="false"/>
+				</textElement>
+				<text><![CDATA[เดือนภาษี]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="297" y="28" width="115" height="15"/>
+				<textElement textAlignment="Right" lineSpacing="Single" markup="none">
+					<font fontName="Monospaced" size="11" isBold="false" pdfFontName="Garuda.ttf" pdfEncoding="Identity-H" isPdfEmbedded="false"/>
+				</textElement>
+				<text><![CDATA[ปี]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="135" y="28" width="100" height="15"/>
+				<textElement>
+					<font fontName="Monospaced" size="11" pdfFontName="Garuda.ttf" pdfEncoding="Identity-H"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{period}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="416" y="28" width="100" height="15"/>
+				<textElement>
+					<font fontName="Monospaced" size="11" pdfFontName="Garuda.ttf" pdfEncoding="Identity-H"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{fiscalyear}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="59" width="182" height="15"/>
+				<textElement lineSpacing="Single" markup="none">
+					<font fontName="Monospaced" size="9" isBold="false" pdfFontName="Garuda.ttf" pdfEncoding="Identity-H" isPdfEmbedded="false"/>
+				</textElement>
+				<text><![CDATA[ชื่อผู้ประกอบการ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="286" y="59" width="170" height="15"/>
+				<textElement textAlignment="Right" lineSpacing="Single" markup="none">
+					<font fontName="Monospaced" size="9" isBold="false" pdfFontName="Garuda.ttf" pdfEncoding="Identity-H" isPdfEmbedded="false"/>
+				</textElement>
+				<text><![CDATA[เลขประจำตัวผู้เสียภาษีอากร]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="93" y="59" width="247" height="15"/>
+				<textElement>
+					<font fontName="Monospaced" size="9" pdfFontName="Garuda.ttf" pdfEncoding="Identity-H"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{company_name}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="83" width="182" height="15"/>
+				<textElement lineSpacing="Single" markup="none">
+					<font fontName="Monospaced" size="9" isBold="false" pdfFontName="Garuda.ttf" pdfEncoding="Identity-H" isPdfEmbedded="false"/>
+				</textElement>
+				<text><![CDATA[ชื่อสถานประกอบการ]]></text>
+			</staticText>
+			<line>
+				<reportElement x="93" y="73" width="240" height="1"/>
+			</line>
+			<textField isBlankWhenNull="true">
+				<reportElement x="390" y="58" width="165" height="15"/>
+				<textElement textAlignment="Right">
+					<font fontName="Monospaced" size="9" pdfFontName="Garuda.ttf" pdfEncoding="Identity-H"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{tax}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="469" y="72" width="85" height="1"/>
+			</line>
+			<textField isBlankWhenNull="true">
+				<reportElement x="93" y="83" width="247" height="15"/>
+				<textElement>
+					<font fontName="Monospaced" size="9" pdfFontName="Garuda.ttf" pdfEncoding="Identity-H"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{company_name}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="93" y="97" width="240" height="1"/>
+			</line>
+			<staticText>
+				<reportElement x="324" y="84" width="92" height="15"/>
+				<textElement textAlignment="Right" lineSpacing="Single" markup="none">
+					<font fontName="Monospaced" size="9" isBold="false" pdfFontName="Garuda.ttf" pdfEncoding="Identity-H" isPdfEmbedded="false"/>
+				</textElement>
+				<text><![CDATA[สำนักงานใหญ่]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="425" y="84" width="47" height="15"/>
+				<textElement textAlignment="Right" lineSpacing="Single" markup="none">
+					<font fontName="Monospaced" size="9" isBold="false" pdfFontName="Garuda.ttf" pdfEncoding="Identity-H" isPdfEmbedded="false"/>
+				</textElement>
+				<text><![CDATA[สาขาที่]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement x="340" y="84" width="10" height="10"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="427" y="84" width="10" height="10"/>
+			</rectangle>
+			<line>
+				<reportElement x="489" y="97" width="65" height="1"/>
+			</line>
+			<staticText>
+				<reportElement x="0" y="0" width="555" height="20">
+					<printWhenExpression><![CDATA[$P{type_tax_use} == "purchase" ? true : false]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Center" lineSpacing="Single" markup="none">
+					<font fontName="Monospaced" size="14" isBold="false" pdfFontName="Garuda.ttf" pdfEncoding="Identity-H" isPdfEmbedded="false"/>
+				</textElement>
+				<text><![CDATA[รายงานภาษีซื้อ]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="17" splitType="Stretch">
+			<textField>
+				<reportElement x="452" y="0" width="80" height="16"/>
+				<textElement textAlignment="Right">
+					<font size="10" isBold="false"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA["Page "+$V{PAGE_NUMBER}+" of"]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report">
+				<reportElement x="535" y="0" width="40" height="16"/>
+				<textElement>
+					<font size="10" isBold="false"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="30">
+			<staticText>
+				<reportElement style="table" x="20" y="0" width="95" height="15"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Monospaced" size="8" pdfFontName="Garuda.ttf" pdfEncoding="Identity-H"/>
+				</textElement>
+				<text><![CDATA[ใบกำกับภาษี]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="table" x="324" y="0" width="64" height="30"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Monospaced" size="8" pdfFontName="Garuda.ttf" pdfEncoding="Identity-H"/>
+				</textElement>
+				<text><![CDATA[]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="table" x="495" y="0" width="60" height="30"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Monospaced" size="8" pdfFontName="Garuda.ttf" pdfEncoding="Identity-H"/>
+				</textElement>
+				<text><![CDATA[]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="table" x="20" y="15" width="40" height="15"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Monospaced" size="8" pdfFontName="Garuda.ttf" pdfEncoding="Identity-H"/>
+				</textElement>
+				<text><![CDATA[วันที่]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="table" x="60" y="15" width="55" height="15"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Monospaced" size="8" pdfFontName="Garuda.ttf" pdfEncoding="Identity-H"/>
+				</textElement>
+				<text><![CDATA[เลขที่]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="table" x="0" y="0" width="20" height="30"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Monospaced" size="8" pdfFontName="Garuda.ttf" pdfEncoding="Identity-H"/>
+				</textElement>
+				<text><![CDATA[#]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="481" y="0" width="90" height="30"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Monospaced" size="8" pdfFontName="Garuda.ttf" pdfEncoding="Identity-H"/>
+				</textElement>
+				<text><![CDATA[จำนวนเงิน
+ภาษีมูลค่าเพิ่ม]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="table" x="115" y="0" width="209" height="30"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Monospaced" size="8" pdfFontName="Garuda.ttf" pdfEncoding="Identity-H"/>
+				</textElement>
+				<text><![CDATA[ชื่อผู้ขายสินค้า / ผู้ให้บริการ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="310" y="0" width="92" height="30"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Monospaced" size="8" pdfFontName="Garuda.ttf" pdfEncoding="Identity-H"/>
+				</textElement>
+				<text><![CDATA[เลขประจำตัว
+ผู้เสียภาษีอากร]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="table" x="388" y="0" width="47" height="30"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Monospaced" size="8" pdfFontName="Garuda.ttf" pdfEncoding="Identity-H"/>
+				</textElement>
+				<text><![CDATA[สถาน
+ประกอบการ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="table" x="435" y="0" width="60" height="30"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Monospaced" size="8" pdfFontName="Garuda.ttf" pdfEncoding="Identity-H"/>
+				</textElement>
+				<text><![CDATA[]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="434" y="0" width="62" height="30"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Monospaced" size="8" pdfFontName="Garuda.ttf" pdfEncoding="Identity-H"/>
+				</textElement>
+				<text><![CDATA[มูลค่าสินค้า
+หรือบริการ]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="15" splitType="Stretch">
+			<textField isStretchWithOverflow="true" pattern="dd/MM/yy" isBlankWhenNull="true">
+				<reportElement style="detail" stretchType="RelativeToTallestObject" mode="Transparent" x="20" y="0" width="40" height="15"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle" lineSpacing="Single">
+					<font fontName="Monospaced" size="7" pdfFontName="Garuda.ttf" pdfEncoding="Identity-H"/>
+				</textElement>
+				<textFieldExpression class="java.util.Date"><![CDATA[$F{date_invoice}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="#,##0.00;-#,##0.00" isBlankWhenNull="true">
+				<reportElement style="detail" stretchType="RelativeToTallestObject" mode="Transparent" x="60" y="0" width="55" height="15">
+					<printWhenExpression><![CDATA[$P{type_tax_use} == "sale" ? true : false]]></printWhenExpression>
+				</reportElement>
+				<textElement verticalAlignment="Middle" lineSpacing="Single">
+					<font fontName="Monospaced" size="7" pdfFontName="Garuda.ttf" pdfEncoding="Identity-H"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{doc_number}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="#,##0.00;-#,##0.00" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToTallestObject" mode="Transparent" x="117" y="0" width="207" height="15"/>
+				<textElement verticalAlignment="Middle" lineSpacing="Single">
+					<font fontName="Monospaced" size="7" pdfFontName="Garuda.ttf" pdfEncoding="Identity-H"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{partner_name}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="#,##0.00;-#,##0.00" isBlankWhenNull="true">
+				<reportElement style="detail" stretchType="RelativeToTallestObject" mode="Transparent" x="495" y="0" width="60" height="15"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle" lineSpacing="Single">
+					<font fontName="Monospaced" size="7" pdfFontName="Arial.ttf" pdfEncoding="Identity-H"/>
+				</textElement>
+				<textFieldExpression class="java.lang.Number"><![CDATA[$V{tax_amount}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="true">
+				<reportElement style="detail" stretchType="RelativeToTallestObject" mode="Transparent" x="0" y="0" width="20" height="15"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle" lineSpacing="Single">
+					<font fontName="Monospaced" size="7" pdfFontName="Garuda.ttf" pdfEncoding="Identity-H"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$V{REPORT_COUNT}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="#,##0.00;-#,##0.00" isBlankWhenNull="true">
+				<reportElement style="detail" stretchType="RelativeToTallestObject" mode="Transparent" x="115" y="0" width="209" height="15"/>
+				<textElement verticalAlignment="Middle" lineSpacing="Single">
+					<font fontName="Monospaced" size="7" pdfFontName="Garuda.ttf" pdfEncoding="Identity-H"/>
+				</textElement>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="#,##0.00;-#,##0.00" isBlankWhenNull="true">
+				<reportElement style="detail" stretchType="RelativeToTallestObject" mode="Transparent" x="60" y="0" width="55" height="15">
+					<printWhenExpression><![CDATA[$P{type_tax_use} == "purchase" ? true : false]]></printWhenExpression>
+				</reportElement>
+				<textElement verticalAlignment="Middle" lineSpacing="Single">
+					<font fontName="Monospaced" size="7" pdfFontName="Garuda.ttf" pdfEncoding="Identity-H"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{supplier_doc_number}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="#,##0.00;-#,##0.00" isBlankWhenNull="true">
+				<reportElement style="detail" stretchType="RelativeToTallestObject" mode="Transparent" x="435" y="0" width="60" height="15"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle" lineSpacing="Single">
+					<font fontName="Monospaced" size="7" pdfFontName="Arial.ttf" pdfEncoding="Identity-H"/>
+				</textElement>
+				<textFieldExpression class="java.lang.Number"><![CDATA[$V{base_amount}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="#,##0.00;-#,##0.00" isBlankWhenNull="true">
+				<reportElement style="detail" stretchType="RelativeToTallestObject" mode="Transparent" x="324" y="0" width="64" height="15"/>
+				<textElement verticalAlignment="Middle" lineSpacing="Single">
+					<font fontName="Monospaced" size="7" pdfFontName="Garuda.ttf" pdfEncoding="Identity-H"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{vat}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="#,##0.00;-#,##0.00" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToTallestObject" mode="Transparent" x="390" y="0" width="66" height="15"/>
+				<textElement verticalAlignment="Middle" lineSpacing="Single">
+					<font fontName="Monospaced" size="7" pdfFontName="Garuda.ttf" pdfEncoding="Identity-H"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{branch}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="#,##0.00;-#,##0.00" isBlankWhenNull="true">
+				<reportElement style="detail" stretchType="RelativeToTallestObject" mode="Transparent" x="388" y="0" width="47" height="15"/>
+				<textElement verticalAlignment="Middle" lineSpacing="Single">
+					<font fontName="Monospaced" size="7" pdfFontName="Garuda.ttf" pdfEncoding="Identity-H"/>
+				</textElement>
+			</textField>
+			<staticText>
+				<reportElement x="57" y="0" width="6" height="15"/>
+				<textElement textAlignment="Center" lineSpacing="Single" markup="none">
+					<font fontName="SansSerif" size="10" isBold="false" pdfFontName="Garuda.ttf" pdfEncoding="Identity-H" isPdfEmbedded="false"/>
+				</textElement>
+				<text><![CDATA[|]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="112" y="0" width="6" height="15"/>
+				<textElement textAlignment="Center" lineSpacing="Single" markup="none">
+					<font fontName="SansSerif" size="10" isBold="false" pdfFontName="Garuda.ttf" pdfEncoding="Identity-H" isPdfEmbedded="false"/>
+				</textElement>
+				<text><![CDATA[|]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="321" y="0" width="6" height="15"/>
+				<textElement textAlignment="Center" lineSpacing="Single" markup="none">
+					<font fontName="SansSerif" size="10" isBold="false" pdfFontName="Garuda.ttf" pdfEncoding="Identity-H" isPdfEmbedded="false"/>
+				</textElement>
+				<text><![CDATA[|]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="385" y="0" width="6" height="15"/>
+				<textElement textAlignment="Center" lineSpacing="Single" markup="none">
+					<font fontName="SansSerif" size="10" isBold="false" pdfFontName="Garuda.ttf" pdfEncoding="Identity-H" isPdfEmbedded="false"/>
+				</textElement>
+				<text><![CDATA[|]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="492" y="0" width="6" height="15"/>
+				<textElement textAlignment="Center" lineSpacing="Single" markup="none">
+					<font fontName="SansSerif" size="10" isBold="false" pdfFontName="Garuda.ttf" pdfEncoding="Identity-H" isPdfEmbedded="false"/>
+				</textElement>
+				<text><![CDATA[|]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="432" y="0" width="6" height="15"/>
+				<textElement textAlignment="Center" lineSpacing="Single" markup="none">
+					<font fontName="SansSerif" size="10" isBold="false" pdfFontName="Garuda.ttf" pdfEncoding="Identity-H" isPdfEmbedded="false"/>
+				</textElement>
+				<text><![CDATA[|]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="17" y="0" width="6" height="15"/>
+				<textElement textAlignment="Center" lineSpacing="Single" markup="none">
+					<font fontName="SansSerif" size="10" isBold="false" pdfFontName="Garuda.ttf" pdfEncoding="Identity-H" isPdfEmbedded="false"/>
+				</textElement>
+				<text><![CDATA[|]]></text>
+			</staticText>
+		</band>
+	</detail>
+	<summary>
+		<band height="18">
+			<textField isStretchWithOverflow="true" pattern="#,##0.00;-#,##0.00" isBlankWhenNull="true">
+				<reportElement style="table" stretchType="RelativeToBandHeight" mode="Transparent" x="435" y="0" width="60" height="18"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle" lineSpacing="Single">
+					<font fontName="Monospaced" size="7" pdfFontName="Arial.ttf" pdfEncoding="Identity-H"/>
+				</textElement>
+				<textFieldExpression class="java.lang.Number"><![CDATA[$V{sum_base}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="#,##0.00;-#,##0.00" isBlankWhenNull="true">
+				<reportElement style="table" stretchType="RelativeToBandHeight" mode="Transparent" x="495" y="0" width="60" height="18"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle" lineSpacing="Single">
+					<font fontName="Monospaced" size="7" pdfFontName="Arial.ttf" pdfEncoding="Identity-H"/>
+				</textElement>
+				<textFieldExpression class="java.lang.Number"><![CDATA[$V{sum_tax}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="#,##0.00;-#,##0.00" isBlankWhenNull="true">
+				<reportElement style="table" stretchType="RelativeToBandHeight" mode="Transparent" x="0" y="0" width="435" height="18"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle" lineSpacing="Single">
+					<font fontName="Monospaced" size="7" pdfFontName="Garuda.ttf" pdfEncoding="Identity-H"/>
+				</textElement>
+				<textFieldExpression class="java.lang.Number"><![CDATA[]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="335" y="0" width="92" height="18"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle" lineSpacing="Single" markup="none">
+					<font fontName="Monospaced" size="8" isBold="false" pdfFontName="Garuda.ttf" pdfEncoding="Identity-H" isPdfEmbedded="false"/>
+				</textElement>
+				<text><![CDATA[รวม]]></text>
+			</staticText>
+		</band>
+	</summary>
+</jasperReport>

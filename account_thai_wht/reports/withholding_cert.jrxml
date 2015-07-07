@@ -224,7 +224,7 @@ $F{partner_type} == "partnership"]]></printWhenExpression>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{taxid}.length()==13?$F{taxid}.substring( 3, 4 ):""]]></textFieldExpression>
 			</textField>
 			<textField pattern="" isBlankWhenNull="true">
-				<reportElement x="43" y="98" width="544" height="22"/>
+				<reportElement x="43" y="98" width="659" height="22"/>
 				<textElement verticalAlignment="Bottom" lineSpacing="1_1_2">
 					<font fontName="Monospaced" size="9" pdfFontName="Garuda.ttf" pdfEncoding="Identity-H"/>
 				</textElement>
@@ -281,7 +281,7 @@ $F{partner_type} == "partnership"]]></printWhenExpression>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{taxid}.length()==13?$F{taxid}.substring( 0, 1 ):""]]></textFieldExpression>
 			</textField>
 			<textField pattern="" isBlankWhenNull="true">
-				<reportElement x="44" y="175" width="543" height="20"/>
+				<reportElement x="44" y="175" width="658" height="20"/>
 				<textElement verticalAlignment="Bottom" lineSpacing="1_1_2">
 					<font fontName="Monospaced" size="9" pdfFontName="Garuda.ttf" pdfEncoding="Identity-H"/>
 				</textElement>
