@@ -212,7 +212,7 @@ class product_pricelist(osv.osv):
                                 res2 = cr.dictfetchone()
                                 if res2:
                                     price = res2['price']
-                        else:
+                        elif res[basefieldname]:
                             price_type = price_type_obj.browse(cr, uid, int(res[basefieldname]))
                             uom_price_already_computed = True
                             price = currency_obj.compute(cr, uid,
