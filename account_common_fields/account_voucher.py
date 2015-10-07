@@ -22,21 +22,22 @@
 from openerp.osv import fields, osv
 import time
 
+
 class account_voucher_line(osv.osv):
-    
+
     def _supplier_invoice_number(self, cursor, user, ids, name, arg, context=None):
         res = dict.fromkeys(ids, False)
         cursor.execute("""SELECT vl.id, i.supplier_invoice_number
                             FROM account_voucher_line vl
                             inner join account_move_line ml on vl.move_line_id = ml.id
                             left outer join account_invoice i on ml.move_id = i.move_id
-                            WHERE vl.id IN %s""",(tuple(ids),))
+                            WHERE vl.id IN %s""", (tuple(ids),))
         for line_id, supplier_invoice_number in cursor.fetchall():
             res[line_id] = supplier_invoice_number
         return res
-    
+
     _inherit = 'account.voucher.line'
-    
+
     _columns = {
         'supplier_invoice_number': fields.function(_supplier_invoice_number, string='Supplier Invoice Number', type='char'),
     }
@@ -45,12 +46,12 @@ account_voucher_line()
 
 
 class account_voucher(osv.osv):
-    
+
     _inherit = 'account.voucher'
-    
+
     _columns = {
-        'date_cheque':fields.date('Cheque Date', readonly=True, select=True, states={'draft':[('readonly',False)]}),
-        'number_cheque':fields.char('Cheque No.', size=64),
+        'date_cheque': fields.date('Cheque Date', readonly=True, select=True, states={'draft': [('readonly', False)]}),
+        'number_cheque': fields.char('Cheque No.', size=64),
     }
     _defaults = {
         'date_cheque': lambda *a: time.strftime('%Y-%m-%d'),

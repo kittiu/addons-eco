@@ -22,8 +22,9 @@
 from openerp import netsvc
 from openerp.osv import fields, osv
 
+
 class account_invoice(osv.osv):
-    
+
     _inherit = 'account.invoice'
     _columns = {
         'supplier_invoice_number': fields.char('Supplier Invoice Number', size=64, help="The reference of this invoice as provided by the supplier.", readonly=False),
