@@ -1,1 +1,6 @@
-/account_bank_balance/
+*.pyc
+*.jasper
+.project
+.pydevproject
+*.settings
+openerp-server.conf
